@@ -1,0 +1,112 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <title>Speciation in Canonical NEAT</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.75" />
+    <link rel="stylesheet" href="../sharpneat.css" type="text/css" media="screen" />
+    <style media="screen" type="text/css">
+        body {
+            font-family: Arial, Helvetica;
+            margin: 0px 50px;
+        }
+
+        li {
+            margin: 15px 0;
+        }
+    </style>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+        
+        });
+    </script>
+    <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_HTMLorMML-full'></script>
+</head>
+
+<body>
+    <div class="banner">
+        <a href="/" title="SharpNEAT">
+            <img src="../sharpneat_logo_banner.svg" alt="SharpNEAT" class="bannerimage" />
+        </a>
+    </div>
+    <br/>
+    <h1 align="center">Speciation in Canonical NEAT</h1>
+    <h4 align="center">Colin D. Green,<br />September 2009</h4>
+    <br />
+    <h2>Introduction</h2>
+    <p>
+        NEAT was originally presented in the paper Efficient Evolution Of Neural Network Topologies [1], 
+        and was accompanied with an implementation of NEAT written in C++ [2]. Over time a number
+        of additional implementations have been created by researchers and enthusiasts [3]. The precise details
+        of the speciation method used in each implementation likely differ to some degree, but in general
+        the method used in all implementations can be broadly described as laid out in this document.
+    </p>
+    <br/>
+    <h2>Compatibility Metric</h2>
+    <p>
+        A compatibility metric is defined that allows us to determine the compatibility between any two genomes.
+        Compatibility is represented by a single non-negative value which by itself is effectively meaningless; its
+        primary use is as a means of estimating <i>relative</i> compatibility between genomes, i.e. e.g. genome A is
+        more compatible with B than C. The compatibility metric in Canonical NEAT (C-NEAT) pairs up connection genes with 
+        the same innovation ID (from the two genomes being compared). For matching gene pairs the distance between the genes
+        is defined as the absolute difference in weight multiplied by a coefficient (`c_3`). Non-matching genes are categorized 
+        as either 'excess' or 'disjoint', and each of these two types contributes a fixed value towards the overall distance 
+        value, the fixed values are named `c_1` and `c_2` respectively.
+    </p>
+    <p>
+        The coefficients `c_1`, `c_2` and `c_3` allow scaling of the relative importance of different types of genome differences. E.g. 
+        if we consider weight differences to be irrelevant then we can set `c_3` to zero and the distance metric will become an
+        indication of topology differences only.
+    </p>
+    <p>
+        <i>N.B. In practice `c_1` and `c_2` are often set equal - no distinction is made between excess and disjoint genes.</i>
+    </p>
+    <p>
+        There is a fairly significant caveat to make here, in [1] compatibility is defined as:
+    </p>
+    <p>
+    <p>$$ D =  \frac{{c_1}{N_e}}{N} + \frac{{c_2}{N_d}}{N} + {c_3}{W} \tag{1}$$</p>
+    <p style="font-style:italic; font-size:smaller; margin-left:20px">
+        `N_e`, `N_d` - The number of excess and disjoint genes, respectively.<br/>
+        `N` - The number of genes in the largest genome.<br />
+        `W` - The sum of absolute weight differences.<br />
+    </p>
+    <br/>
+    <p>
+        The contribution of disjoint and excess genes is divided by N and thus the total contribution of the these two parts
+        of the equation is scaled to a value between 0 and 1 (there can only be N mismatching genes at most). Therefore the
+        distance between genomes with completely different topologies is 1 (assuming c1 = c2 = 1), but the distance between
+        genomes with the same topology and different weights is unbounded (unless c3 is set to zero). This would seem to run
+        contrary to the motivation for a genetic distance metric and in fact the original C++ source code [2] uses a modified
+        distance metric:
+    </p>
+
+    <p>$$ D =  {c_1}{N_e} + {c_2}{N_d} + {c_3}{W} \tag{2}$$</p>
+
+    <p>Distance is defined as the sum of the differences from the three types, with each type of difference having its contribution
+    weighted by its own coefficient (`c_1`, `c_2`, `c_3`) as before.</p>
+    <br />
+
+    <hr/>
+    <h3>References</h3>
+    <ol>
+        <li>Kenneth O. Stanley and Risto Miikkulainen, <a href="http://nn.cs.utexas.edu/pub-view.php?PubID=114">Efficient Evolution Of Neural Network Topologies</a>, 2002</li>
+        <li><a href="http://nn.cs.utexas.edu/soft-view.php?SoftID=4">NEAT C++ Original</a>, Neural Networks Research Group, University of Texas at Austin</li>
+        <li><a href="http://www.cs.ucf.edu/~kstanley/neat.html">The NeuroEvolution of Augmenting Topologies (NEAT) Users Page</a></li>
+    </ol>
+    <br />
+    <br />
+    <hr />
+    <div style="margin-left:10px;">
+        <img src="../creativecommons88x31.png" border="0" align="left" hspace="10" vspace="0" />
+        Copyright 2009, 2016 Colin Green.<br />
+        This article is licensed under a <a href="http://creativecommons.org/licenses/by/3.0/" rel="nofollow">
+            Creative Commons
+            Attribution 3.0 License
+        </a>
+        <br />
+        <br />
+    </div>
+</body>
+</html>

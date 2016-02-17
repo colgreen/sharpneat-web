@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>SharpNEAT</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.75"/>
+    <link rel="stylesheet" href="sharpneat.css" type="text/css" media="screen" />
+</head>
+<body>
+    <div class="banner">      
+        <a href="/" title="SharpNEAT">
+            <img src="sharpneat_logo_banner.svg" alt="SharpNEAT" class="bannerimage" />
+        </a>
+    </div>
+    <div class="centralcolumn">
+        <div class="centralcolumninner">
+            <!-- Column divider -->
+            <div style="float: left; width: 3.3%">
+                <br />
+            </div>
+            <!-- Pagetop Blurb -->
+            <div class="frontpagebubble" ">
+                <div style="font-weight:bold; font-size:x-large" align="center">
+                    Screenshots
+                </div>
+            </div>
+
+            <div align="center">
+                <h1>&nbsp;</h1>
+                <h3>SharpNEAT Main Control Window</h3>
+                <p><img src="screenshots2/mainform.png"></p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <h3>Network Visualisation (CPPNs)</h3>
+                <p style="margin:12px; font-weight:normal; text-align:center">
+                    Here we see nodes coloured to indicate the CPPN activation function at each node.
+                </p>
+                <p>
+                    <img src="screenshots2/cppn_net.png">
+                </p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <h3>Network Visualisation (Plain NEAT)</h3>
+                <p style="margin:12px; font-weight:normal; text-align:center">
+                    This screenshot shows a NEAT nework with moderate complexity.
+                </p>
+                <p>
+                    <img src="screenshots2/net.png">
+                </p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <h3>'Boxes' Visual Discrimination Task</h3>
+                <p style="margin:12px; font-weight:normal; text-align:left">
+                    Here we see something akin to a visual field of pixels. An input field accepts binary inputs, the pixels within the orange square outlines are set to 1, all other inputs to 0.
+                    An output field of the same size and resolution is connected up to the input field using an evolved CPPN to define the connectivity. In this animation we see how the
+                    activation level of the output pixels varies as we move the input pixels (orange boxes). The red pixel is the output pixel with the highest activation level.
+                </p>
+                <p><img src="screenshots2/visual_discrimination_anim.gif"></p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <h3> Progress Monitoring Graphs</h3>
+                <p style="margin:12px; font-weight:normal; text-align:left">
+                    The graphs on this screen are drawn using the excellent free graphing control <a href="http://zedgraph.org/">ZedGraph</a>. Zedgraph supports panning and zooming.
+                </p>
+                <p>
+                    <img src="screenshots2/fitness_plot.png">
+                </p>
+                <p>
+                    <img src="screenshots2/specia_size_distribution.png">
+                </p>
+                <p>
+                    <img src="screenshots2/specia_complexity_distribution.png">
+                </p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <h3>Function Regression View</h3>
+                <p><img src="screenshots2/regression_sinx.png"></p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <h3>Prey Capture Simulator View</h3>
+                <p style="margin:12px; font-weight:normal; text-align:left">
+                    Here you can see the prey (green pixel) and our agent (red pixel) with its 8 radial sensor areas shown collectively as the blue region. The agent cannot see beyond the sensor
+                    range shown and thus must employ a search strategy before successfully using its sensor inputs to finally home in on the prey.
+                </p>
+                <p>
+                    <img src="screenshots2/preycapture.png">
+                </p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <h3>Species List / Visualization (SharpNEAT 1)</h3>
+                <p style="margin:12px; font-weight:normal; text-align:left">
+                    Species visualisation from SharpNEAT 1. Not currently present in SharpNEAT 2.
+                </p>
+                <p>
+                    <img src="screenshots/species_list.png" width="810" height="619">
+                </p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <h3>Pole Balancing Simulator EXE (SharpNEAT 1)</h3>
+                <p style="margin:12px; font-weight:normal; text-align:left">
+                    Here we see the tricky problem of double pole balancing and the even trickier problem of double pole balancing without a velocity input.
+                    Two poles attached to a cart can in fact be balanced if they are of different lengths. The lengths shown here are actually not
+                    representative - the short pole is actually much shorter but is shown longer to allow us to see its angle more clearly.
+                </p>
+                <p><img src="screenshots/doublepolesim.png" width="768" height="440"></p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <h3>Tic Tac Toe Game / Simulator EXE (SharpNEAT 1)</h3>
+                <p><img src="screenshots/tic_tac_toe.png" width="496" height="392"></p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+            </div>
+        </div>
+        <br />
+        <hr />
+        <div class="frontpagefooter">
+            Contact: <a href="mailto:colin.green1@gmail.com">Colin Green</a><br /></li>
+            SharpNEAT is a <a href="http://heliosphan.org/">Heliosphan.org</a> project.<br /></li>
+            Bitcoin: <a href="bitcoin:16u3U7s5UrzjCtcqtXLYQj7jZaUn4cEDbn">16u3U7s5UrzjCtcqtXLYQj7jZaUn4cEDbn</a><br />
+        </div>
+        <br />
+    </div>
+</body>
+</html>

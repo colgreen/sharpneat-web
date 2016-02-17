@@ -1,0 +1,335 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <title>Neural Network Code Optimizations</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.75" />
+    <link rel="stylesheet" href="../sharpneat.css" type="text/css" media="screen" />
+
+    <style media="screen" type="text/css">
+        body {
+            font-family: Arial, Helvetica;
+            margin: 0px 50px;
+        }
+
+        li {
+            margin: 15px 0;
+        }
+
+        .code
+        {
+            font-family:'Courier';
+        }
+    </style>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+
+        });
+    </script>
+    <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_HTMLorMML-full'></script>
+</head>
+
+<body>
+    <div class="banner">
+        <a href="/" title="SharpNEAT">
+            <img src="../sharpneat_logo_banner.svg" alt="SharpNEAT" class="bannerimage" />
+        </a>
+    </div>
+    <br />
+    <h1 align="center">Neural Network Code Optimizations</h1>
+    <h4 align="center">Colin D. Green,<br />June 20th, 2004</h4>
+    <br />
+    <p>
+        Following a discussion on optimizations on the NEAT users yahoo group and a bit of further investigation I have written some 
+        code that performs about 8x faster than my existing code. For the record and for those who are interested I thought it would 
+        be a good idea to describe what I did.
+    </p>
+    <p>
+        Essentially the speedup is due to ensuring in-order memory accesses wherever possible (thanks to Ian Badcoe for the insights here)
+        and ensuring that the data structures used are as small as possible - that way the CPU caches can hold more of the network data 
+        and won't have to access memory proper quite so often.
+    </p>
+
+    <h4>The Existing (slow) Code</h4>
+
+
+    <p>To give a sense of perspective I will describe how my old code worked and hint at were the problem areas are. The old code is 
+    heavily OO based, here is a cut down description of the classes showing the pertinent fields:</p>
+
+    <pre class="code" style="margin-left:25px">
+---------------------------------------
+Neuron
+    ConnectionList connectionList; // This neuron's incoming connections.
+    double outputValue; 
+    double outputRecalc;
+
+Connection
+    Neuron sourceNeuron; 
+    double weight;
+--------------------------------------
+    </pre>
+
+    <p>To perform one epoch we do:</p>
+
+    <pre class="code" style="margin-left:25px">
+---------------------------------------
+void singleStep()
+{
+   foreach(Neuron neuron in network.NeuronList)
+      neuron.Recalc();
+  
+   foreach(Neuron neuron in network.NeuronList)
+      neuron.UseRecalculatedValue();
+}
+--------------------------------------
+    </pre>
+
+    <p>And in the Neuron class we have:</p>
+
+    <pre class="code" style="margin-left:25px">
+---------------------------------------
+void Neuron.Recalc()
+{
+   double accumulator=0;
+   foreach(Connection c in connectionList)
+      accumulator += c.SourceNeuron.outputValue * connection.Weight;
+   outputRecalc = activationFn.Calculate(accumulator);
+}
+--------------------------------------
+    </pre>
+
+    <p>
+        So each neuron has a list of all its incoming connections so that it can independently calculate its acculumated
+        incoming signal, apply an activation function and store its new output. A second loop then calls
+        neuron.UseRecalculatedValue() and switches each neuron over to its new output value - ready for the next epoch.
+    </p>
+    <p>
+        Conceptually this code is clean and easy to read, but from a performance point of view it is poor. The two loops 
+        in singleStep() are sequential but then we call a method that does it own looping and breaks the sequence, to make
+        things worse Neuron.Recalc() reads c.SourceNeuron.outputValue which is some random out-of-sequence piece of memory.
+    </p>
+    <p>
+        Another performance hit comes from encapsulating each neuron and connection in its own object and calling methods 
+        on those objects. Objects are decorated with additional data structures which sit alongside our core neural net data
+        and use part of the CPU cache. Method invokations by their nature have some overhead - unless the compiler inlines 
+        them, which the .NET compilers seem very reluctant to do by the way.
+    </p>
+    <p>
+        The optimized network code does away with the Neuron and Connection classes, instead we use three arrays and one very 
+        minimal structure:
+    </p>
+    <pre class="code" style="margin-left:25px">
+---------------------------------------
+struct FastConnection
+{
+   public int sourceNeuronIdx;
+   public int targetNeuronIdx;
+   public double weight;
+   public double signal;
+}
+
+double[] neuronSignalArray;
+double[] _neuronSignalArray;
+FastConnection[] connectionArray;
+--------------------------------------
+    </pre>
+    <p>
+        connectionArray effectively describes the network's structure. Each FastConnection element connects a source neuron index
+        with a target (within neuronSignalArray). To perform one epoch we do (in pseudo code):
+    </p>
+    <pre class="code" style="margin-left:25px">
+---------------------------------------
+// Loop connections. Calculate each connection's output signal.
+for(int i=0; i&lt;connectionArray.Length; i++)
+{
+    FastConnection c=connectionArray[i];
+    c.signal=neuronSignalArray[c.sourceNeuronIdx] * c.weight;
+}
+
+// Loop the connections again. This time add the signals to the target neurons.
+// This will largely require out of order memory writes. This is the one loop where
+// this will happen.
+for(int i=0; i&lt;connectionArray.Length; i++)
+{
+    FastConnection c=connectionArray[i];
+    _neuronSignalArray[c.targetNeuronIdx] +=c.signal;
+}
+// Now loop _neuronSignalArray, pass the signals through the activation function
+// and store the result back to neuronSignalArray.
+for(int i=0; i&lt;_neuronSignalArray.Length; i++)
+{
+    neuronSignalArray[i]=activationFn.Calculate(_neuronSignalArray[i]);
+
+    // Take the opportunity to reset the pre-activation signal array.
+   _neuronSignalArray[i]=0.0;
+}
+--------------------------------------
+    </pre>
+    <p>
+        The first loop through the connections accesses neuronSignalArray[c.sourceNeuronIdx] which at first sight might seem 
+        to be a random memory access, but when building the connectionArray we sort it on sourceNeuronIdx and then on 
+        targetNeuronIdx. This means that although we are accessing two arrays, we will at least be doing this in order.
+    </p>
+    <p>
+        The second loop then DOES access memory out-of-order because we write the connection's signal to 
+        _neuronSignalArray[c.targetNeuronIdx], however some order is gained by the secondary sory order on targetNeuronIdx.
+        This out-of-order accessing is necessary and reflects the complex structure of the underlying neural network, what
+        we have done though is reduced out-of-order memory accesses to the absolute minimum - this is the only loop where this
+        occurs.
+    </p>
+    <p>
+        The third loop very cleanly loops through _neuronSignalArray, applies the activation function, and writes the result to
+        neuronSignalArray. All in-order and very fast.
+    </p>
+    <p>
+        This new code is quite a bit faster because the data structures in use are very lean and are accessed in-order. This means
+        that more of the network data can fit into the CPU cache, and that the data is not 'polluted' with the extra data structures
+        that are attached to proper objects, this in turn means that the CPU instruction pipelining can be better utilized.
+    </p>
+    <p>
+        On top of all this there is another significant optimization that can be made and that is to switch the whole network over to 
+        using floats instead of doubles. I looked up the CPU cycles required to do floating and double precision maths on a pentium 4 
+        and the figures are almost identical (see here), so on the face of it you may not think there is any gain to be had, but because 
+        floats are 4 bytes and doubles are 8 bytes using floats means we can fit roughly twice as much of our network structure in the 
+        CPU cache! In tests floats did indeed perform better (figures below).
+    </p>
+    <p>
+        Actually I'd be interested if anyone has any thoughts on the float vs double, I would guess that single precision maths is 
+        perfectly acceptable for our purposes. Certainly it seems to work OK when I try the new floating point network on the double-pole 
+        problem. Using doubles is probably overkill.
+    </p>
+    <br/>
+    <h4>Benchmarks</h4>
+    <p>Times are against 3 networks of different sizes:</p>
+    <ol>
+        <li>12N_56C - 12 neurons, 56 connections.</li>
+        <li>122N_445C - 122 neurons, 445 connections.</li>
+        <li>236N_861C - 236 neurons, 861 connections.</li>
+    </ol>
+
+    <p>The 4 different neural net routines tested are:</p>
+    <ol>
+        <li>OldNet - The old, low performance code.</li>
+        <li>FastNet - The optimized code.</li>
+        <li>FloatFastNet - The optimized code operating on floats.</li>
+        <li>
+            FloatFastNet-Inline - As FloatFastNet but with the activation function manually
+            inlined. This is a nice test case to see the maximum speed we can get from
+            the new code.
+        </li>
+    </ol>
+    <p>
+        All networks used a fast sigmoid activation function of `y = 1+(x/ (0.1 + abs(x)))`
+        This is not perfect for use in actual experiments, but represents how fast an
+        efficient activation function can be. Timings are for 100,000 epochs of the
+        network.
+    </p>
+    <table width="573" border="1">
+        <tr>
+            <td width="85">&nbsp;</td>
+            <td width="69"><div align="right">OldNet</div></td>
+            <td width="104"><div align="right">FastNet</div></td>
+            <td width="122"><div align="right">FloatFastNet</div></td>
+            <td width="159"><div align="right">FloatFastNet-Inline</div></td>
+        </tr>
+        <tr>
+            <td>12N_56C</td>
+            <td><div align="right">461ms</div></td>
+            <td><div align="right">90ms</div></td>
+            <td><div align="right">70ms</div></td>
+            <td><div align="right">62ms</div></td>
+        </tr>
+        <tr>
+            <td>122N_445C</td>
+            <td><div align="right">4021ms</div></td>
+            <td><div align="right">844ms</div></td>
+            <td><div align="right">562ms</div></td>
+            <td><div align="right">524ms</div></td>
+        </tr>
+        <tr>
+            <td>236N_861C</td>
+            <td><div align="right">8088ms</div></td>
+            <td><div align="right">1594ms</div></td>
+            <td><div align="right">1094ms</div></td>
+            <td><div align="right">1000ms</div></td>
+        </tr>
+    </table>
+    <p>Points</p>
+    <ol>
+        <li>FastNet shows an approx 5x speed increase over OldNet.</li>
+        <li>
+            FloatFastNet shows an approx 30% further improvement can be had by using
+            floats instead of doubles.
+        </li>
+        <li>
+            FloatFastNet-Inline shows an approx. 10% further improvement can be had by
+            inlining the activation function.
+        </li>
+        <li>All improvements together make an approx 8x speed increase.</li>
+    </ol>
+    <br/>
+    <h3>Activation Functions</h3>
+    <p>
+        Now that we have code that efficiently traverses a network structure, the time
+        required by the activation function actually becomes a significant factor. Here
+        are some timings for the FloatFastNet-Inline code base and the large 236N_861C
+        network with a selection of activation functions.
+    </p>
+    <p>The activation functions are:</p>
+    <ol>
+        <li>InverseAbs, `y = x / (1 + abs(x))`</li>
+        <li>PlainSigmoid, `y = 1/(1+exp(-x))`</li>
+        <li>SteependedSigmoid, `y = 1/(1+exp(-0.49*x))`</li>
+        <li>Tanh, `y = tanh(0.9*x)`</li>
+    </ol>
+    <table width="273" border="1">
+        <tr>
+            <td width="126">&nbsp;</td>
+            <td width="131"><div align="right">FloatFastNet-Inline</div></td>
+        </tr>
+        <tr>
+            <td>InverseAbs</td>
+            <td><div align="right">1000ms</div></td>
+        </tr>
+        <tr>
+            <td>PlainSigmoid</td>
+            <td><div align="right">2580ms</div></td>
+        </tr>
+        <tr>
+            <td>SteependedSigmoid</td>
+            <td><div align="right">2580ms</div></td>
+        </tr>
+        <tr>
+            <td>Tanh</td>
+            <td><div align="right">4573ms</div></td>
+        </tr>
+    </table>
+    <p>
+        One important note here is that the last three functions all required a single
+        cast from double to float because the trig functions in the .NET Math library
+        are only declared for doubles, why this is I don't know. That single cast might
+        be quite expensive (more benchmarks required here) and may skew the results,
+        however we can see that tanh is expensive compared to using exp and that using
+        the .NET maths functions with a floating point network might erode much of the
+        performance gained by using floats.
+    </p>
+    <hr />
+    <p style="font-size:small">
+            keywords: neural, network, fast, optimal, optimization, optimisation,
+            cpu, cache, sequential, memory, access, pipelining, pipeline, associativity
+    </p>
+    <br />
+    <hr />
+    <div style="margin-left:10px;">
+        <img src="../creativecommons88x31.png" border="0" align="left" hspace="10" vspace="0" />
+        Copyright 2004, 2016 Colin Green.<br />
+        This article is licensed under a <a href="http://creativecommons.org/licenses/by/3.0/" rel="nofollow">
+            Creative Commons
+            Attribution 3.0 License
+        </a>
+        <br />
+        <br />
+    </div>
+</body>
+</html>

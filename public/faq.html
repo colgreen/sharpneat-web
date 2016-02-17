@@ -1,0 +1,184 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>SharpNEAT</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.75"/>
+    <link rel="stylesheet" href="sharpneat.css" type="text/css" media="screen" />
+</head>
+<body>
+    <div class="banner">      
+        <a href="/" title="SharpNEAT">
+            <img src="sharpneat_logo_banner.svg" alt="SharpNEAT" class="bannerimage" />
+        </a>
+    </div>
+    <div class="centralcolumn">
+        <div class="centralcolumninner">
+            <!-- Column divider -->
+            <div style="float: left; width: 3.3%">
+                <br />
+            </div>
+            <!-- Pagetop Blurb -->
+            <div class="frontpagebubble" ">
+                <div style="font-weight:bold; font-size:x-large" align="center">
+                    SharpNEAT Frequently Asked Questions (F.A.Q.)
+                </div>
+                <p align="center">Last updated: December 2012</p>
+            </div>
+            <br />
+            <br />
+
+
+
+
+
+            <h4>1. What is ShapNEAT</h4>
+            <p>
+                In a nutshell, SharpNEAT provides an implementation of an
+                <a href="http://en.wikipedia.org/wiki/Evolutionary_algorithm">Evolutionary Algorithm</a> (EA)
+                with the specific goal of evolving neural networks. The EA uses the evolutionary mechanisms of mutation,
+                recombination and selection to search for neural networks with behaviour that satisfies some formally defined
+                problem. Example problems might be how to control the limbs of a simple biped or quadruped to make it walk,
+                how to control a rocket to maintain vertical flight, or finding a network that implements some desired digital logic
+                (such as a multiplexer).
+            </p>
+            <p>
+                A notable point is that NEAT and SharpNEAT search both neural network structure (network nodes and connectivity)
+                and connection weights (inter-node connection strength). This is distinct from algorithms such as back-propogation
+                that generally attempt to discover good connection weights for a given structure.
+            </p>
+            <p>
+                SharpNEAT is a kit of parts that facilitate research into evolutionary computation and specifically evolution of neural networks.
+                The code as released provides a number of example problem domains that demonstrate how the various parts
+                can be wired together to produce a complete working EA. Alternatively researchers can swap in alternative parts, such as a
+                new/alternative genetic coding or even a new evolutionary algorithm. The provision for such rewiring was a
+                major design goal of SharpNEAT and is facilitated by abstractions made in SharpNEAT's architecture around key concepts
+                such as genome (genetic representation and coding) and evolutionary algorithm (mutations, recombination, selection strategy).
+            </p>
+            <p>
+                Motivation for the development of SharpNEAT mainly came from a broader interest in biological evolution, and more
+                specifically curiosity on what the limits of neuro-evolution are in terms of the level of problem complexity it can
+                produce satisfactory solutions for.
+            </p>
+
+
+            <br />
+            <h4>2. What is NEAT?</h4>
+            <p>
+                NEAT is Neuro-Evolution of Augmenting Topologies, a neuro-evolution technique
+                devised by Kenneth Stanley while part of the Neural Networks Research Group, University
+                of Texas at Austin (Now at the University of Central Florida School of Electrical Engineering and Computer Science).
+                The main NEAT website is hosted by Ken Stanley at <a href="http://www.cs.ucf.edu/~kstanley/">http://www.cs.ucf.edu/~kstanley/</a>
+            </p>
+            <p>
+                One of major features of NEAT is its genetic coding of networks, each node and conenction is assigned a number, this
+                numeber can then be used to 'line-up' the structural parts of each networks when performing genetic recombination. This feature
+                of NEAT addresses the problem of how to perform meaningful genetic recombination between two network structures without having
+                to perform computationally expensive structural matching/alignment.
+            </p>
+            <p>
+                Another major feature of NEAT is the use of speciation - the clustering of genomes into species, each of which exists as a partially
+                independent sub-population that aims to partially protect its members from competition with the wider population. The motivation for this
+                mechanism is the desire to foster genetic diversity, that is, to allow low scoring (weak) genomes to survive if they represent some degree
+                novelty when compare to the wider population.
+            </p>
+            <br />
+
+            <h4>3. What types of problem is NEAT applicable to?</h4>
+            <p>
+                There is no definitive answer here as research into NEAT is ongoing and
+                there have been varying degrees of success reported. Significant problem
+                domains that I know of for which good or near-perfect solutions have been
+                found are; Single and Double Pole Balancing, Finless Rocket Control, Prey
+                Capture, The 3/6 and 11-Multiplexer logic problems.
+                Note however that a significant number of problems do not have a 'perfect'
+                solution as such, just good and bad solutions. E.g. in game playing experiments
+                it is common to use co-evolution where fitness is evaluated by networks
+                competing against each other, the fitness scores are therefore only indications
+                of relative fitness not overall ability to play a game.
+            </p>
+            <p>
+                One very basic requirement when considering an experiment is that a fast
+                method of evaluating fitness must be available for the problem at hand.
+                This is so that NEAT can evaluate as many candidate networks as possible
+                within a given time period. The more evaluations that can be performed
+                the greater the probability of finding a good solution (all other factors beign equal).
+                e.g. if the fitness function is a simple mathematical equation or if it involves playing a short/fast
+                game(such as tic-tac-toe) entirely within code, then we can evaluate networks
+                very quickly and therefore evaluate a large number of networks in a given
+                period. If however the fitness function requires interaction with a person
+                or some physical system external to the CPU then the chances are that
+                not enough evaluations can be performed for NEAT to be successful within
+                a reasonable amount of time. However there may be exceptions to even this
+                rule, if say a very simple topology is capable of solving a problem then
+                it may be discoverable within very few evaluations.
+            </p>
+            <br />
+
+            <h4>4. What problem domains are provided with SharpNEAT as standard?</h4>
+            <ul>
+                <li>Single &amp; Double Pole Balancing (Cart and Pole)</li>
+                <li>Inverted Double Pendulum</li>
+                <li>Function regression (abs, sin, sin(x^2), log(x), multiplication)</li>
+                <li>Binary 3/6/11 Multiplexer (NEAT)</li>
+                <li>Logical XOR (NEAT)</li>
+                <li>Boxes - Visual Discrimination Task</li>
+                <li>Predator-Prey</li>
+                <li>2D Walker</li>
+            </ul>
+            <p>
+                An explanation for each experiment is available within the SharpNEAT
+                GUI, just select an experiment in the drop-down combobox and click the
+                button marked '?'.
+            </p>
+            <br />
+
+            <h4>5. How do I perform an experimental run using one of the provided problem domains?</h4>
+            <ol>
+                <li>Run the SharpNEAT GUI executable (SharpNEAT.exe)</li>
+                <li>Select an experiment in the drop-down list.</li>
+                <li>Click the button marked 'Load Default Search Parameters'.</li>
+                <li>
+                    Select one of the 'Initialize Population' menu options. For starters
+                    just click 'Auto Generate' and 'OK'.
+                </li>
+                <li>Click the 'Start/Continue' button.</li>
+            </ol>
+            <p>
+                You should now see progress information being written to the log window,
+                there are also some extra monitor windows available via the 'Visualization'
+                Menu.
+            </p>
+            <br />
+
+            <h4>6. What is Phased Searching?</h4>
+            <p>
+                Within the SharpNEAT GUI on the 2nd tab page there is a checkbox with
+                the label 'Enable Pruning' which is checked by default. This enables a
+                process whereby the average complexity of genomes in the population is
+                tracked, and if it passes some threshold then the search switches to a
+                'pruning' mode. In pruning mode the search continues as normal but additive
+                mutations are disabled and deletion mutation rates are increased, this
+                causes the average structural complexity of genomes in the population to fall
+                but without loosing the best genomes. This can give rise to new bursts
+                of improvement in fitness and also a speedup of the search, since more
+                complex genomes take longer to evaluate. For a more complete explanation
+                see the experimental write-up see - <a href="phasedsearch.html">
+                    Phased Searching
+                    with NEAT: Alternating Between Complexification And Simplification.
+                </a>
+            </p>
+            <br />
+
+        </div>
+        <br />
+        <hr />
+        <div class="frontpagefooter">
+            Contact: <a href="mailto:colin.green1@gmail.com">Colin Green</a><br /></li>
+            SharpNEAT is a <a href="http://heliosphan.org/">Heliosphan.org</a> project.<br /></li>
+            Bitcoin: <a href="bitcoin:16u3U7s5UrzjCtcqtXLYQj7jZaUn4cEDbn">16u3U7s5UrzjCtcqtXLYQj7jZaUn4cEDbn</a><br />
+        </div>
+        <br />
+    </div>
+</body>
+</html>
