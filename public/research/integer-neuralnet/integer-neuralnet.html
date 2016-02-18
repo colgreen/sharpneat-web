@@ -15,11 +15,13 @@
             margin: 15px 0;
         }
 
-        .arith
-        {
-            font-family:'Courier';
+        /* Style overrides for narrow screens. */
+        @media screen and (max-width: 680px) {
+            body {
+                font-family: Arial, Helvetica;
+                margin: 0px 8px;
+            }
         }
-        
     </style>
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({

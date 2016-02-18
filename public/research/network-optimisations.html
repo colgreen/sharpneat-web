@@ -5,7 +5,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=0.75" />
     <link rel="stylesheet" href="../sharpneat.css" type="text/css" media="screen" />
-
     <style media="screen" type="text/css">
         body {
             font-family: Arial, Helvetica;
@@ -16,11 +15,15 @@
             margin: 15px 0;
         }
 
-        .code
-        {
-            font-family:'Courier';
+        /* Style overrides for narrow screens. */
+        @media screen and (max-width: 680px) {
+            body {
+                font-family: Arial, Helvetica;
+                margin: 0px 8px;
+            }
         }
     </style>
+
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
         tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
@@ -57,23 +60,21 @@
     <p>To give a sense of perspective I will describe how my old code worked and hint at were the problem areas are. The old code is 
     heavily OO based, here is a cut down description of the classes showing the pertinent fields:</p>
 
-    <pre class="code" style="margin-left:25px">
----------------------------------------
+    <pre class="code" style="margin-left:25px; padding:4px">
 Neuron
-    ConnectionList connectionList; // This neuron's incoming connections.
+    // This neuron's incoming connections.
+    ConnectionList connectionList;
     double outputValue; 
     double outputRecalc;
 
 Connection
     Neuron sourceNeuron; 
     double weight;
---------------------------------------
     </pre>
 
     <p>To perform one epoch we do:</p>
 
-    <pre class="code" style="margin-left:25px">
----------------------------------------
+    <pre class="code" style="margin-left:25px; padding:4px">
 void singleStep()
 {
    foreach(Neuron neuron in network.NeuronList)
@@ -82,13 +83,11 @@ void singleStep()
    foreach(Neuron neuron in network.NeuronList)
       neuron.UseRecalculatedValue();
 }
---------------------------------------
     </pre>
 
     <p>And in the Neuron class we have:</p>
 
-    <pre class="code" style="margin-left:25px">
----------------------------------------
+    <pre class="code" style="margin-left:25px; padding:4px">
 void Neuron.Recalc()
 {
    double accumulator=0;
@@ -96,7 +95,6 @@ void Neuron.Recalc()
       accumulator += c.SourceNeuron.outputValue * connection.Weight;
    outputRecalc = activationFn.Calculate(accumulator);
 }
---------------------------------------
     </pre>
 
     <p>
@@ -119,8 +117,7 @@ void Neuron.Recalc()
         The optimized network code does away with the Neuron and Connection classes, instead we use three arrays and one very 
         minimal structure:
     </p>
-    <pre class="code" style="margin-left:25px">
----------------------------------------
+    <pre class="code" style="margin-left:25px; padding:4px">
 struct FastConnection
 {
    public int sourceNeuronIdx;
@@ -132,31 +129,32 @@ struct FastConnection
 double[] neuronSignalArray;
 double[] _neuronSignalArray;
 FastConnection[] connectionArray;
---------------------------------------
     </pre>
     <p>
         connectionArray effectively describes the network's structure. Each FastConnection element connects a source neuron index
         with a target (within neuronSignalArray). To perform one epoch we do (in pseudo code):
     </p>
-    <pre class="code" style="margin-left:25px">
----------------------------------------
-// Loop connections. Calculate each connection's output signal.
+    <pre class="code" style="margin-left:25px; padding:4px">
+// Loop connections. Calculate each connection's
+// output signal.
 for(int i=0; i&lt;connectionArray.Length; i++)
 {
     FastConnection c=connectionArray[i];
     c.signal=neuronSignalArray[c.sourceNeuronIdx] * c.weight;
 }
 
-// Loop the connections again. This time add the signals to the target neurons.
-// This will largely require out of order memory writes. This is the one loop where
+// Loop the connections again. This time add the signals 
+// to the target neurons. This will largely require out 
+// of order memory writes. This is the one loop where
 // this will happen.
 for(int i=0; i&lt;connectionArray.Length; i++)
 {
     FastConnection c=connectionArray[i];
     _neuronSignalArray[c.targetNeuronIdx] +=c.signal;
 }
-// Now loop _neuronSignalArray, pass the signals through the activation function
-// and store the result back to neuronSignalArray.
+// Now loop _neuronSignalArray, pass the signals through
+// the activation function and store the result back to
+// neuronSignalArray.
 for(int i=0; i&lt;_neuronSignalArray.Length; i++)
 {
     neuronSignalArray[i]=activationFn.Calculate(_neuronSignalArray[i]);
@@ -164,7 +162,6 @@ for(int i=0; i&lt;_neuronSignalArray.Length; i++)
     // Take the opportunity to reset the pre-activation signal array.
    _neuronSignalArray[i]=0.0;
 }
---------------------------------------
     </pre>
     <p>
         The first loop through the connections accesses neuronSignalArray[c.sourceNeuronIdx] which at first sight might seem 
