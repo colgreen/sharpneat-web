@@ -7,6 +7,11 @@ body
    font-family:  Arial, Helvetica;
 }
 
+body.research
+{
+    margin: 0px 50px;
+}
+
 a {
     color: #0e6211;
     text-decoration: underline;
@@ -57,7 +62,7 @@ a:visited {
 }
 .frontpagebubble ul {list-style-type: none; margin: 10px 0;}
 .frontpagebubble li {margin: 15px 0;}
-
+.research li {margin: 15px 0;}
 
 .frontpagefooter
 {
@@ -92,7 +97,11 @@ a:visited {
 
 /* Style overrides for narrow screens. */
 @media screen and (max-width: 680px) 
-{
+{        
+    body.research {
+        margin: 0px 15px;
+    }
+
     .bannercolumn
     {
        width:100%;
