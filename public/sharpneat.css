@@ -90,7 +90,6 @@ a:hover {
     text-align: center;
 }
 
-
 .textbubble
 {
     background-color: #eef3fb;
@@ -104,17 +103,6 @@ a:hover {
 }
 .textbubble ul {list-style-type: none; margin: 10px 0px 0px 0px;}
 .textbubble li {margin: 25px 0;}
-
-
-
-/*
-.researchbubble
-{
-    text-align: left;
-}
-.researchbubble p {padding: 10px 0px}
-*/
-
 
 .articlebodyouter
 {
@@ -161,9 +149,25 @@ a:hover {
 
     .frontpagebubble
     {
-        background-color: #eef3fb;
+        background-color: #ffffff;
         padding: 15px;
         border-radius: 5px;
         width:100%;
     }
+
+    .frontpagebubbletop
+    {
+        background-color: #ffffff;
+        padding: 15px;
+        border-radius: 5px;
+        width:100%;
+    }
+
+    .textbubble
+    {
+        background-color: #ffffff;
+        padding: 15px;
+        border-radius: 5px;
+        width:100%;
+    }    
 }
