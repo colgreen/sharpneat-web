@@ -13,11 +13,12 @@ body.research
 }
 
 a {
-    color: #0e6211;
-    text-decoration: underline;
+    color: #850000;
+    text-decoration:none;
 }
-a:visited {
-    color: #4f4f4f;
+
+a:hover {
+    text-decoration: underline;
 }
 
 .banner
@@ -51,10 +52,10 @@ a:visited {
    overflow:hidden;
 }
 
-.frontpagebubble
+.frontpagebubbletop
 {
-    background-color: #e4ecef;
-    padding: 15px;
+    background-color: #eef3fb;
+    padding: 15px 25px;
     box-sizing:border-box;
     border-radius: 5px;
     width:55%;
@@ -62,9 +63,25 @@ a:visited {
     margin-right: auto;
     font-size: 0.9em;
 }
-.frontpagebubble ul {list-style-type: none; margin: 10px 0;}
-.frontpagebubble li {margin: 15px 0;}
-.research li {margin: 15px 0;}
+
+.frontpagebubble
+{
+    background-color: #eef3fb;
+    padding: 25px 55px 10px 55px;
+    box-sizing:border-box;
+    border-radius: 5px;
+    width:55%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 0.9em;
+    text-align: center;
+}
+
+.frontpagebubble ul {list-style-type: none; -webkit-padding-start : 0}
+.frontpagebubble li {margin: 24px 0; }
+.frontpagebubble a {font-size: 1em; font-weight: bold;}
+.frontpagebubble p {padding: 0px 15px}
+.research li {margin: 0px 25px;}
 
 .frontpagefooter
 {
@@ -72,6 +89,32 @@ a:visited {
     margin-right: auto;
     text-align: center;
 }
+
+
+.textbubble
+{
+    background-color: #eef3fb;
+    padding: 15px 25px 10px 15px;
+    box-sizing:border-box;
+    border-radius: 5px;
+    width:55%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 0.9em;
+}
+.textbubble ul {list-style-type: none; margin: 10px 0px 0px 0px;}
+.textbubble li {margin: 25px 0;}
+
+
+
+/*
+.researchbubble
+{
+    text-align: left;
+}
+.researchbubble p {padding: 10px 0px}
+*/
+
 
 .articlebodyouter
 {
@@ -118,7 +161,7 @@ a:visited {
 
     .frontpagebubble
     {
-        background-color: #e4ecef;
+        background-color: #eef3fb;
         padding: 15px;
         border-radius: 5px;
         width:100%;
