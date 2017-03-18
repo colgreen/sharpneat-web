@@ -24,9 +24,7 @@ a:hover {
 {
    padding: 15px;
    margin: 0 auto;
-   background-image: url(banner_section.png); 
-   background-repeat: repeat-x;
-   background-position: 0 -5px;   
+   background-color: 111111
 }
 
 .bannerimage
