@@ -1,15 +1,14 @@
 body
 {
    margin-top: 0px;  
-   background-image: url(banner_section.png); 
-   background-repeat: repeat-x;
-   background-position: 0 -5px;
    font-family:  Arial, Helvetica;
 }
 
 body.research
 {
-    margin: 0px 50px;
+    margin: 0px auto;
+    width:97%;
+    max-width: 900px;
 }
 
 a {
@@ -23,17 +22,33 @@ a:hover {
 
 .banner
 {
-   height: 140px;  
    padding: 15px;
-   width:460px;
    margin: 0 auto;
+   background-image: url(banner_section.png); 
+   background-repeat: repeat-x;
+   background-position: 0 -5px;   
 }
 
 .bannerimage
 {
+   max-width:460px; 
    margin-left: auto;
    margin-right: auto;
    display: block;
+}
+
+.articlebanner
+{
+    padding: 15px;
+    margin: 0 auto;
+}
+
+.articlebannerimage
+{
+    max-width: 220px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
 }
 
 .centralcolumn
