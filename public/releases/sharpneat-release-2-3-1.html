@@ -85,61 +85,88 @@
         </a>
     </div>
     <hr/>
-    <h1 align="center">SharpNEAT 2.3.0</h1>
+    <h1 align="center">SharpNEAT 2.3.1</h1>
 
-    <h2>Summary of Changes</h2>
-    <h4>Fix: Add Node Mutation: Innovation ID Reuse</h4>
     <p>
-        When splitting a connection to add a new node, the connection's innovation ID is looked up in a 'history buffer'.
-        If a connection with the same ID has been split previously then the history buffer holds the IDs of the two new connections
-        and one new node that replaced the connection that was split. These IDs may be re-used for the current connection split,
-        but only if none of the IDs already exist in the genome being operated on; this defect relates to this final test.
-    </p>
-    <p>
-        The ID lookups are performed using a binary search which returns a negative number if a lookup fails (i.e. there is no such 
-        ID in the current genome). However, a test was made for a value of -1 specifically, and not for any negative value. This will
-        have resulted in IDs not being used for a large proportion of instances where they could have been. In effect innovation ID
-        re-use was largely not in effect for the 'add node' mutation.
+        Versions of SharpNEAT prior to v2.3.1 applied the 'steepened sigmoid' activation function on all tasks. This function takes the form:
     </p>
 
-    <h4>Fix: Add Connection Mutation: Innovation ID Reuse</h4>
+    $$ y = \frac{1}{1 + e^{-4.9 x }} \tag {1}$$
+
+    <br/>
     <p>
-        Lookup of a previously used connection ID between two node IDs (source and target nodes) always failed. A dictionary (hashtable)
-        lookup was used, using the source and target node IDs as the dictionary key; but the key data type was not correctly implemented,
-        resulting in none of the lookups succeeding.
+        The exponent term in this function is a performance bottleneck on most or all available computing hardware platforms, i.e.
+        it is generally a relatively slow and complex CPU instruction to execute. In addition, the complexity of the exp instruction 
+        tends to result in CPUs having limited provision for parallel execution in CPU pipelines, i.e. there may only be minimal copies
+        of the circuitry for performing this operation, whereas for simpler instructions (e.g. basic arithmetic operations) there will 
+        typically be good provision for executing multiple instructions simultaneously, perhaps even within each instruction pipeline.
     </p>
     <p>
-        The overall effect of innovation ID re-use is perhaps not well understood, but since SharpNEAT claims to implement this 
-        technique it ought to be working correctly until such time as research can be performed to provide evidence for its
-        efficacy (or lack thereof).
+        Three alternative activation functions are considered that are designed to avoid the use of exp()
     </p>
 
-    <h4>Performance Tuning: K-Means Speciation</h4>
+    <ul>
+        <li>Steepened Sigmoid Approximation.</li>
+        <li>Bounded Leaky ReLU.</li>
+        <li>Bounded Leaky ReLU (Centered).</li>
+    </ul>
+
+    
+
+
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
     <p>
-        A parallelized sub-routine was found to be often in a blocked state (waiting for a thread sync lock). Replacement of that 
-        sub-routine with an existing non-parallel equivalent resulted in faster execution overall. Specifically, this relates
-        to the CalculateCentroid() subroutine that is central to the k-means algorithm. Parallelization is still used by calling
-        CalculateCentroid() on each species in parallel, but the sub-routine itself is not parallelized.
+        Note. All of these alternative activation function require at least one condition (execution branch), and in this repsect they differ from the sigmoid activation function.
     </p>
     <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
 
-    <h2>Efficacy Sampling Tests</h2>
-    <p>
-        In <a href="/research/efficacy-sampling.html">efficacy sampling</a> results were reported for the previous version 
-        of SharpNEAT (<a href="https://github.com/colgreen/sharpneat/releases/tag/v2.2.4">version 2.2.4</a>). These same tests
-        were re-run against this version (<a href="https://github.com/colgreen/sharpneat/releases/tag/v2.3.0">version 2.3.0</a>).
-        The resulting best fitness histograms are provided below. To recap, these histograms show the best fitness achieved on each 
-        of a large number of independent SharpNEAT runs, terminating after one minute of execution.
-    </p>
+
+
+    <h3>Steepened Sigmoid Approximation</h3>
+    <p>An approximation to the current default function that avoids use of exp() and thus potentially yields a performance improvement.</p>
+
+
+    <h3>Bounded leaky ReLU</h3>
+    <p>One of a number of ReLU based function that have become increasngly popular due to their simplicity and performance.</p>
+
+    <h3>Bounded leaky ReLU Centered</h3>
+
 
 
     <br/>
     <figure>
-        <img src="sharpneat-2-3-0/binary11-bestfitness-v224-v230-hist.png" />
-        <img src="sharpneat-2-3-0/sinewave-bestfitness-v224-v230-hist.png" />
-        <figcaption><b>Figure 1.</b><br/>Comparison of best fitness histograms obtained from SharpNEAT v2.2.4 and v2.3.0;<br/>
-        on the Binary11 Multiplexer and Generative Sinewave tasks.</figcaption>
+        <img src="sharpneat-2-3-1/binary11-bestfitness-relu-sigmoid-sigmoidapprox.png" />
+        <img src="sharpneat-2-3-1/binary11-evalcount-relu-sigmoid-sigmoidapprox.png" />
+        <figcaption><b>Figure 1.</b><br/>Binary11 task: Comparison of best fitness and evaulation count histograms for three different activation functions; ReLU, Sigmoid and Sigmoid Approximation.
+        </figcaption>
     </figure>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+        <br/>
+    <br/>
+        <br/>
+    <br/>
+        <br/>
+    <br/>
+        <br/>
+    <br/>
+        <br/>
+    <br/>
+        <br/>
     <br/>
     <figure>
         <img src="sharpneat-2-3-0/binary11-evalcount-v224-v230-hist.png" />
