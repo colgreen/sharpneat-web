@@ -3,44 +3,39 @@ setwd("D:/home/websites/sharpneat-web/public/releases/sharpneat-2-3-1")
 
 # A colourblind friendly palette.
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
-
-cbPalette1 <- c("#F0E442", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
-
-cbPalette2 <- c("#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999", "#E69F00")
-cbPalette3 <- c("#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#999999", "#E69F00", "#56B4E9", "#009E73")
+cbPaletteB <- c("#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00","#CC79A7", "#999999", "#E69F00")
 
 # Load two data frames
-dat1 <- read.table("binary11-samples-relu.csv", sep=",", head=TRUE)
-dat2 <- read.table("binary11-samples-relucentered.csv", sep=",", head=TRUE)
-dat3 <- read.table("binary11-samples-sigmoid.csv", sep=",", head=TRUE)
-dat4 <- read.table("binary11-samples-sigmoidapprox.csv", sep=",", head=TRUE)
+dat1 <- read.table("binary11-samples-v2-3-0.csv", sep=",", head=TRUE)
+dat2 <- read.table("binary11-samples-v2-3-1.csv", sep=",", head=TRUE)
 
 # Combine the two dataframes into one.
 # First create a new column in each.
-dat1$fn <- 'relu'
-dat2$fn <- 'relucentered'
-dat3$fn <- 'sigmoid'
-dat4$fn <- 'sigmoidapprox'
+dat1$ver <- 'v230'
+dat2$ver <- 'v231'
 
-# Plot two overlaid histograms (best fitness; relu, sigmoid, sigmoidapprox)
-dat <- rbind(dat1, dat3, dat4)
+# and combine into a new data frame.
+dat <- rbind(dat1, dat2)
 
-p1 = ggplot(dat, aes(bestfitness, fill = fn )) + 
+# Plot two overlaid histograms, one for each of the two dataframes
+p1 = ggplot(dat, aes(bestfitness, fill = ver )) + 
    geom_histogram(alpha = 0.7, aes(y = ..density..), position = 'identity') +
-   scale_fill_manual(values=cbPalette, name='Activation\nfunction', labels=c('relu', 'sigmoid', 'sigmoidapprox')) +
-   labs(x='evaluation count') + 
-   ggtitle("Binary11 Multiplexer: Best Fitness Histograms") 
+   scale_fill_manual(values=cbPalette, name='Version', labels=c('v 2.3.0','v 2.3.1')) +
+   labs(x='fitness') + 
+   ggtitle("Binary11 Multiplexer Task") +
+   theme(plot.title = element_text(size = 12))
 
-ggsave(filename="binary11-bestfitness-relu-sigmoid-sigmoidapprox.png", plot=p1, height=4, width=8, units="in", dpi=100)
+ggsave(filename="binary11-bestfitness-v230-v231-hist.png", plot=p1, height=4, width=8, units="in", dpi=100)
 
-
-# Plot two overlaid histograms (eval count; relu, sigmoid, sigmoidapprox)
-p1 = ggplot(dat, aes(evalcount, fill = fn )) + 
+# Eval count.
+p2 = ggplot(dat, aes(evalcount, fill = ver )) + 
    geom_histogram(alpha = 0.7, aes(y = ..density..), position = 'identity') +
-   scale_fill_manual(values=cbPalette2, name='Activation\nfunction', labels=c('relu', 'sigmoid', 'sigmoidapprox')) +
+   scale_fill_manual(values=cbPaletteB, name='Version', labels=c('v 2.3.0','v 2.3.1')) +
    labs(x='evaluation count') + 
-   ggtitle("Binary11 Multiplexer: Evaluation Count Histograms") 
+   ggtitle("Binary11 Multiplexer Task") +
+   theme(plot.title = element_text(size = 12))
 
-ggsave(filename="binary11-evalcount-relu-sigmoid-sigmoidapprox.png", plot=p1, height=4, width=8, units="in", dpi=100)
+ggsave(filename="binary11-evalcount-v230-v231-hist.png", plot=p2, height=4, width=8, units="in", dpi=100)
+
 
 

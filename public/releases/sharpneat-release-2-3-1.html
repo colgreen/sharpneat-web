@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>SharpNEAT 2.3.0</title>
+    <title>SharpNEAT 2.3.1</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=0.75" />
     <link rel="stylesheet" href="../sharpneat.css" type="text/css" media="screen" />
@@ -87,120 +87,139 @@
     <hr/>
     <h1 align="center">SharpNEAT 2.3.1</h1>
 
+    
+    <h2>Overview</h2>
     <p>
-        Versions of SharpNEAT prior to v2.3.1 applied the 'steepened sigmoid' activation function on all tasks. This function takes the form:
+        <a href="https://github.com/colgreen/sharpneat/releases/tag/v2.3.1">This version</a> contains no major functional changes. This
+        is primarily a marker release for the recording and reporting of efficacy sampler results following a small change to the efficacy
+        sampler program's runtime environment, a change that has resulted in a substantial performance improvement, in turn requiring a
+        re-run of the efficacy sampling experiments on the two  benchmark tasks in order to obtain baseline results to compare future
+        improvements against.
     </p>
-
-    $$ y = \frac{1}{1 + e^{-4.9 x }} \tag {1}$$
-
+    <p>
+        The change in question is a config setting added to the standard .NET application config file that enables a 'server' garbage 
+        collection (GC) algorithm. Without this setting the default 'client' GC algorithm is used, and this seems wholly unsuitable
+        for the intensive multi-threaded CPU workload that SharpNEAT results in.
+    </p>
+    <p>
+        In particular the client mode GC will sporadically crash with the following error:
+    </p>
+    <blockquote>
+    System.ExecutionEngineException occurred HResult=0x80131506
+    </blockquote>
+    <p>
+        This crash sometimes occurs within a few minutes of running efic.exe (the efficacy sampler program that runs SharpNEAT in a
+        continuous loop); on other occasions it has occurred several days into execution. Using the server mode GC so far appears to
+        have resolved this problem, and has also resulted in a significant increase in overall execution speed. The relevant config 
+        setting is:
+    </p>
+    <pre>
+    &lt;runtime&gt;
+      &lt;gcServer enabled="true"/&gt;
+    &lt;/runtime&gt;
+    </pre>
+    <p>
+        Note that the main SharpNEAT GUI program already contains this setting. It was omitted in error when creating the efficacy sampler
+        program.
+    </p>
+    <p>
+        Essentially the client mode GC contains a defect, but one that only occurs when using that GC in an environment to which it is not
+        well suited, hence the performance loss. However it is possible to side step the issue by using the GC algorithm more suited to 
+        SharpNEAT's CPU workload.
+    </p>
+    <p>
+        It is my understanding that the client GC attempts to maximize responsiveness of interactive programs, as such it will attempt to 
+        perform some GC activity concurrently with the running program threads; whereas the server GC uses a more traditional approach of freezing
+        all program threads before performing GC activity. The server GC could result in pauses and stutter in a UI based application, but is more suited
+        to CPU intensive workloads because it results in better performance overall, and less thread context switching and thread sync lock blocking.
+    </p>
     <br/>
+
+    <h2>Summary of Other Changes</h2>
+
+    <h4>Added OutputSignalArray and OutputMappingSignalArray</h4>
     <p>
-        The exponent term in this function is a performance bottleneck on most or all available computing hardware platforms, i.e.
-        it is generally a relatively slow and complex CPU instruction to execute. In addition, the complexity of the exp instruction 
-        tends to result in CPUs having limited provision for parallel execution in CPU pipelines, i.e. there may only be minimal copies
-        of the circuitry for performing this operation, whereas for simpler instructions (e.g. basic arithmetic operations) there will 
-        typically be good provision for executing multiple instructions simultaneously, perhaps even within each instruction pipeline.
-    </p>
-    <p>
-        Three alternative activation functions are considered that are designed to avoid the use of exp()
+        These two new classes ensures that the neural net output values are always in the interval [0,1] even if the activation output interval
+        is beyond that range. This in turn removes the requirement that activation functions output in the interval [0,1], which allows for 
+        performance optimisations in their implementations.
     </p>
 
+    <h4>Activation functions review and clean-up</h4>
     <ul>
-        <li>Steepened Sigmoid Approximation.</li>
-        <li>Bounded Leaky ReLU.</li>
-        <li>Bounded Leaky ReLU (Centered).</li>
+        <li>Renames:
+            <ul>
+                <li>SteepenedSigmoid -> LogisticFunctionSteep</li>
+                <li>SteepenedSigmoidApproximation -> QuadraticSigmoid</li>
+                <li>BoundedLeakyReLU -> SReLU</li>
+                <li>BoundedLeakyReLUCentered -> SReLUShifted</li>
+                <li>InverseAbsoluteSigmoid -> SoftSignSteep</li>
+                <li>PlainSigmoid -> LogisticFunction</li>
+                <br/>
+            </ul>            
+        </li>
+        <li>Removed activation functions:
+            <ul>
+                <li>Absolute</li>
+                <li>AbsoluteRoot</li>
+                <li>ReducedSigmoid</li>
+                <li>StepFunction</li>
+                <br/>
+            </ul>
+        </li>
+    
+        <li>New activation functions:
+            <ul>
+                <li>PolynomialApproximantSteep</li>
+                <br/>
+            </ul>
+        </li>
+        <li>The following experiments/tasks have been reverted to use the default activation function:
+            <ul>
+                <li>SinglePoleBalancingExperiment</li>
+                <li>InvertedDoublePendulumExperiment</li>
+                <li>SinglePoleBalancingBox2dExperiment</li>
+                <li>WalkerBox2dExperiment</li>
+                <br/>
+            </ul>
+        </li>
     </ul>
 
-    
-
-
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
+    <h2>Efficacy Sampling Tests</h2>
     <p>
-        Note. All of these alternative activation function require at least one condition (execution branch), and in this repsect they differ from the sigmoid activation function.
+        Efficacy sampling was performed on the two standard benchmark tasks and the results compared between this and the previous version 
+        (<a href="https://github.com/colgreen/sharpneat/releases/tag/v2.3.0">version 2.3.0</a>).
+        The resulting best fitness histograms are provided below. To recap, these histograms show the best fitness achieved on each 
+        of a large number of independent SharpNEAT runs, terminating after one minute of execution. Histograms are also provided
+        comparing the evaluation counts achieved in each 60 second run.
     </p>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-
-
-
-    <h3>Steepened Sigmoid Approximation</h3>
-    <p>An approximation to the current default function that avoids use of exp() and thus potentially yields a performance improvement.</p>
-
-
-    <h3>Bounded leaky ReLU</h3>
-    <p>One of a number of ReLU based function that have become increasngly popular due to their simplicity and performance.</p>
-
-    <h3>Bounded leaky ReLU Centered</h3>
-
-
 
     <br/>
     <figure>
-        <img src="sharpneat-2-3-1/binary11-bestfitness-relu-sigmoid-sigmoidapprox.png" />
-        <img src="sharpneat-2-3-1/binary11-evalcount-relu-sigmoid-sigmoidapprox.png" />
-        <figcaption><b>Figure 1.</b><br/>Binary11 task: Comparison of best fitness and evaulation count histograms for three different activation functions; ReLU, Sigmoid and Sigmoid Approximation.
-        </figcaption>
+        <img src="sharpneat-2-3-1/binary11-bestfitness-v230-v231-hist.png" />
+        <img src="sharpneat-2-3-1/sinewave-bestfitness-v230-v231-hist.png" />
+        <figcaption><b>Figure 1.</b><br/>Comparison of best fitness histograms obtained from SharpNEAT v2.3.0 and v2.3.1;<br/>
+        on the Binary11 Multiplexer and Generative Sinewave tasks.</figcaption>
     </figure>
     <br/>
-    <br/>
-    <br/>
-    <br/>
-        <br/>
-    <br/>
-        <br/>
-    <br/>
-        <br/>
-    <br/>
-        <br/>
-    <br/>
-        <br/>
-    <br/>
-        <br/>
-    <br/>
     <figure>
-        <img src="sharpneat-2-3-0/binary11-evalcount-v224-v230-hist.png" />
-        <img src="sharpneat-2-3-0/sinewave-evalcount-v224-v230-hist.png" />
-        <figcaption><b>Figure 2.</b><br/>Comparison of evaluation count histograms obtained from SharpNEAT v2.2.4 and v2.3.0;<br/>
+        <img src="sharpneat-2-3-1/binary11-evalcount-v230-v231-hist.png" />
+        <img src="sharpneat-2-3-1/sinewave-evalcount-v230-v231-hist.png" />
+        <figcaption><b>Figure 2.</b><br/>Comparison of evaluation count histograms obtained from SharpNEAT v2.3.0 and v2.3.1;<br/>
         on the Binary11 Multiplexer and Generative Sinewave tasks.</figcaption>
     </figure>
     <br/>
 
     <h2>Discussion</h2>
     <p>
-        The evaluation count histograms in figure 2 provide good evidence that the overall speed of the NEAT search algorithm 
-        has improved in v2.3.0. It is not conclusive evidence because the two fixes may have changed overall size
-        of the evolved genomes such that number of evaluations achieved is not directly correlated with speed of the software.
-        However, the evaluation counts reported are significantly higher on average, on both tasks.
+        The evaluation count histograms demonstrate the substantial performance improvement obtained by enabling the server mode
+        garbage collection algorithm. The Generative Sinewave task has obtained the greatest performance boost, and this is likely 
+        because it spends proportionally more time in the NEAT algorithm (reproduction, mutation, crossover, speciation, etc.)
+        compared to the Binary11 task, which spends proportionally more time in the neural network activation code, and is therefore
+        more responsive to performance improvements in the neural network code (which operates on a static neural net model with minimal
+        need for memory allocatiosn and thus garbage collection)
     </p>
     <p>
-        The generative sinewave task in particular exhibits much higher evaluation counts; this is because it derives more benefit 
-        from the k-means speciation performance improvement, in turn because proportionally it spends more time in those 
-        speciation routines than the binary11 task. The binary11 task is more neural net activation heavy, requiring 2048 
-        activations of a feedforward-only network, per fitness evaluation. In contrast the generative sinewave task requires 
-        eighty activations of a cyclic/recurrent neural net. Attaching a performance profiler confirmed this point, with the 
-        sinewave task running in v2.2.4 reporting as much as 60% of CPU time blocked on the now improved speciation routine, whereas
-        the binary11 task reported much lower time blocked in that same routine.
-    </p>
-    <p>
-        The best fitness histograms for both tasks appear to have shifted to the right to some degree, and it seems likely that the
-        speed improvement is the primary cause of this shift, although the defect fixes cannot be ruled out as contributing also.
-        Further efficacy sampling experiments would be required to determine the effect of the fixes, but these were not performed.
-        More work needs to be done to conclusively determine the efficacy of innovation ID re-use.
-    </p>
-    <p>
-        It is hoped that the efficacy sampling evidence provided demonstrates an empirical improvement in SharpNEAT's search
-        algorithm between v2.2.4 and v2.3.0.
+        It is hoped that the efficacy sampling evidence provided will form a good baseline for future releases to be compared against.
     </p>
     <br/>
 
@@ -227,23 +246,23 @@ CPU
 
     <h5>R Scripts</h5>
     <ul>
-    <li><a href="sharpneat-2-3-0/generate-binary11-hist.R">R/ggplot script for generating histograms (Binary11 Multiplexer task)</a></li>
-    <li><a href="sharpneat-2-3-0/generate-sinewave-hist.R">R/ggplot script for generating histograms (Generative Sinewave task)</a></li>
+    <li><a href="sharpneat-2-3-1/generate-binary11-hist.R">R/ggplot script for generating histograms (Binary11 Multiplexer task)</a></li>
+    <li><a href="sharpneat-2-3-1/generate-sinewave-hist.R">R/ggplot script for generating histograms (Generative Sinewave task)</a></li>
     </ul>
 
     <h5>Histogram CSV data</h5>
     <ul>
-    <li><a href="sharpneat-2-3-0/binary11-samples-v2-2-4.csv">CSV data (Binary11 Multiplexer task, v 2.2.4)</a></li>
-    <li><a href="sharpneat-2-3-0/binary11-samples-v2-3-0.csv">CSV data (Binary11 Multiplexer task, v 2.3.0)</a></li>
-    <li><a href="sharpneat-2-3-0/sinewave-samples-v2-2-4.csv">CSV data (Generative Sinewave, v 2.2.4)</a></li>
-    <li><a href="sharpneat-2-3-0/sinewave-samples-v2-3-0.csv">CSV data (Generative Sinewave task, v 2.3.0)</a></li>
+    <li><a href="sharpneat-2-3-1/binary11-samples-v2-3-0.csv">CSV data (Binary11 Multiplexer task, v 2.3.0)</a></li>
+    <li><a href="sharpneat-2-3-1/binary11-samples-v2-3-1.csv">CSV data (Binary11 Multiplexer task, v 2.3.1)</a></li>
+    <li><a href="sharpneat-2-3-1/sinewave-samples-v2-3-0.csv">CSV data (Generative Sinewave task, v 2.3.0)</a></li>
+    <li><a href="sharpneat-2-3-1/sinewave-samples-v2-3-1.csv">CSV data (Generative Sinewave task, v 2.3.1)</a></li>
     </ul>    
 
     <br/>
     <p>
         <i>
             Colin,
-            <br />April 29th, 2017
+            <br />May 18th, 2017
         </i>
     </p>
     <br/>
