@@ -169,6 +169,15 @@
                     <li><a href="http://redcalx.livejournal.com/181438.html">Evolutionary Strategy Space - Sampling (Notes)</a></li>
                     <li><a href="http://redcalx.livejournal.com/181580.html">Evolutionary Strategy Space - Sampling II</a></li>
                 </ul>
+                <hr/>
+                <br/>
+
+                <h4>Investigate Alea GPU</h4>
+                <p>
+                    <a href="http://www.aleagpu.com/release/3_0_3/doc/gpu_programming_csharp.html">Alea GPU</a> allows GPU kernels to be
+                    written in C# and run from the .NEt runtime environment. It may therefore be possible to obtain significantly faster 
+                    performance by re-writing carefully chosen portions of SharpNEAT to run on a GPU. 
+                </p>
             </div>
             <br />
 
@@ -180,8 +189,8 @@
                 <p>
                     The <a href="https://en.wikipedia.org/wiki/Rectifier_(neural_networks)">ReLU</a> activation function is currently
                     in widespread use in AI neural net models; it is considerably simpler to compute compared to the 
-                    <a href="https://en.wikipedia.org/wiki/Logistic_function"> logistic sigmoid, which has been the default
-                    in SharpNEAT since its inception.</a>
+                    <a href="https://en.wikipedia.org/wiki/Logistic_function">logistic function</a>, which has been the default
+                    in SharpNEAT since its inception.
                 </p>
                 <p>
                     The simplicity of the ReLU computation will likely result in a significant performance improvement over the logistic 
@@ -223,7 +232,7 @@
                     <li><a href="http://stanford.edu/~rezab/nips2014workshop/slides/jeff.pdf">Techniques and Systems for Training Large Neural Networks Quickly, Jeff Dean, Google</a> - "Neural nets are very tolerant of reduced precision:
                         8 bits or less for inference 12 to 14 bits for training", pg 41</li>
                 </ul>
-                <h5>Response from <a href="http://www.sifter.org/~brandyn">Brandyn Webb</a></h5>
+                <h5>Response from <a href="http://sifter.org/~simon/journal/">Brandyn Webb</a></h5>
                 <p>
                     Fwiw, I seem to recall productively reducing at least some of the weights
                     in Inkwell (Apple's handwriting recognition engine) to 8 bit logarithmic
