@@ -44,7 +44,7 @@
                     <li>Efficacy sampling tests.
                         <ul>
                             <li>May result in changing the global default activation fn in SharpNEAT, and/or the defaults for each task. 
-                                In turn this may result in peformance improvements, e.g. ReLU versus Logistic function.</li>
+                                In turn this may result in performance improvements, e.g. ReLU versus Logistic function.</li>
                         </ul>
                     </li>
 
@@ -70,14 +70,14 @@
                             This should allow for some low hanging fruit optimisations in the ANN code and activation functions, where adding and
                             multiplying can be performed on arrays of numbers. It likely will not allow access to FMA (fused multiply and add)
                             instructions that are designed for use in just this kind of code; therefore there is future work to tap into 
-                            further possible optimsiations.
+                            further possible optimisations.
                         </li>
-                        <li>Note. Vectoprized code will operate much faster for only single precision floats compared to double precision because
+                        <li>Note. Vectorized code will operate much faster for only single precision floats compared to double precision because
                             twice as many values can be fit in each SIMD register. At time of writing current consumer Intel CPUs have 256 bit SIMD 
                             registers, allowing for operations on 8 floats or 4 doubles.
                         </li>
                         <li>May require new classes, i.e. SIMDPrecisionFastCyclic, etc. Thus there could four 'fast*' ANN classes because of the 
-                            variants for workign with single and double precision, as well as the SIMD, non-SIMD variants.
+                            variants for working with single and double precision, as well as the SIMD, non-SIMD variants.
                         </li>
                         <li>Relevant links:
                             <ul>
@@ -130,7 +130,7 @@
                 <h4>Integration with Native Math Libraries</h4>
                  
                 <ul style="list-style-type:disc">
-                    <li>The ANN code can tap into highly optimised matrix-vector multiplication subroutines provided by natively compiled 
+                    <li>The ANN code can tap into highly optimized matrix-vector multiplication subroutines provided by natively compiled 
                         math libraries. In particular NEAT should benefit from sparse matrix sub-routines that fully utilise CPU and GPU 
                         capabilities such as vector/SIMD instructions, FMA (fused multiple and add) instructions, and massive parallelism.
                         Math libs of note are:
@@ -190,7 +190,7 @@
                     a significant difference from the function that has formed the basis of most neuro-evolution research to date.
                 </p>
                 <h5>Notes</h5>
-                <p>Leaky Relus is defined as y = (x if x&gt;0, .01x if x&lt;0), which is similar but possesses a nonzero gradient for negative values so that it can still learn.</p>
+                <p>Leaky ReLU is defined as y = (x if x&gt;0, .01x if x&lt;0), which is similar but possesses a nonzero gradient for negative values so that it can still learn.</p>
                 <br/>
                 <hr/>
 
@@ -229,7 +229,7 @@
                     in Inkwell (Apple's handwriting recognition engine) to 8 bit logarithmic
                     values (expanded on the fly via a small lookup table).  We'd periodically
                     discretize them this way during training so that over time the weights could
-                    compensate for eachothers' discretization errors (otherwise if you just lop
+                    compensate for each others' discretization errors (otherwise if you just lop
                     blindly at the end the odds are too high of systematic shifts that add up
                     over large numbers of weights).  In general I think the more abstract the
                     representation, the less granularity you need.  That is, whether a pixel is
@@ -245,12 +245,12 @@
                 <br/>
                 <hr/>
             
-                <h4>Performance - SIMD &amp; Vectorisation</h4>
+                <h4>Performance - SIMD &amp; Vectorization</h4>
                 <p>
                     SharpNEAT does not currently utilise any of the vector instruction available in modern CPUs. A key issue has been the 
                     lack of support for SIMD in the .NET framework. As of .NET 4.6 the new RyuJIT compiler will generate some SIMD
                     instructions when in 64bit mode and when the .NET System.Numerics.Vector classes are in use. There is a limited 
-                    set of SIMD functionailty being exposed via .NET 4.6, but it is worthy of investigation not least because it 
+                    set of SIMD functionality being exposed via .NET 4.6, but it is worthy of investigation not least because it 
                     ought to be a relatively simple exercise to use the available Vector classes where possible, e.g. in the neural network
                     classes.
                 </p>
@@ -264,10 +264,10 @@
                 <p>
                     Also worth noting at here is that in recent years server CPUs (e.g. Intel Xeons) have tended to use the increasing 
                     transistor count budget to increase core count, with up to 20 cores possible at time of writing. Whereas desktop CPUs
-                    have followed a different path of integrating a GPU and other systems previously living on dediciated chips/circuitry off CPU.
+                    have followed a different path of integrating a GPU and other systems previously living on dedicated chips/circuitry off CPU.
                     At this time (2016) it's worth investigating the very significantly higher CPU resources available on server CPUs. This is
                     perhaps not a point that is widely discussed because in the past CPU evolution was mostly on a single path, but now appears
-                    to have forked into at leat two two very different paths (server and consumer CPUs).
+                    to have forked into at least two very different paths (server and consumer CPUs).
                 </p>
                 <h5>Notes / Links</h5>
                 <ul>
@@ -300,8 +300,8 @@
                     <a href="http://github.com/lordjesus/UnityNEAT">github.com/lordjesus/UnityNEAT</a>.
                 </p>
                 <p>
-                    The changes requried to make this integration work appear to be relatively modest, and therefore it's worth looking into 
-                    whether the SharpNEAT core library classes could be re-organised slightly and Unity integration provided as part of the
+                    The changes required to make this integration work appear to be relatively modest, and therefore it's worth looking into 
+                    whether the SharpNEAT core library classes could be re-organized slightly and Unity integration provided as part of the
                     main SharpNEAT project.
                 </p>
                 <br/>
@@ -316,7 +316,7 @@
                     <li>Unit tests.</li>
                     <li>Periodic innovation ID defragmentation.</li>
                     <li>Population-wide integrity checks. e.g. ensure a given innovation ID is not being used in nodes *and* connections.</li>
-                    <li>Distributed NEAT. Island model. (+ fast binary serialisation/IO).</li>
+                    <li>Distributed NEAT. Island model. (+ fast binary serialization/IO).</li>
                     <li>3D HyperNeat substrate/network visualization. Where # of connections is large visualization is possible by randomly thinning
                      out the shown connections. This approach is used in TrackVis (http://www.trackvis.org/) to visualise brain fibers.</li>
                 </ul>
