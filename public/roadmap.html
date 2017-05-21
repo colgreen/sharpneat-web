@@ -59,7 +59,7 @@
                         <ul>
                             <li>Should improve performance by halving memory bandwidth required to move arrays of connection weights, improving CPU cache 
                                 hit rate, doubling number of weights in vector/SIMD CPU instructions (see below).</li>
-                            <li>Consider switching precision level used as the global default and the and per task defaults.</li>
+                            <li>Consider switching precision level used as the global default and the per task defaults.</li>
                             <li>Genomes will continue to use double precision pending a broader review and restructure of the entire code base (see below)</li>
                             <li>May require new classes, i.e. SinglePrecisionFastCyclic, etc.</li>
                         </ul>
@@ -72,8 +72,8 @@
                             instructions that are designed for use in just this kind of code; therefore there is future work to tap into 
                             further possible optimisations.
                         </li>
-                        <li>Note. Vectorized code will operate much faster for only single precision floats compared to double precision because
-                            twice as many values can be fit in each SIMD register. At time of writing current consumer Intel CPUs have 256 bit SIMD 
+                        <li>Note. Vectorized code will operate much faster on single precision floats compared to double precision because
+                            twice as many values can be fit into each SIMD register. At time of writing current consumer Intel CPUs have 256 bit SIMD 
                             registers, allowing for operations on 8 floats or 4 doubles.
                         </li>
                         <li>May require new classes, i.e. SIMDPrecisionFastCyclic, etc. Thus there could four 'fast*' ANN classes because of the 
@@ -104,8 +104,8 @@
                     </p>
                     <p>
                         Over the last few years I've adopted a rough heuristic of keeping classes to less than 400 LOC (300 ideally), and methods substantially
-                        less than that. This isn't a hard rule, but generally larger classes are a good proxy for poor design choices and defects. So a revisit
-                        of the code with these ideas in mind is planned.
+                        less than that. This isn't a hard rule, but generally larger classes are a good proxy for poor design choices and presence of defects.
+                        So a revisit of the code with these ideas in mind is planned.
                     </p>
                 </div>               
                 <ul style="list-style-type:disc">
