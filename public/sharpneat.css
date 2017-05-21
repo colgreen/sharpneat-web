@@ -12,7 +12,6 @@ body.research
 }
 
 a {
-    color: #850000;
     text-decoration:none;
 }
 
@@ -87,7 +86,7 @@ a:hover {
     margin-left: auto;
     margin-right: auto;
     font-size: 0.9em;
-    text-align: center;
+    /*text-align: center;*/
 }
 
 .frontpagebubble ul {list-style-type: none; -webkit-padding-start : 0}

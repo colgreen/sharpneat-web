@@ -1,0 +1,333 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>SharpNEAT Project Roadmap</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.75"/>
+    <link rel="stylesheet" href="sharpneat.css" type="text/css" media="screen" />
+</head>
+<body>
+    <div class="banner">      
+        <a href="/" title="SharpNEAT">
+            <img src="sharpneat_logo_banner.svg" alt="SharpNEAT" class="bannerimage" />
+        </a>
+    </div>
+    <div class="centralcolumn">
+        <div class="centralcolumninner">
+            <!-- Column divider -->
+            <div style="float: left; width: 3.3%">
+                <br />
+            </div>
+            <!-- Pagetop Blurb -->
+            <div class="textbubble">
+                <div style="font-weight:bold; font-size:x-large" align="center">
+                    SharpNEAT Project Roadmap
+                </div>
+                <p align="center">Last reviewed / updated 2017-05-21</p>
+            </div>
+            <br />
+            <br />
+
+
+            <!-- Short / Near Term -->
+            <div class="textbubble">
+                <h3 align="center">Short / Near Term</h2>
+
+                <h4>Activation Functions Review</h4>
+
+                <ul style="list-style-type:disc">
+                    <li>Review the set of activations provided. Add new functions, remove unuseful functions.</li>
+                    <li>Review naming of functions in line with adopted terminology in recent years, e.g. ReLU, Softmax.</i>
+                    <li>Modify activation function curves where necessary, in particular ensure there is a gradient to follow over
+                        wide range instead of using hard truncation at the output range extremes.</li>
+                    <li>Performance tuning.</li>
+                    <li>Efficacy sampling tests.
+                        <ul>
+                            <li>May result in changing the global default activation fn in SharpNEAT, and/or the defaults for each task. 
+                                In turn this may result in peformance improvements, e.g. ReLU versus Logistic function.</li>
+                        </ul>
+                    </li>
+
+                </ul>
+                <br/>
+                <hr/>
+
+                <h4>Performance Tuning</h4>
+                <ul style="list-style-type:disc">
+                    <li>Building on recent improvements, i.e. tuning of multi-threaded speciation algorithm and activation function performance.</li>
+                    <li>ANNs operating on single precision floats.
+                        <ul>
+                            <li>Should improve performance by halving memory bandwidth required to move arrays of connection weights, improving CPU cache 
+                                hit rate, doubling number of weights in vector/SIMD CPU instructions (see below).</li>
+                            <li>Consider switching precision level used as the global default and the and per task defaults.</li>
+                            <li>Genomes will continue to use double precision pending a broader review and restructure of the entire code base (see below)</li>
+                            <li>May require new classes, i.e. SinglePrecisionFastCyclic, etc.</li>
+                        </ul>
+                    </li>
+                    <li>Use of built in SIMD/Vectorization support in .NET</li>
+                    <ul>
+                        <li>.NET 4.6 and the new RyuJIT compiler introduced some basic support for accessing SIMD/vector CPU instructions.
+                            This should allow for some low hanging fruit optimisations in the ANN code and activation functions, where adding and
+                            multiplying can be performed on arrays of numbers. It likely will not allow access to FMA (fused multiply and add)
+                            instructions that are designed for use in just this kind of code; therefore there is future work to tap into 
+                            further possible optimsiations.
+                        </li>
+                        <li>Note. Vectoprized code will operate much faster for only single precision floats compared to double precision because
+                            twice as many values can be fit in each SIMD register. At time of writing current consumer Intel CPUs have 256 bit SIMD 
+                            registers, allowing for operations on 8 floats or 4 doubles.
+                        </li>
+                        <li>May require new classes, i.e. SIMDPrecisionFastCyclic, etc. Thus there could four 'fast*' ANN classes because of the 
+                            variants for workign with single and double precision, as well as the SIMD, non-SIMD variants.
+                        </li>
+                        <li>Relevant links:
+                            <ul>
+                                <li><a href="http://instil.co/2016/03/21/parallelism-on-a-single-core-simd-with-c/">Parallelism on a Single Core - SIMD with C#</a></li>
+                                <li><a href="http://instil.co/2016/04/07/simd-performance-and-cost-with-csharp-and-cpp/">SIMD in Depth - Performance and Cost in C# and C++</a></li>
+                                <li><a href="http://stackoverflow.com/questions/tagged/simd+ryujit">Stackoverflow [simd] [ryujit]</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </ul>
+            </div>
+            <br />
+
+
+            <!-- Mid Term -->
+            <div class="textbubble">
+                <h3 align="center">Mid Term</h2>
+
+                <h4>Full code review, restructure and refactor</h4>
+                <div style="margin: 24px">
+                    <p>
+                        Most code bases have room for improvement, and SharpNEAT is no exception. One area I would like to visit is the size 
+                        of some of the classes in terms of lines of code (LOC) and cyclomatic complexity, and also the size of some methods/functions.
+                    </p>
+                    <p>
+                        Over the last few years I've adopted a rough heuristic of keeping classes to less than 400 LOC (300 ideally), and methods substantially
+                        less than that. This isn't a hard rule, but generally larger classes are a good proxy for poor design choices and defects. So a revisit
+                        of the code with these ideas in mind is planned.
+                    </p>
+                </div>               
+                <ul style="list-style-type:disc">
+                    <li>Functional division used in evolution algorithm class(es) can be improved.</li>
+                    <li>IExperiment, IGuiExperiment could be greatly clarified and tidied up.</li>
+                    <li>Overall API and functional division review, tidy-up, improvements.</li>
+                    <li>Use of <a href="https://en.wikipedia.org/wiki/Inversion_of_control">IoC</a> and 
+                    <a href="https://en.wikipedia.org/wiki/Dependency_injection">DI</a>
+                        <ul>
+                            <li>Currently likelihood is that <a href="http://structuremap.github.io/">Structure Map</a> will be used.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+            <br />
+
+            <!-- Long Term -->
+            <div class="textbubble">
+                <h3 align="center">Long Term</h2>
+
+                <h4>Integration with Native Math Libraries</h4>
+                 
+                <ul style="list-style-type:disc">
+                    <li>The ANN code can tap into highly optimised matrix-vector multiplication subroutines provided by natively compiled 
+                        math libraries. In particular NEAT should benefit from sparse matrix sub-routines that fully utilise CPU and GPU 
+                        capabilities such as vector/SIMD instructions, FMA (fused multiple and add) instructions, and massive parallelism.
+                        Math libs of note are:
+                        <ul>
+                            <li><a href="https://en.wikipedia.org/wiki/Math_Kernel_Library">Intel Math Kernel Library (Intel MKL)</a></li>
+                            <li><a href="https://en.wikipedia.org/wiki/CUDA">CUDA</a></li>
+                            <li><a href="https://en.wikipedia.org/wiki/LAPACK">https://en.wikipedia.org/wiki/OpenBLAS</a></li>
+                        </ul>
+                    </li>
+                    <li>Of particular note is the plug-in native math lib support in
+                        <a href="https://github.com/mathnet/mathnet-numerics/tree/master/src/NativeProviders">mathnet-numerics</a>. 
+                        SharpNEAT may use this to gain access to the abstraction that mathnet provides, thus supporting a widespread
+                        range of options rather than tying SharpNEAT to one or two. However, a recent check discovered that the
+                        Intel MKL provider did not have support for MKL's sparse matrix sub-routines, so this may have to be addressed
+                        (not sure about the other providers, e.g CUDA in particular warrants strong attention).
+                    </li>
+                </ul>
+                <hr/>
+                <br/>
+                <h4>Speciation Research</h4>
+                <p>
+                    I have this vague idea that speciation by comparing genomes is possibly flawed in some significant ways; this fits the
+                    narrative around novelty search research, and how following an objective function may not lead you to the desired
+                    objective.
+                </p>
+                <p>
+                    For now the ideas under this heading are best covered by a number of fairly rambling blog posts, which I hope to condense
+                    into something more concrete at some future time...
+                </p>
+
+                <ul>
+                    <li><a href="http://the-locster.livejournal.com/140308.html">EC Notes</a></li>
+                    <li><a href="http://the-locster.livejournal.com/140704.html">EC Notes II</a></li>
+                    <li><a href="http://redcalx.livejournal.com/180809.html">Evolutionary Selection and N-Dimensional Density Fields</a></li>
+                    <li><a href="http://redcalx.livejournal.com/181086.html">Evolutionary Strategy Space - General Approach for Evolved Neural Nets</a></li>
+                    <li><a href="http://redcalx.livejournal.com/181438.html">Evolutionary Strategy Space - Sampling (Notes)</a></li>
+                    <li><a href="http://redcalx.livejournal.com/181580.html">Evolutionary Strategy Space - Sampling II</a></li>
+                </ul>
+            </div>
+            <br />
+
+            <!-- Notes / Miscellany  -->
+            <div class="textbubble">
+                <h3 align="center">Notes / Miscellany</h2>
+
+                <h4>Performance - ReLU (Rectified Linear Units)</h4>
+                <p>
+                    The <a href="https://en.wikipedia.org/wiki/Rectifier_(neural_networks)">ReLU</a> activation function is currently
+                    in widespread use in AI neural net models; it is considerably simpler to compute compared to the 
+                    <a href="https://en.wikipedia.org/wiki/Logistic_function"> logistic sigmoid, which has been the default
+                    in SharpNEAT since its inception.</a>
+                </p>
+                <p>
+                    The simplicity of the ReLU computation will likely result in a significant performance improvement over the logistic 
+                    sigmoid. Some investigation is required to evaluate the scale of the improvement (with some thought given to SIMD based
+                    code also), and what the implications are to the wider efficacy of neuro-evolution when using an activation with such
+                    a significant difference from the function that has formed the basis of most neuro-evolution research to date.
+                </p>
+                <h5>Notes</h5>
+                <p>Leaky Relus is defined as y = (x if x&gt;0, .01x if x&lt;0), which is similar but possesses a nonzero gradient for negative values so that it can still learn.</p>
+                <br/>
+                <hr/>
+
+                <h4>Performance - Floating Point Precision</h4>
+
+                <p>The relative merits of single versus double precision floats.</p>
+                <p>
+                    There is an open question regarding how much precision is required in neuro-evolution methods.
+                    For AI methods that learn weights by gradient following there is an argument to allow very small
+                    gradient to be followed, otherwise learning may stop. In NEAT a very similar question arises - what
+                    is the smallest useful weight change/delta when mutating a connection weight? And can that smallest
+                    level of precision be represented by single precision floats
+                </p>
+                <p>
+                    A single precision float is 32 bits (4 bytes); double precision is 64bits (8 bytes). Therefore there
+                    is a potential speed improvement to be gained by using less precision, in terms of fitting more weights
+                    into CPU caches, efficient use of memory bandwidth and the ability to apply SIMD instructions to 2x as
+                    many weights in one operation (at time of writing 256 bit SIMD instructions are common and 512 bit
+                    instructions will be available soon, 512/32 = 16 floats)
+                </p>
+
+                <p>A broader question might be whether the precision could be reduced further, given the existence of 
+                <a href="https://en.wikipedia.org/wiki/Half-precision_floating-point_format">half precision floats</a></p>
+
+                <h5>Notes / Links</h5>
+                <ul>
+                    <li><a href="https://devblogs.nvidia.com/parallelforall/new-features-cuda-7-5/">New Features in CUDA 7.5: 16-bit Floating Point (FP16) Data</a></li>
+                    <li><a href="https://software.intel.com/en-us/articles/performance-benefits-of-half-precision-floats">Performance Benefits of Half Precision Floats</a></li>
+                    <li><a href="https://en.m.wikipedia.org/wiki/Half-precision_floating-point_format#IEEE_754_half-precision_binary_floating-point_format:_binary16">IEEE 754 half-precision binary floating-point format: binary16</a></li>
+                    <li><a href="http://stanford.edu/~rezab/nips2014workshop/slides/jeff.pdf">Techniques and Systems for Training Large Neural Networks Quickly, Jeff Dean, Google</a> - "Neural nets are very tolerant of reduced precision:
+                        8 bits or less for inference 12 to 14 bits for training", pg 41</li>
+                </ul>
+                <h5>Response from <a href="http://www.sifter.org/~brandyn">Brandyn Webb</a></h5>
+                <p>
+                    Fwiw, I seem to recall productively reducing at least some of the weights
+                    in Inkwell (Apple's handwriting recognition engine) to 8 bit logarithmic
+                    values (expanded on the fly via a small lookup table).  We'd periodically
+                    discretize them this way during training so that over time the weights could
+                    compensate for eachothers' discretization errors (otherwise if you just lop
+                    blindly at the end the odds are too high of systematic shifts that add up
+                    over large numbers of weights).  In general I think the more abstract the
+                    representation, the less granularity you need.  That is, whether a pixel is
+                    brighter than its neighbor or not can require quite a precise measurement,
+                    and this can matter, as can precise averages over a large number of noisy
+                    pixels; but usually whether something is a dog or a tree, and the relative
+                    implications thereof, is relatively high contrast--it's not that borderline
+                    cases never exist, but just that they're increasingly rare as you ascend
+                    the hierarchy of abstraction.  You also generally have far fewer examples
+                    of more abstract concepts, so there's often little basis for a high precision
+                    tally thereof.
+                </p>
+                <br/>
+                <hr/>
+            
+                <h4>Performance - SIMD &amp; Vectorisation</h4>
+                <p>
+                    SharpNEAT does not currently utilise any of the vector instruction available in modern CPUs. A key issue has been the 
+                    lack of support for SIMD in the .NET framework. As of .NET 4.6 the new RyuJIT compiler will generate some SIMD
+                    instructions when in 64bit mode and when the .NET System.Numerics.Vector classes are in use. There is a limited 
+                    set of SIMD functionailty being exposed via .NET 4.6, but it is worthy of investigation not least because it 
+                    ought to be a relatively simple exercise to use the available Vector classes where possible, e.g. in the neural network
+                    classes.
+                </p>
+                <h5>C++/CLI</h5>
+                <p>
+                    To more fully utilise SIMD in modern CPUs (including the coming 512bit wide vector instructions due from Intel CPUs in 2016), 
+                    it's necessary to run code outside of the .NET managed runtime. The most promising option here appears to be the 
+                    <a href="https://en.wikipedia.org/wiki/C%2B%2B/CLI">C++/CLI</a> language/environment, this provides an environment where
+                    C++ targeting the native CPU can be written, but interaction with the managed runtime is also possible.
+                </p>
+                <p>
+                    Also worth noting at here is that in recent years server CPUs (e.g. Intel Xeons) have tended to use the increasing 
+                    transistor count budget to increase core count, with up to 20 cores possible at time of writing. Whereas desktop CPUs
+                    have followed a different path of integrating a GPU and other systems previously living on dediciated chips/circuitry off CPU.
+                    At this time (2016) it's worth investigating the very significantly higher CPU resources available on server CPUs. This is
+                    perhaps not a point that is widely discussed because in the past CPU evolution was mostly on a single path, but now appears
+                    to have forked into at leat two two very different paths (server and consumer CPUs).
+                </p>
+                <h5>Notes / Links</h5>
+                <ul>
+                    <li><a href="http://www.codeproject.com/Articles/19354/Quick-C-CLI-Learn-C-CLI-in-less-than-minutes">Quick C++/CLI - Learn C++/CLI in less than 10 minutes</a></li>
+                    <li><a href="https://msdn.microsoft.com/en-us/library/68td296t.aspx">.NET Programming with C++/CLI (Visual C++)</a></li>
+                    <li><a href="http://stackoverflow.com/questions/35525556/under-what-conditions-does-the-net-jit-compiler-perform-automatic-vectorization">Under what conditions does the .NET JIT compiler perform automatic vectorization?</a></li>
+                </ul>
+                <br/>
+                <hr/>
+
+                <h4>Review 2D Physics Engine</h4>
+                <p>
+                    Some of the experiments shipped with SharpNEAT use the <a href="https://code.google.com/archive/p/box2dx/">box2dx</a> 
+                    physics engine.
+                </p>
+                <p>
+                    There is a detailed overview of the situation regarding use of this 2D physics engine and the rendering library being used with it, 
+                    at <a href="https://github.com/colgreen/box2dx/blob/master/README.md">gihub.com/colgreen/box2dx</a>. Ultimately it may be wise
+                    to switch to another 2D engine such as the <a href="https://farseerphysics.codeplex.com/">Farseer Physics Engine</a>, although
+                    there is also some debate about the 
+                    <a href="https://www.reddit.com/r/gamedev/comments/2sy9a8/is_there_a_successor_to_farseer_for_c_2d_physics/">status of that project</a>.
+                </p>
+                <br/>
+                <hr/>
+
+                <h4>Unity Game Engine Integration</h4>
+                <p>
+                    There is at least one github repository that has integrated SharpNEAT and the <a href="https://unity3d.com">Unity game engine</a>
+                    (not to be confused with the Microsoft Unity IoC framework); located at 
+                    <a href="http://github.com/lordjesus/UnityNEAT">github.com/lordjesus/UnityNEAT</a>.
+                </p>
+                <p>
+                    The changes requried to make this integration work appear to be relatively modest, and therefore it's worth looking into 
+                    whether the SharpNEAT core library classes could be re-organised slightly and Unity integration provided as part of the
+                    main SharpNEAT project.
+                </p>
+                <br/>
+                <hr/>
+
+                <h4>Miscellany</h4>
+                <ul>
+                    <li>Replace roulette wheel selection with stochastic universal sampling (SUS).</li>
+                    <li>Regularized k-means speciation.</li>
+                    <li>Species visualisation(s).</li>
+                    <li>Simple primer tutorial(s).</li>
+                    <li>Unit tests.</li>
+                    <li>Periodic innovation ID defragmentation.</li>
+                    <li>Population-wide integrity checks. e.g. ensure a given innovation ID is not being used in nodes *and* connections.</li>
+                    <li>Distributed NEAT. Island model. (+ fast binary serialisation/IO).</li>
+                    <li>3D HyperNeat substrate/network visualization. Where # of connections is large visualization is possible by randomly thinning
+                     out the shown connections. This approach is used in TrackVis (http://www.trackvis.org/) to visualise brain fibers.</li>
+                </ul>
+            </div>
+        <br />
+        <hr />
+        <div class="frontpagefooter">
+            Contact: <a href="mailto:colin.green1@gmail.com">Colin Green</a><br /></li>
+            SharpNEAT is a <a href="http://heliosphan.org/">Heliosphan.org</a> project.<br /></li>
+        </div>
+        <br />
+    </div>
+</body>
+</html>
