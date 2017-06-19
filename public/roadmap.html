@@ -83,7 +83,13 @@
                             <ul>
                                 <li><a href="http://instil.co/2016/03/21/parallelism-on-a-single-core-simd-with-c/">Parallelism on a Single Core - SIMD with C#</a></li>
                                 <li><a href="http://instil.co/2016/04/07/simd-performance-and-cost-with-csharp-and-cpp/">SIMD in Depth - Performance and Cost in C# and C++</a></li>
+
+                                <li><a href="http://frankniemeyer.blogspot.co.uk/2015/06/simd-fundamentals-part-i-from-sisd-to.html">SIMD Fundamentals. Part I: From SISD to SIMD</a></li>
+                                <li><a href="http://frankniemeyer.blogspot.co.uk/2015/06/simd-fundamentals-part-ii-aos-soa.html">SIMD Fundamentals. Part II: AoS, SoA, Gather/Scatter - Oh my!</a></li>
+                                <li><a href="http://frankniemeyer.blogspot.co.uk/2015/08/simd-fundamentals-part-iii.html">SIMD Fundamentals. Part III: Implementation &amp; Benchmarks</a></li>
+                                
                                 <li><a href="http://stackoverflow.com/questions/tagged/simd+ryujit">Stackoverflow [simd] [ryujit]</a></li>
+                                <li><a href="http://stackoverflow.com/questions/37443569/can-c-sharp-make-use-of-fused-multiply-add">Can C# make use of fused multiply-add?</a></li>                                
                             </ul>
                         </li>
                     </ul>
@@ -118,6 +124,8 @@
                             <li>Currently likelihood is that <a href="http://structuremap.github.io/">Structure Map</a> will be used.</li>
                         </ul>
                     </li>
+                    <li>Plain text and/or json network and genome file formats. Support for the existing XML format will be continued,
+                        but plain text or json will likely be favoured over XML going forward.</li>
                 </ul>
 
             </div>
@@ -148,8 +156,8 @@
                         (not sure about the other providers, e.g CUDA in particular warrants strong attention).
                     </li>
                 </ul>
-                <hr/>
                 <br/>
+                <hr/>
                 <h4>Speciation Research</h4>
                 <p>
                     I have this vague idea that speciation by comparing genomes is possibly flawed in some significant ways; this fits the
@@ -169,8 +177,15 @@
                     <li><a href="http://redcalx.livejournal.com/181438.html">Evolutionary Strategy Space - Sampling (Notes)</a></li>
                     <li><a href="http://redcalx.livejournal.com/181580.html">Evolutionary Strategy Space - Sampling II</a></li>
                 </ul>
-                <hr/>
                 <br/>
+                <hr/>
+
+                <h4>Python bindings</h4>
+                <p>
+                    Provide python bindings to allow setting up and running of evolutions using python.
+                </p>
+                <br/>
+                <hr/>
 
                 <h4>Investigate Alea GPU</h4>
                 <p>
@@ -178,6 +193,7 @@
                     written in C# and run from the .NEt runtime environment. It may therefore be possible to obtain significantly faster 
                     performance by re-writing carefully chosen portions of SharpNEAT to run on a GPU. 
                 </p>
+                <br/>
             </div>
             <br />
 
