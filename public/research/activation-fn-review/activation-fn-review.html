@@ -1,0 +1,762 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <title>A Review of Activation Functions in SharpNEAT</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.75" />
+    <link rel="stylesheet" href="../../sharpneat.css" type="text/css" media="screen" />
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}, });
+    </script>
+    <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_HTMLorMML-full'></script>
+    <style>
+        figure {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px dotted gray;
+        }
+
+        figure img {
+            display: inline-block;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 100%
+        }
+
+        figcaption {
+            text-align: center;
+            margin: 7px;
+        }
+
+        li {
+            margin: 15px 0;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 15px;
+        }
+    </style>
+    <style type="text/css">
+        .tg {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        .tg td {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+        }
+
+        .tg th {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: normal;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+        }
+
+        .tg .tg-erlg {
+            font-weight: bold;
+            background-color: #efefef;
+            vertical-align: top
+        }
+
+        .tg .tg-baqh {
+            text-align: center;
+            vertical-align: top
+        }
+
+        .tg .tg-yw4l {
+            vertical-align: top
+        }
+    </style>
+</head>
+
+<body class="research">
+    <div class="articlebanner">
+        <a href="/" title="SharpNEAT">
+            <img src="../../sharpneat-banner-narrow.svg" alt="SharpNEAT" class="articlebannerimage" />
+        </a>
+    </div>
+    <hr/>
+    <h1 align="center">A Review of Activation Functions in SharpNEAT</h1>
+    <br />
+
+    <h3>1. Introduction</h3>
+    <p>
+        Nine neural network activation functions are compared on their execution speed and overall efficacy when applied to two 
+        benchmark neuro-evolution tasks.
+    </p>
+
+    <br/>
+    <figure style="border: none;">
+        <figcaption><b>Figure 1.</b><br/>Table of activation functions under review.</figcaption>
+        <br/>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Description / Notes</th>
+                <th>Function</th>
+            </tr>
+
+            <tr>
+                <td>logistic-steep</td>
+                <td>
+                    <p>
+                        The logistic function with a scaling factor applied to $x$ such that the gradient at x=0 is approximately 1,
+                        i.e. as per the <a href="https://en.wikipedia.org/wiki/Identity_function">identity function</a>.
+                    </p>
+                        This function is the long standing default activation function in SharpNEAT, although some tasks are configured
+                        to override this default.
+                    </p>
+                    <p>
+                        Execution speed is hampered by the exponential term as this is inherently expensive to compute. The compute time will also increase
+                        with the amount of precision required, and the <a href="https://en.wikipedia.org/wiki/Common_Language_Runtime">.NET CLR</a> 
+                        (the execution platform for SharpNEAT) provides an exp() function for double precision (64 bit) floating point values only.
+                    </p>
+                </td>
+                <td>$$ y = \frac{1}{1 + e^{-4.9x}} $$</td>
+            </tr>
+
+            <tr>
+                <td>logistic-approx-steep</td>
+                <td>
+                    <p>
+                        The logistic function implemented using a fast to compute approximation of exp(x), as described in the paper
+                        <a href="https://pdfs.semanticscholar.org/35d3/2b272879a2018a2d33d982639d4be489f789.pdf">A Fast, Compact Approximation
+                        of the Exponential Function</a>, Nicol N. Schraudolph.
+                    </p>
+                    <p>
+                        The approximation utilizes knowledge of the precise layout of the binary representation of IEEE 754 double precision 
+                        floating point values. This approximation has some issues, in particular (a) 'stepping' of the function at a small/fine scale
+                        due to loss of precision; (b) 'piecewise' curvature, i.e. the main sigmoid curve appears made up of multiple sub-curves that
+                        don't have matching gradients at the joins; (c) The nature of the exp() approximation is such that it fails outside of the
+                        interval [-700,700], combined with the scaling of the $x$ input values this reduces the effective range of the activation function
+                        to approximately [-144,144].
+                    </p>
+                    <p>
+                        As per logistic-steep a scaling factor is applied to $x$ such that the gradient at x=0 is approximately 1.
+                    </p>
+                </td>
+                <td>
+                    $$ y = \frac{1}{1 + e^{-4.9x}} $$
+                    <br/>
+                    (approximated $e^x$)
+                </td>
+            </tr>
+
+            <tr>
+                <td>poly-approx-steep</td>
+                <td>
+                    <p>A polynomial approximation to the logistic function.</p>
+                    <p>
+                        In a neuro-evolution context this sigmoid is practically equivalent to the logistic function but avoids use of a high 
+                        precision exponential calculation, thus reducing execution time.
+                    </p>
+                    <p>
+                        Note the use of a single conditional branch which may affect performance on 
+                        <a href="https://en.wikipedia.org/wiki/Superscalar_processor">superscalar CPUs</a> (i.e. nearly all modern CPUs).
+                        Overall however this activation function is very much faster to compute than the logistic-steep in 
+                        the performance test environment despite the conditional branch (details in section 2).
+                    </p>
+                </td>
+                <td>
+                    <pre>
+  function(x) 
+  {
+    x = x * 4.9;
+    double x2 = x*x;
+    double u = 1.0 + Math.Abs(x) + 
+                    (x2 * 0.555) + 
+                    (x2 * x2 * 0.143);
+
+    double v = (x > 0) ? (1.0 / u) : u;
+    return 1.0 / (1.0 + v);
+  }
+    </pre>
+                </td>
+            </tr>
+
+            <tr>
+                <td>softsign-steep</td>
+                <td>
+                    <p>
+                        A simple, fast sigmoid with polynomial approach to its asymptotes in contrast to the logistic function's exponential approach.
+                    </p>
+                    <p>
+                        This is a variant on the standard sofsign function modified such that the gradient at x=0 is approximately 1 
+                        (as per the logistic-steep function and others).
+                    </p>
+                </td>
+                <td>$$ y = \frac{1}{2} + \frac{1}{2} \left(\frac{x}{0.2+|x|}\right) $$</td>
+            </tr>
+
+            <tr>
+                <td>quadratic</td>
+                <td>
+                    <p>
+                        A sigmoid formed by joining two subsections of the curve of $y=x^2$.
+                    </p>
+                    <p>
+
+                    </p>
+
+                    <td>                    
+                        $t = 0.999\,\,\,\,\,\,\, \text{threshold}$
+                        $g = 0.00001\,\,\,\, \text{gradient}$
+                        
+                        <br/>
+                        <br/>
+                        $w =
+                        \begin{cases}
+                            t - (|x| - t)^2 , & \text{for}\, 0 <= |x| < t \\
+                            t + (|x| - t) g , & \text{for}\, t <= |x| \\ 
+                        \end{cases}$
+                        <br/>
+                        <br/>
+                        $ y = \frac{1}{2} w \cdot sgn(x)  + \frac{1}{2} $
+                    </td>
+            </tr>
+            <tr>
+                <td>leakyrelu</td>
+                <td>
+                    <p>
+                        A <a href="https://en.wikipedia.org/wiki/Rectifier_(neural_networks)">Rectified Linear Unit</a> with a small,
+                        non-zero gradient when the unit is not active.
+                    </p>
+                    <p>
+
+                    </p>
+
+                    <td>
+                        $g = 0.001\,\,\,\, \text{gradient}$
+                        
+                        <br/>
+                        <br/>
+                        $y =
+                        \begin{cases}
+                            x, & \text{for}\, x > 0 \\
+                            gx , & \text{for}\, x <= 0  \\ 
+                        \end{cases}$
+                        <br/>
+                    </td>
+            </tr>
+            <tr>
+                <td>leakyrelu-shifted</td>
+                <td>
+                    <p>A variant of leakyrelu translated on the x-axis such that $f(0) = \frac{1}{2}$, as per the logistic function.</p>
+                </td>
+                <td>$y = leakyrelu(x+\frac{1}{2})$</td>
+            </tr>
+            <tr>
+                <td>srelu</td>
+                <td>
+                    <p>S-shaped rectified linear activation unit (SReLU).</p>
+                    <p>
+                        A variant on the <a href="https://en.wikipedia.org/wiki/Rectifier_(neural_networks)#Leaky_ReLUs">leaky ReLU</a>
+                        that has two threshold based non-linearities instead of one, forming a crude S shape. The thresholds
+                        are positioned such that the very low gradient in the regions outside of the main linear slope approaches the limits
+                        of the bounds y=[0,1] only when x is outside of the interval [-100,100].
+                    </p>
+                    <td>
+                        $l = 0.001\,\,\,\,\, \text{threshold (left)}$
+                        $r = 0.999\,\,\,\,\, \text{threshold (right)}$
+                        $g = 0.00001\,\,\,\,\, \text{gradient}$
+                        <br/>
+                        <br/>
+                        $y = 
+                        \begin{cases} 
+                            l + (x-l) g, & \text{for}\, x <= l \\ 
+                            x,           & \text{for}\, l < x < r \\
+                            r + (x-r) g, & \text{for}\, r <=x \\ 
+                        \end{cases}$
+                    </td>
+            </tr>
+
+            <tr>
+                <td>srelu-shifted</td>
+                <td>
+                    <p>A variant of srelu translated on the x-axis such that $f(0) = \frac{1}{2}$, as per the logistic function.</p>
+                </td>
+                <td>$y = srelu(x+\frac{1}{2})$</td>
+            </tr>
+        </table>
+        <br/>
+        
+    </figure>
+    <br/>
+    <br/>
+    <br/>
+
+    <figure>
+        <figcaption><b>Figure 2.</b><br/>
+        <br/>
+        Activation function plots: The logistic function plotted alongside each of</br>
+        the eight other activation functions under review for comparison.</figcaption>
+        <br/>
+        <img src="actfn-logisticsteep-logisticapproxsteep.png" />
+        <img src="actfn-logisticsteep-polyapproxsteep.png" />
+        <img src="actfn-logisticsteep-softsignsteep.png" />
+        <img src="actfn-logisticsteep-quadratic.png" />
+        <img src="actfn-logisticsteep-leakyrelu.png" />
+        <img src="actfn-logisticsteep-leakyrelu-shifted.png" />
+        <img src="actfn-logisticsteep-srelu.png" />
+        <img src="actfn-logisticsteep-srelushifted.png" />
+    </figure>
+    <br/>
+    <br/>
+
+    <h3>2. Performance Benchmarks</h3>
+    <p>
+        Each of the activation functions were performance tested in isolation. Each function was invoked a large number of times,
+        the total time for all calls was recorded and the average time per call calculated.
+    </p>
+    <p>
+        Precalculated Gaussian noise was used as the input value to the functions in an attempt to replicate the distribution of input
+        values that occur during neuro-evolution.
+    </p>
+    <p>
+        All functions tested here are implemented using double precision (64bit) floating point values and arithmetic. Also note that 
+        no vector/SIMD CPU instructions are used in the activation function implementations at this time.
+    </p>
+    <p>The performance test source code is available at: <a href="https://github.com/colgreen/sharpneat/tree/master/src/ActivationFnBenchmarks">github.com/colgreen/sharpneat/src/ActivationFnBenchmarks/</a>
+    </p>
+    <br/>
+
+    <figure style="border: none;">
+        <br/>
+        <figcaption><b>Figure 3.</b><br/>
+        <br/>
+        Activation function performance, ordered by speed (fastest function first).</figcaption>
+        <br/>
+        <table align="center">
+            <col width="140" style="background-color:#f4f4f4">
+            <col width="140">
+            <col width="140">
+            <col width="135">
+            <tr>
+                <th>Name</th>
+                <th>Mean execution time (nanoseconds)</th>
+                <th>Executions / sec<br/> (M = Million)</th>
+                <th>Speed relative to logistic-steep</h>
+            </tr>
+            <tr>
+                <td>leakyrelu</td>
+                <td style="text-align:right">2.66 ns</td>
+                <td style="text-align:right">375.9 M</td>
+                <td>× 5.18</td>
+            </tr>
+            <tr>
+                <td>leakyrelu-shifted</td>
+                <td style="text-align:right">2.66 ns</td>
+                <td style="text-align:right">375.9 M</td>
+                <td>× 5.18</td>
+            </tr>
+            <tr>
+                <td>srelu</td>
+                <td style="text-align:right">2.66 ns</td>
+                <td style="text-align:right">375.9 M</td>
+                <td>× 5.18</td>
+            </tr>
+            <tr>
+                <td>srelu-shifted</td>
+                <td style="text-align:right">2.66 ns</td>
+                <td style="text-align:right">375.9 M</td>
+                <td>× 5.18</td>
+            </tr>
+            <tr>
+                <td>softsign-steep</td>
+                <td style="text-align:right">2.66 ns</td>
+                <td style="text-align:right">375.9 M</td>
+                <td>× 5.18</td>
+            </tr>
+            <tr>
+                <td>logistic-approx-steep</td>
+                <td style="text-align:right">3.19 ns</td>
+                <td style="text-align:right">313.5 M</td>
+                <td>× 4.32</td>
+            </tr>
+            <tr>
+                <td>polynomial-approx-steep</td>
+                <td style="text-align:right">8.03 ns</td>
+                <td style="text-align:right">124.5 M</td>
+                <td>× 1.72</td>
+            </tr>
+            <tr>
+                <td>quadratic</td>
+                <td style="text-align:right">9.10 ns</td>
+                <td style="text-align:right">109.9 M</td>
+                <td>× 1.52</td>
+            </tr> 
+            <tr style="background-color: lightyellow">
+                <td>logistic-steep</td>
+                <td style="text-align:right">13.79 ns</td>
+                <td style="text-align:right">72.5 M</td>
+                <td>× 1.00</td>
+            </tr>
+            <tr>
+                <td>arctan</td>
+                <td style="text-align:right">14.42 ns</td>
+                <td style="text-align:right">69.3 M</td>
+                <td>× 0.96</td>
+            </tr>
+            <tr>
+                <td>tanh</td>
+                <td style="text-align:right">22.95 ns</td>
+                <td style="text-align:right">43.6 M</td>
+                <td>× 0.60</td>
+            </tr>
+        </table>
+    </figure>
+    <br/>
+    <figure style="max-width:400px; padding: 10px">
+        <figcaption><b>Figure 4.</b><br/>
+        Activation function performance tests; platform details.</figcaption>
+
+        <p style="font-family: monospace">
+            Processor=Intel Core i7-6700T CPU 2.80GHz (Skylake)<br/>
+            OS=Windows 10 Redstone 1 (10.0.14393)<br/>
+            BenchmarkDotNet=v0.10.6<br/> 
+            CLR 4.0.30319.42000<br/>
+            64bit RyuJIT-v4.6.1648.0<br/>
+        </p>
+    </figure>
+    <br/>
+
+    <h4>2.1 Performance Test Observations </h4>
+    <p>
+        The performance tests show that logistic-steep is the slowest activation function of those under review. Note that two additional 
+        sigmoidal functions were performance tested, arctan and tanh; however, these were slower even than logistic-sigmoid and therefore were not 
+        included in the set of functions to be analysed further.
+    </p>
+
+    <p>
+       Five functions are joint first in terms of speed with an execution time of 2.66 ns (5.18x faster than the logistic function); these are the
+       four ReLU variants that are known to be fast to compute due to their simplicity, and softsign-steep which is implemented with simple arithmetic
+       operations only and having no conditional branches as the ReLU functions do.
+    </p>
+    <p>
+        logistic-approx-steep is the next fastest function at 3.19 ns. Again this function has a very simple implementation that avoids the expensive 
+        $e^x$ calculation by substituting it for a fast to compute approximation. Note however that use of the approximation results in some non-desirable
+        features (briefly covered in the notes in figure 1) that may or may not be detrimental when used in a neuro-evolution context.
+    </p>
+    <p>
+        The next best function is polynomial-approx-steep at a considerably slower 8.03 ns. This function is similar to logistic-approx-steep in the sense
+        that it provides a faster to compute approximation to the logistic function. However, this approximation does not have the detrimental features of 
+        logistic-approx-steep but it is notably slower than that function due to having a more complex implementation.
+    </p>
+    <p>
+        The quadratic-sigmoid function is also faster than the logistic-steep at 9.1 ns (1.52x faster). The most notable difference is the polynomial
+        approach to the asymptotes in comparison to the logistic function's exponential approach to its asymptotes, and this may affect the overall efficacy
+        of quadratic-sigmoid in a neuro-evolution context.
+    </p>
+    <br/>    
+    <br/>
+
+    <h3>3. Efficacy Sampling</h3>
+    <p>
+        The overall performance of an activation function in a neuro-evolution setting is dependent not only on its execution speed but also
+        the degree to which its shape is conducive to use in a neuro-evolution context generally, and also on any given objective/task.
+        In particular features such as the minimum and maximum, monotonicity, continuity, type of approach to asymptotes, and gradient 
+        (especially in the region proximal to x=0) may affect the overall efficacy of an activation function.
+    </p>
+    <p>
+        As such, <a href="/research/efficacy-sampling.html">efficacy sampling</a> tests were performed for the activation functions under investigation.
+        Efficacy sampling consists of running SharpNEAT for one minute on a benchmark task and recording the best fitness at the end of that
+        minute; this process is repeated many times and a histogram of the recorded best fitness scores is constructed. This histogram provides a window
+        onto the overall performance of SharpNEAT on a task, and by comparing the histograms obtained from use of a range of different activation
+        functions it is possible to compare the relative efficacy of those functions on a given benchmark task.
+    </p>
+    <p>
+        Efficacy sampling was performed on all nine activation functions under review (all those listed in figure 1) and on two benchmark tasks 
+        (Binary-11 Multiplexer and Generative Sinewave), giving eighteen efficacy sampling runs in total. Each run collected at least 1000 samples
+        and therefore these experiments required approximately two weeks to complete. The resulting histograms are presented in figures 5 and 6 below.
+    </p>
+    <br/>
+
+    <figure>
+        <figcaption><b>Figure 5.</b><br/>
+        Efficacy sampling with the Binary11 Multiplexer Task<br/>
+        (best fitness and evaluation count histograms).
+        </figcaption>        
+        <hr style="border-top: dotted 1px; color:lightgray"/>
+        <img src="binary11-bestfitness-logisticsteep-logisticapproxsteep.png" />
+        <img src="binary11-evalcount-logisticsteep-logisticapproxsteep.png" />
+        <br/>
+        <hr style="border-top: dotted 1px; color:lightgray"/>
+        <img src="binary11-bestfitness-logisticsteep-polyapproxsteep.png" />
+        <img src="binary11-evalcount-logisticsteep-polyapproxsteep.png" />
+        <br/> 
+        <hr style="border-top: dotted 1px; color:lightgray"/>
+        <img src="binary11-bestfitness-logisticsteep-softsignsteep.png" />
+        <img src="binary11-evalcount-logisticsteep-softsignsteep.png" />
+        <br/>
+        <hr style="border-top: dotted 1px; color:lightgray"/>
+        <img src="binary11-bestfitness-logisticsteep-quadratic.png" />
+        <img src="binary11-evalcount-logisticsteep-quadratic.png" />
+        <br/>        
+        <hr style="border-top: dotted 1px; color:lightgray"/>
+        <img src="binary11-bestfitness-logisticsteep-leakyrelu.png" />
+        <img src="binary11-evalcount-logisticsteep-leakyrelu.png" />
+        <br/>        
+        <hr style="border-top: dotted 1px; color:lightgray"/>
+        <img src="binary11-bestfitness-logisticsteep-leakyrelushifted.png" />
+        <img src="binary11-evalcount-logisticsteep-leakyrelushifted.png" />
+        <br/>        
+        <hr style="border-top: dotted 1px; color:lightgray"/>
+        <img src="binary11-bestfitness-logisticsteep-srelu.png" />
+        <img src="binary11-evalcount-logisticsteep-srelu.png" />
+        <br/>    
+        <hr style="border-top: dotted 1px; color:lightgray"/>
+        <img src="binary11-bestfitness-logisticsteep-srelushifted.png" />
+        <img src="binary11-evalcount-logisticsteep-srelushifted.png" />
+    </figure>
+    <br/>
+    <br/>
+    <br/>
+    <figure>
+        <figcaption><b>Figure 6.</b><br/>
+        Efficacy sampling with the Generative Sinewave Task<br/>
+        (best fitness and evaluation count histograms).
+        </figcaption>        
+        <hr style="border-top: dotted 1px; color:lightgray"/>
+        <img src="sinewave-bestfitness-logisticsteep-logisticapproxsteep.png" />
+        <img src="sinewave-evalcount-logisticsteep-logisticapproxsteep.png" />
+        <br/>
+        <hr style="border-top: dotted 1px; color:lightgray"/>
+        <img src="sinewave-bestfitness-logisticsteep-polyapproxsteep.png" />
+        <img src="sinewave-evalcount-logisticsteep-polyapproxsteep.png" />
+        <br/>
+        <hr style="border-top: dotted 1px; color:lightgray"/>
+        <img src="sinewave-bestfitness-logisticsteep-softsignsteep.png" />
+        <img src="sinewave-evalcount-logisticsteep-softsignsteep.png" />
+        <br/>
+        <hr style="border-top: dotted 1px; color:lightgray"/>
+        <img src="sinewave-bestfitness-logisticsteep-quadratic.png" />
+        <img src="sinewave-evalcount-logisticsteep-quadratic.png" />
+        <br/>        
+        <hr style="border-top: dotted 1px; color:lightgray"/>
+        <img src="sinewave-bestfitness-logisticsteep-leakyrelu.png" />
+        <img src="sinewave-evalcount-logisticsteep-leakyrelu.png" />
+        <br/>        
+        <hr style="border-top: dotted 1px; color:lightgray"/>
+        <img src="sinewave-bestfitness-logisticsteep-leakyrelushifted.png" />
+        <img src="sinewave-evalcount-logisticsteep-leakyrelushifted.png" />
+        <br/>        
+        <hr style="border-top: dotted 1px; color:lightgray"/>
+        <img src="sinewave-bestfitness-logisticsteep-srelu.png" />
+        <img src="sinewave-evalcount-logisticsteep-srelu.png" />
+        <br/>    
+        <hr style="border-top: dotted 1px; color:lightgray"/>
+        <img src="sinewave-bestfitness-logisticsteep-srelushifted.png" />
+        <img src="sinewave-evalcount-logisticsteep-srelushifted.png" />
+    </figure>
+
+    <br/>
+    <br/>
+    <h4>3.1 Efficacy Sampling Overview</h4>
+    <p>
+        The evaluation count histograms broadly reflect and confirm the activation function performance results in figure 2, i.e.
+        use of a faster activation function results in a higher evaluation count on average.
+    </p>
+    <p>
+        As might be expected, higher evaluation counts broadly correlate with higher fitness scores as evidenced by a shift to the right of the fitness
+        score histograms (higher fitness on average) in comparison to the histogram data for the baseline activation function, logistic-steep. This is certainly
+        expected for those activation functions that have a near identical shape to logistic-steep, such as logistic-approx-steep and poly-approx-steep.
+        The other functions that have a smooth and continuous S-shape also follow this broad pattern, there are however some deviations from this pattern 
+        for the non-continuous activations functions, i.e. the rectified linear unit based functions that have one or more instantaneous gradient changes at 
+        defined input thresholds.
+    </p>
+    <p>
+        On the generative sinewave task in particular a qualitatively different histogram shape is observed for the leaky-relu, leaky-relu-shifted
+        and srelu activation functions, with the usual bell-like distribution (consisting of a peak/mode with tails) becoming a flatter or near-uniform
+        distribution with fitness scores as high as 1,000 being recorded (the maximum fitness on this task).
+    </p>
+    <p>
+        These same three activation functions (leaky-relu, leaky-relu-shifted, srelu) also result in qualitatively different shapes when applied to the
+        binary-11 multiplexer task, although the differences are less pronounced than those seen on the generative sinewave task. In particular a spike
+        in the far left tail of the distribution (at a fitness of approximately 1,600) is absent on the histograms when these three functions are used,
+        suggesting that one or more local maxima exist at that fitness level when logistic-steep is used, but not when these three relu variants are used.
+        The histograms are also noticeably shifted further to the right in comparison to the other activations functions, suggesting that these three
+        activation functions are more conducive to finding solutions on this task compared to the other functions.
+    </p>
+    <br/>
+
+    <h4>3.2 Rectified Linear Unit Variants</h4>
+    <p>
+        The rectified linear unit based activation functions discussed above (leaky-relu, leaky-relu-shifted and srelu) each have one or both of 
+        two notable qualities not present in the other non-relu activation functions, these are (a) zero centering and (b) unbounded output for positive
+        and increasing x. 
+    </p>
+    <p>
+        If we include the fourth relu based function under review, srelu-shifted, we can arrange all four functions in a 2x2 grid based on which of the 
+        two qualities each function possesses (figure 7.)
+    </p>
+    <p>
+        Note. A zero centered function is defined here as a function for which $f(0) = 0$, noting that the logistic sigmoid is not zero centered, having $f(0) = 1/2$.
+    </p>
+    
+    <figure style="border: none;">
+        <br/>
+        <figcaption><b>Figure 7.</b><br/>
+        <br/>
+        The four 'relu' based activation functions, arranged dependent on presence of two qualities<br/>
+        (a) zero centered, and (b) bounded output.<br/>
+        <br/>
+        Functions highlighted in yellow have efficacy sampling fitness histograms<br/>
+        that are qualitatively distinct in comparison to the histograms obtained for logistic-sigmoid.
+        </figcaption>
+        <br/>
+        <table align="center">
+            <col width="140" style="background-color:#f4f4f4">
+            <col width="140">
+            <col width="155">
+            <tr>
+                <td></td>
+                <td style="text-align:center"><b>Zero Centered</b></td>
+                <td style="text-align:center"><b>Not Zero Centered</b></td>
+            </tr>
+            <tr>
+                <td style="text-align:center"><b>Bounded</b></td>
+                <td style="background-color: lightyellow">srelu</td>
+                <td>srelu-shifted</td>
+            </tr>
+            <tr>
+                <td style="text-align:center"><b>Unbounded</b></td>
+                <td style="background-color: lightyellow">leaky-relu</td>
+                <td style="background-color: lightyellow">leaky-relu-shifted</td>
+            </tr>
+        </table>
+    </figure>
+    <br/>
+    <p>
+        Figure 7 shows the four relu based activation functions. The three functions highlighted in yellow are those that 
+        produce qualitatively distinct (and superior) fitness histograms in comparison to the other functions (and logistic-steep in particular).
+    </p>
+    <p>
+        It can be screen that neither of the two qualities fully explain the superior efficacy alone, but it <i>can</i> be explained by
+        an either/or relationship, i.e. the superior activation functions are either unbounded, zero centered or both unbounded and zero centered.
+        srelu-shifted is notable as being very closely related to the other three variants but having neither of those two qualities, and not 
+        producing superior or distinct fitness histograms. In fact the fitness histograms obtained for srelu-shifted (one each for the two benchmark tasks)
+        are most similar to the histograms obtained for the non-relu functions.
+    <p>
+    <p>
+        In summary, the efficacy sampling results provide evidence suggesting that both unbounded range and zero centering are beneficial
+        qualities in activation functions when applied to the two benchmark tasks used in this paper (the Binary-11 Multiplexer and 
+        Generative Sinewave Tasks). These two tasks are distinct enough from each other to suggest that the two qualities may be beneficial to a wide
+        range of other tasks.
+    </p>
+    <br/>
+    
+
+    <h3>4. Conclusions</h3>
+    <p>
+        Evidence is supplied demonstrating that SharpNEAT's efficacy is improved on two benchmarks tasks by substituting the 
+        long standing default activation function (logistic-steep) with a faster to execute near equivalent such as polynomial-approx-steep.
+        However, significant further improvement in efficacy is possible by use of a rectified linear unit based activation function that is
+        either zero centered, unbounded, or both zero centered and unbounded.
+    </p>
+    <p>
+        This greater improvement in efficacy is likely due to a combination of fast execution speed (see figure 3), and activation 
+        function shape being more conducive to finding good solutions on the two benchmark tasks. In particular there is evidence that some 
+        low fitness local maxima are avoided, and that higher fitness scores are achieved overall, on average.
+    </p>
+    <br />
+    
+    <h3>5. Future Work</h3>
+
+    <h4>Reduction of Activation Function Call Overhead</h4>
+    <p>
+        In the version of SharpNEAT in use (v2.3.1) each invocation of the activation function requires a single function call that results in an additional 
+        overhead of at least 2ns of call time in addition to the timings reported in figure 3. This overhead could be greatly reduced or eliminated by either vectorizing the
+        function signature (i.e. operating on an array of input values instead of a single value) or marking the function for inlining at compile time.
+        Note however that inlining is not currently possible in SharpNEAT v2.3.1 because the activation function is accessed via an interface definition,
+        in turn necessitating a virtual method table lookup, thus preventing the possibility of inlining.
+    </p>
+    <p>
+        There is also overhead in placing a value on the call stack, as such vectorizing the function signature is a likely future 
+        modification; this would also be the first step to vectorizing the activation function implementations using vector/SIMD CPU instructions.
+    </p>
+
+    <h4>Single Precision Floating Point Arithmetic</h4>
+    <p>
+        Further performance gains can likely be achieved by evolving neural nets consisting of single precision floating point values ('floats')
+        rather than the current double precision values in use ('doubles'). Single precision floats require half the size (32 bits) of a doubles (64 bits)
+        thus roughly halving memory bandwidth needs for execution of a given network, and doubling the number of values that can be operated on 
+        by vector/SIMD CPU instructions.
+    </p>
+
+    <h4>Use of Vector/SIMD CPU Instructions</h4>
+    <p>
+        Vectorization of activation function implementations may provide further execution speed improvements. 
+    </p>
+    <br/>
+    <br/>
+
+    <hr/>
+    <h3>Appendix 1: Resources</h3>
+
+    <h5>R Scripts</h5>
+    <ul>
+        <li><a href="generate-hist.R">R/ggplot2 script for generating histograms.</a></li>
+        <li><a href="activation-functions.R">R/ggplot2 script for generating activation function plots.</a></li>
+    </ul>
+
+    <h5>Histogram CSV data</h5>
+    <ul>
+        <li><a href="binary11-samples-leakyrelu.csv">binary11-samples-leakyrelu.csv</a></li>
+        <li><a href="binary11-samples-leakyrelushifted.csv">binary11-samples-leakyrelushifted.csv</a></li>
+        <li><a href="binary11-samples-logisticapproxsteep.csv">binary11-samples-logisticapproxsteep.csv</a></li>
+        <li><a href="binary11-samples-logisticsteep.csv">binary11-samples-logisticsteep.csv</a></li>
+        <li><a href="binary11-samples-polyapproxsteep.csv">binary11-samples-polyapproxsteep.csv</a></li>
+        <li><a href="binary11-samples-quadratic.csv">binary11-samples-quadratic.csv</a></li>
+        <li><a href="binary11-samples-softsignsteep.csv">binary11-samples-softsignsteep.csv</a></li>
+        <li><a href="binary11-samples-srelu.csv">binary11-samples-srelu.csv</a></li>
+        <li><a href="binary11-samples-srelushifted.csv">binary11-samples-srelushifted.csv</a></li>
+        <br />
+        <li><a href="sinewave-samples-leakyrelu.csv">sinewave-samples-leakyrelu.csv</a></li>
+        <li><a href="sinewave-samples-leakyrelushifted.csv">sinewave-samples-leakyrelushifted.csv</a></li>
+        <li><a href="sinewave-samples-logisticapproxsteep.csv">sinewave-samples-logisticapproxsteep.csv</a></li>
+        <li><a href="sinewave-samples-logisticsteep.csv">sinewave-samples-logisticsteep.csv</a></li>
+        <li><a href="sinewave-samples-polyapproxsteep.csv">sinewave-samples-polyapproxsteep.csv</a></li>
+        <li><a href="sinewave-samples-quadratic.csv">sinewave-samples-quadratic.csv</a></li>
+        <li><a href="sinewave-samples-softsignsteep.csv">sinewave-samples-softsignsteep.csv</a></li>
+        <li><a href="sinewave-samples-srelu.csv">sinewave-samples-srelu.csv</a></li>
+        <li><a href="sinewave-samples-srelushifted.csv">sinewave-samples-srelushifted.csv</a></li>
+    </ul>
+
+    <br/>
+    <p>
+        <i>
+            Colin,
+            <br />June 19th, 2017
+        </i>
+    </p>
+    <br/>
+    <hr/>
+    <div style="margin-left:10px;">
+        <img src="../../creativecommons88x31.png" border="0" align="left" hspace="10" vspace="0" /> Copyright 2017 Colin Green.<br
+        /> This article is licensed under a <a href="http://creativecommons.org/licenses/by/3.0/" rel="nofollow">
+            Creative Commons
+            Attribution 3.0 License
+        </a>
+        <br />
+        <br />
+    </div>
+</body>
+
+</html>
