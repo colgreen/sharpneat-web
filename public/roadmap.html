@@ -236,6 +236,13 @@
                     many weights in one operation (at time of writing 256 bit SIMD instructions are common and 512 bit
                     instructions will be available soon, 512/32 = 16 floats)
                 </p>
+                <p>
+                    .NET Core appears to have acquired a MathF class (single precision equivalent of Math).
+                </p>
+                <ul>
+                    <li><a href="https://github.com/dotnet/coreclr/pull/5492">Adding single-precision math functions. #5492</a></li>
+                    <li><a href="https://github.com/dotnet/coreclr/blob/master/src/mscorlib/src/System/MathF.cs">/MathF.cs</a></li>
+                </ul>
 
                 <p>A broader question might be whether the precision could be reduced further, given the existence of 
                 <a href="https://en.wikipedia.org/wiki/Half-precision_floating-point_format">half precision floats</a></p>
