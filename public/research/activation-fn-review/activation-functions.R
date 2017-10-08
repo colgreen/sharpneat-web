@@ -29,7 +29,6 @@ f4 = function(x) {
   (y * s * 0.5) + 0.5
 }
 
-
 # leakyrelu
 f5 = function(x) {
 
@@ -79,6 +78,56 @@ f8 = function(x) {
       (x >= tr) * (tr + (x - tr) * a)
   y
 }
+
+# relu
+f9 = function(x) {
+
+  a = 0.001
+
+  y = ((x > 0) * x) +
+	 ((x <=0) * x * a)
+  y
+}
+
+
+# selu
+f10 = function(x) {
+
+  alpha = 1.6732632423543772848170429916717
+  scale = 1.0507009873554804934193349852946
+
+  y = ((x > 0) * x) +
+	 ((x <=0) * ((alpha * exp(x)) - alpha))
+  scale * y
+}
+
+
+
+# arcsinh
+f11 = function(x) {
+  y = 1.2567348023993685 * ((asinh(x) + 1.0) * 0.5);
+  y
+}
+
+# y = max(-1,x)
+f12 = function(x) {
+  y = ((x > -1) * x) +
+	 ((x <= -1) * -1)
+  y
+}
+
+# arctan
+f13 = function(x) {
+  y = atan(x)
+  y
+}
+
+# tanh
+f14 = function(x) {
+  y = tanh(x)
+  y
+}
+
 
 # import ggplot.
 library("ggplot2")
@@ -174,6 +223,87 @@ p1 = ggplot(data.frame(x = c(-2, 2)), aes(x)) +
          legend.title=element_blank())
 
 ggsave(filename="actfn-logisticsteep-srelushifted.png", plot=p1, height=4, width=4, units="in", dpi=100)
+
+
+# generate plot and save png
+p1 = ggplot(data.frame(x = c(-2, 2)), aes(x)) + 
+   stat_function(fun = f1, aes(colour="logistic-steep")) + 
+   stat_function(fun = f9, aes(colour="relu")) + 
+   xlab("x") + 
+   ylab("y") + 
+   theme(legend.position="top",
+         legend.direction="horizontal",
+         legend.title=element_blank())
+
+ggsave(filename="actfn-logisticsteep-relu.png", plot=p1, height=4, width=4, units="in", dpi=100)
+
+# generate plot and save png
+p1 = ggplot(data.frame(x = c(-2, 2)), aes(x)) + 
+   stat_function(fun = f1, aes(colour="logistic-steep")) + 
+   stat_function(fun = f10, aes(colour="selu")) + 
+   xlab("x") + 
+   ylab("y") + 
+   theme(legend.position="top",
+         legend.direction="horizontal",
+         legend.title=element_blank())
+
+ggsave(filename="actfn-logisticsteep-selu.png", plot=p1, height=4, width=4, units="in", dpi=100)
+
+# generate plot and save png
+p1 = ggplot(data.frame(x = c(-2, 2)), aes(x)) + 
+   stat_function(fun = f1, aes(colour="logistic-steep")) + 
+   stat_function(fun = f11, aes(colour="arcsinh")) + 
+   xlab("x") + 
+   ylab("y") + 
+   theme(legend.position="top",
+         legend.direction="horizontal",
+         legend.title=element_blank()) + 
+   guides(col = guide_legend(reverse = TRUE), fill = guide_legend(reverse = TRUE)) +
+   scale_colour_manual(values = c("arcsinh" = "#00BFC4", "logistic-steep" = "#F8766D"))
+
+
+ggsave(filename="actfn-logisticsteep-arcsinh.png", plot=p1, height=4, width=4, units="in", dpi=100)
+
+# generate plot and save png
+p1 = ggplot(data.frame(x = c(-2, 2)), aes(x)) + 
+   stat_function(fun = f1, aes(colour="logistic-steep")) + 
+   stat_function(fun = f12, aes(colour="maxminusone")) + 
+   xlab("x") + 
+   ylab("y") + 
+   theme(legend.position="top",
+         legend.direction="horizontal",
+         legend.title=element_blank()) 
+
+
+ggsave(filename="actfn-logisticsteep-maxminusone.png", plot=p1, height=4, width=4, units="in", dpi=100)
+
+# generate plot and save png
+p1 = ggplot(data.frame(x = c(-2, 2)), aes(x)) + 
+   stat_function(fun = f1, aes(colour="logistic-steep")) + 
+   stat_function(fun = f13, aes(colour="arctan")) + 
+   xlab("x") + 
+   ylab("y") + 
+   theme(legend.position="top",
+         legend.direction="horizontal",
+         legend.title=element_blank()) + 
+   guides(col = guide_legend(reverse = TRUE), fill = guide_legend(reverse = TRUE)) +
+   scale_colour_manual(values = c("arctan" = "#00BFC4", "logistic-steep" = "#F8766D"))
+
+ggsave(filename="actfn-logisticsteep-arctan.png", plot=p1, height=4, width=4, units="in", dpi=100)
+
+
+# generate plot and save png
+p1 = ggplot(data.frame(x = c(-2, 2)), aes(x)) + 
+   stat_function(fun = f1, aes(colour="logistic-steep")) + 
+   stat_function(fun = f14, aes(colour="tanh")) + 
+   xlab("x") + 
+   ylab("y") + 
+   theme(legend.position="top",
+         legend.direction="horizontal",
+         legend.title=element_blank())
+
+ggsave(filename="actfn-logisticsteep-tanh.png", plot=p1, height=4, width=4, units="in", dpi=100)
+
 
 
 # Generate plot for logistic-approx-steep (from data output from a C# app).

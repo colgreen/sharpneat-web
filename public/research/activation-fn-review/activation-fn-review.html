@@ -355,70 +355,70 @@
                 <th>Speed relative to logistic-steep</h>
             </tr>
             <tr>
-                <td>leakyrelu</td>
-                <td style="text-align:right">2.66 ns</td>
-                <td style="text-align:right">375.9 M</td>
-                <td>× 5.18</td>
-            </tr>
-            <tr>
-                <td>leakyrelu-shifted</td>
-                <td style="text-align:right">2.66 ns</td>
-                <td style="text-align:right">375.9 M</td>
-                <td>× 5.18</td>
+                <td>softsign-steep</td>
+                <td style="text-align:right">2.95 ns</td>
+                <td style="text-align:right">339.0 M</td>
+                <td>× 4.85</td>
             </tr>
             <tr>
                 <td>srelu</td>
-                <td style="text-align:right">2.66 ns</td>
-                <td style="text-align:right">375.9 M</td>
-                <td>× 5.18</td>
+                <td style="text-align:right">3.31 ns</td>
+                <td style="text-align:right">302.1 M</td>
+                <td>× 4.33</td>
             </tr>
             <tr>
                 <td>srelu-shifted</td>
-                <td style="text-align:right">2.66 ns</td>
-                <td style="text-align:right">375.9 M</td>
-                <td>× 5.18</td>
-            </tr>
-            <tr>
-                <td>softsign-steep</td>
-                <td style="text-align:right">2.66 ns</td>
-                <td style="text-align:right">375.9 M</td>
-                <td>× 5.18</td>
+                <td style="text-align:right">3.42 ns</td>
+                <td style="text-align:right">292.4 M</td>
+                <td>× 4.19</td>
             </tr>
             <tr>
                 <td>logistic-approx-steep</td>
-                <td style="text-align:right">3.19 ns</td>
-                <td style="text-align:right">313.5 M</td>
-                <td>× 4.32</td>
+                <td style="text-align:right">3.77 ns</td>
+                <td style="text-align:right">265.3 M</td>
+                <td>× 3.80</td>
+            </tr>
+            <tr>
+                <td>leakyrelu</td>
+                <td style="text-align:right">5.64 ns</td>
+                <td style="text-align:right">177.3 M</td>
+                <td>× 2.54</td>
             </tr>
             <tr>
                 <td>polynomial-approx-steep</td>
                 <td style="text-align:right">8.03 ns</td>
                 <td style="text-align:right">124.5 M</td>
-                <td>× 1.72</td>
+                <td>× 1.78</td>
+            </tr>
+            <tr>
+                <td>leakyrelu-shifted</td>
+                <td style="text-align:right">8.29 ns</td>
+                <td style="text-align:right">120.6 M</td>
+                <td>× 1.73</td>
             </tr>
             <tr>
                 <td>quadratic</td>
-                <td style="text-align:right">9.10 ns</td>
-                <td style="text-align:right">109.9 M</td>
-                <td>× 1.52</td>
+                <td style="text-align:right">12.23 ns</td>
+                <td style="text-align:right">81.8 M</td>
+                <td>× 1.17</td>
             </tr> 
             <tr style="background-color: lightyellow">
                 <td>logistic-steep</td>
-                <td style="text-align:right">13.79 ns</td>
-                <td style="text-align:right">72.5 M</td>
+                <td style="text-align:right">14.32 ns</td>
+                <td style="text-align:right">69.8 M</td>
                 <td>× 1.00</td>
             </tr>
             <tr>
                 <td>arctan</td>
-                <td style="text-align:right">14.42 ns</td>
-                <td style="text-align:right">69.3 M</td>
+                <td style="text-align:right">14.87 ns</td>
+                <td style="text-align:right">67.2 M</td>
                 <td>× 0.96</td>
             </tr>
             <tr>
                 <td>tanh</td>
-                <td style="text-align:right">22.95 ns</td>
-                <td style="text-align:right">43.6 M</td>
-                <td>× 0.60</td>
+                <td style="text-align:right">23.25 ns</td>
+                <td style="text-align:right">43.0 M</td>
+                <td>× 0.62</td>
             </tr>
         </table>
     </figure>
@@ -439,30 +439,57 @@
 
     <h4>2.1 Performance Test Observations </h4>
     <p>
-        The performance tests show that logistic-steep is the slowest activation function of those under review. Note that two additional 
-        sigmoidal functions were performance tested, arctan and tanh; however, these were slower even than logistic-sigmoid and therefore were not 
-        included in the set of functions to be analysed further.
+        Note that two additional functions were performance tested in addition to those under review, arctan and tanh.
+    </p>
+    <p>
+        The general pattern in the timings is as may be expected, i.e. simpler functions (e.g. softsign-steep) are faster to compute than 
+        more complex functions (e.g. tanh). Factors that will generally result in slower execution are use of 
+        <a href="https://en.wikipedia.org/wiki/Transcendental_function">transcendental functions</a>, conditional branches 
+        and perhaps division. Avoidance of these factors will generally increase execution speed, however there are some 
+        unusual results that do not follow the overall trend.
+    </p>
+    <p>
+        Of particular note is the speed difference between the srelu and leavy-relu variants. Leaky-relu is a very simple
+        function and srelu is essentially the same function with further conditional branch and addition operations, as such
+        it's unusual to see leaky-relu reporting significantly <i>higher</i> execution times than srelu.
+    </p>
+    <p>
+        The likely cause of such discrepancies is the various optimization techniques employed by superscalar CPUs, such as instruction
+        fusing (the merging of two or more instructions into a single equivalent instruction), and instruction re-ordering and scheduling (i.e. 
+        the allocation of an instruction to one of several heterogeneous execution units). The complexities of these optimizations can make 'micro' 
+        performance benchmarks of the kind performed here misleading and not representative of execution speed in normal use, i.e.
+        an activation function being used within the wider context of a neural net implementation, rather than is isolation.
+    </p>
+    <p>
+        As such, in hindsight these performance results are perhaps not as useful as was hoped when the performance test was originally considered,
+        they do however demonstrate that use of transcendental functions results in relatively slow execution, and we should therefore seek to avoid
+        these functions where possible. E.g. poly-approx-steep gives a very good polynomial approximation of logistic-steep that is almost twice as fast 
+        to compute in these tests; whether that speed-up will hold in real use is not certain, but it is likely. 
     </p>
 
+
+    <h4>2.2 Notable Activation Functions</h4>
     <p>
-       Five functions are joint first in terms of speed with an execution time of 2.66 ns (5.18x faster than the logistic function); these are the
-       four ReLU variants that are known to be fast to compute due to their simplicity, and softsign-steep which is implemented with simple arithmetic
-       operations only and having no conditional branches as the ReLU functions do.
+        Softsign-steep is the fastest function. This function is expected to be fast due to the use of only simple arithmetic operations 
+        and the absence of conditional branches.
     </p>
     <p>
-        logistic-approx-steep is the next fastest function at 3.19 ns. Again this function has a very simple implementation that avoids the expensive 
+        Srelu and srelu-shifted are the next fastest. The various relu based functions are also very simple and therefore expected to be fast,
+        but there is a discrepancy in the timings for the leaky-relu variants (as discussed above), and this may or may not manifest in real usage tests.
+    </p>
+    <p>
+        logistic-approx-steep is the next fastest function at 3.77 ns. Again this function has a very simple implementation that avoids the expensive 
         $e^x$ calculation by substituting it for a fast to compute approximation. Note however that use of the approximation results in some non-desirable
         features (briefly covered in the notes in figure 1) that may or may not be detrimental when used in a neuro-evolution context.
     </p>
-    <p>
-        The next best function is polynomial-approx-steep at a considerably slower 8.03 ns. This function is similar to logistic-approx-steep in the sense
+        polynomial-approx-steep; mean execution time 8.03 ns. This function is similar to logistic-approx-steep in the sense
         that it provides a faster to compute approximation to the logistic function. However, this approximation does not have the detrimental features of 
         logistic-approx-steep but it is notably slower than that function due to having a more complex implementation.
     </p>
     <p>
-        The quadratic-sigmoid function is also faster than the logistic-steep at 9.1 ns (1.52x faster). The most notable difference is the polynomial
-        approach to the asymptotes in comparison to the logistic function's exponential approach to its asymptotes, and this may affect the overall efficacy
-        of quadratic-sigmoid in a neuro-evolution context.
+        quadratic; mean execution time 12.23 ns. The most notable feature of this function is the polynomial approach to the asymptotes 
+        in comparison to the logistic function's exponential approach to its asymptotes, and this may affect the overall efficacy of this function 
+        in a neuro-evolution context.
     </p>
     <br/>    
     <br/>
@@ -570,8 +597,10 @@
     <br/>
     <h4>3.1 Efficacy Sampling Overview</h4>
     <p>
-        The evaluation count histograms broadly reflect and confirm the activation function performance results in figure 2, i.e.
-        use of a faster activation function results in a higher evaluation count on average.
+        The evaluation count histograms show that every other activation under review is much faster than logistic-sigmoid
+        in real use (i.e. outside of the artificial environment of a micro benchmark) and that there isn't a strong correlation 
+        with the performance numbers in figure 3. As such, in future it may be more useful to base activation function benchmarks
+        on performance of entire neural nets with fixed/known topology, weights, and input signals.
     </p>
     <p>
         As might be expected, higher evaluation counts broadly correlate with higher fitness scores as evidenced by a shift to the right of the fitness
@@ -691,6 +720,10 @@
         There is also overhead in placing a value on the call stack, as such vectorizing the function signature is a likely future 
         modification; this would also be the first step to vectorizing the activation function implementations using vector/SIMD CPU instructions.
     </p>
+    <p>
+        <b>UPDATE 2017-07-12</b>: The just-in-time compiler RjuJIT version 4.7.x introduced a 'devirtualization' optimization whereby virtual method calls
+        can be in-lined if there is no ambiguity at compile time regarding which method will be called at runtime.
+    </p>    
 
     <h4>Single Precision Floating Point Arithmetic</h4>
     <p>
@@ -744,6 +777,8 @@
         <i>
             Colin,
             <br />June 19th, 2017
+            <br/>---
+            <br/>Updated July 12th, 2017
         </i>
     </p>
     <br/>
