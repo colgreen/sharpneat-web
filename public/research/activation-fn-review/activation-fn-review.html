@@ -431,8 +431,7 @@
             Processor=Intel Core i7-6700T CPU 2.80GHz (Skylake)<br/>
             OS=Windows 10 Redstone 1 (10.0.14393)<br/>
             BenchmarkDotNet=v0.10.6<br/> 
-            CLR 4.0.30319.42000<br/>
-            64bit RyuJIT-v4.6.1648.0<br/>
+            .NET Framework: 4.6.1 (CLR 4.0.30319.42000)<br/>
         </p>
     </figure>
     <br/>
@@ -716,14 +715,19 @@
         Note however that inlining is not currently possible in SharpNEAT v2.3.1 because the activation function is accessed via an interface definition,
         in turn necessitating a virtual method table lookup, thus preventing the possibility of inlining.
     </p>
+
+    <blockquote>
+    <p>
+        UPDATE 2017-07-12: <i>Inlining of methods accessed via an interface type is now possible as of .NET 4.7; this is 
+        was a RjuJIT compiler optimisation in .NET 4.7. However, the above experiments were performed using the .NET 4.6.1 Framework.</i>
+    </p>
+    </blockquote>
+
     <p>
         There is also overhead in placing a value on the call stack, as such vectorizing the function signature is a likely future 
         modification; this would also be the first step to vectorizing the activation function implementations using vector/SIMD CPU instructions.
     </p>
-    <p>
-        <b>UPDATE 2017-07-12</b>: The just-in-time compiler RjuJIT version 4.7.x introduced a 'devirtualization' optimization whereby virtual method calls
-        can be in-lined if there is no ambiguity at compile time regarding which method will be called at runtime.
-    </p>    
+    
 
     <h4>Single Precision Floating Point Arithmetic</h4>
     <p>
@@ -777,14 +781,20 @@
         <i>
             Colin,
             <br />June 19th, 2017
-            <br/>---
-            <br/>Updated July 12th, 2017
         </i>
+    </p>
+    <br/>
+
+    <hr/>
+    <p>UPDATE: 2018-02-10</p>
+    <p>
+        The efficacy sampling results reported above for the LeakyReLU activation function are likely incorrect; it appears that these experiments
+        were actually using the SReLU activation function. For more information on this see <a href="../../releases/sharpneat-release-2-4-0.html">SharpNEAT 2.4.0</a>
     </p>
     <br/>
     <hr/>
     <div style="margin-left:10px;">
-        <img src="../../creativecommons88x31.png" border="0" align="left" hspace="10" vspace="0" /> Copyright 2017 Colin Green.<br
+        <img src="../../creativecommons88x31.png" border="0" align="left" hspace="10" vspace="0" /> Copyright 2017,2018 Colin Green.<br
         /> This article is licensed under a <a href="http://creativecommons.org/licenses/by/3.0/" rel="nofollow">
             Creative Commons
             Attribution 3.0 License
