@@ -1,0 +1,261 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <title>SharpNEAT 2.4.0</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.75" />
+    <link rel="stylesheet" href="../sharpneat.css" type="text/css" media="screen" />
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}, });
+    </script>
+    <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_HTMLorMML-full'></script>
+    <style>
+        figure {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px dotted gray;
+        }
+
+        figure img {
+            display: inline-block;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 100%
+        }
+
+        figcaption {
+            text-align: center;
+            margin: 7px;
+        }
+
+        li {
+            margin: 15px 0;
+        }
+    </style>
+    <style type="text/css">
+        .tg {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        .tg td {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+        }
+
+        .tg th {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: normal;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+        }
+
+        .tg .tg-erlg {
+            font-weight: bold;
+            background-color: #efefef;
+            vertical-align: top
+        }
+
+        .tg .tg-baqh {
+            text-align: center;
+            vertical-align: top
+        }
+
+        .tg .tg-yw4l {
+            vertical-align: top
+        }
+    </style>
+</head>
+
+<body class="research">
+    <div class="articlebanner">
+        <a href="/" title="SharpNEAT">
+            <img src="../sharpneat-banner-narrow.svg" alt="SharpNEAT" class="articlebannerimage" />
+        </a>
+    </div>
+    <hr/>
+    <h1 align="center">SharpNEAT 2.4.0</h1>
+
+
+    <h2>Overview</h2>
+    <p>
+        <a href="https://github.com/colgreen/sharpneat/releases/tag/v2.4.0">This version</a> contains the following changes:
+    </p>
+
+    <ul>
+        <li>
+            <p>HyperNEAT / CPPNs</p>
+            <ul>
+                <li>Fix: CPPN network outputs were bounded to the interval [0,1], but we require the outputs to be unbounded
+                    because they describe network weights in the networks created by the CPPN network.</li>
+            </ul>
+        </li>
+        <li>
+            <p>NEAT</p>
+            <ul>
+                <li>Fix: Possible bias away from selecting the last node (usually a hidden node unless there are none) for 'add
+                    node' mutations.</li>
+            </ul>
+        </li>
+        <li>
+            <p>Activation functions</p>
+            <ul>
+                <li>New activation functions: LeakyReLU, LeakyReLUShifted, LogisticApproximantSteep, ScaledELU.</li>
+                <li>SReLUShifted performance tuning.</li>
+            </ul>
+        </li>
+        <li>
+            <p>Added ActivationFunctionViewer application.</p>
+        </li>
+        <li>
+            <p>.NET Framework / dependencies</p>
+            <ul>
+                <li>SharpNeatLib now targets .NET Standard 2.0.</li>
+                <li>All other libs upgraded to target .NET 4.7.1</li>
+                <li>Upgraded Redzen nuget to version 4.0 (now a .NET Standard 2.0 assembly).</li>
+                <li>Upgraded Visual Studio project files (*.csproj) to new leaner format.</li>
+            </ul>
+        </li>
+        <li>
+            <p>Various other minor fixes and maintenance; see git history.</p>
+        </li>
+    </ul>
+
+
+    <h2>Efficacy Sampling Tests</h2>
+    <p>
+        Efficacy sampling was performed on the two standard benchmark tasks and the results compared between this and the previous
+        version (<a href="https://github.com/colgreen/sharpneat/releases/tag/v2.3.1">version 2.3.1</a>). The resulting best fitness histograms are provided below. To recap, these histograms show the
+        best fitness achieved on each of a large number of independent SharpNEAT runs, each of which terminates after one minute of execution (clock-time).
+        Histograms are also provided comparing the evaluation counts achieved in each 60 second run.
+    </p>
+
+    <br/>
+    <figure>
+        <img src="sharpneat-2-4-0/binary11-bestfitness-v231-v240-hist.png" />
+        <img src="sharpneat-2-4-0/sinewave-bestfitness-v231-v240-hist.png" />
+        <figcaption>
+            <b>Figure 1.</b>
+            <br/>Comparison of best fitness histograms obtained from SharpNEAT v2.3.1 and v2.4.0;
+            <br/> on the Binary11 Multiplexer and Generative Sinewave tasks.</figcaption>
+    </figure>
+    <br/>
+    <figure>
+        <img src="sharpneat-2-4-0/binary11-evalcount-v231-v240-hist.png" />
+        <img src="sharpneat-2-4-0/sinewave-evalcount-v231-v240-hist.png" />
+        <figcaption>
+            <b>Figure 2.</b>
+            <br/>Comparison of evaluation count histograms obtained from SharpNEAT v2.3.1 and v2.4.0;
+            <br/> on the Binary11 Multiplexer and Generative Sinewave tasks.</figcaption>
+    </figure>
+    <br/>
+
+    <h2>Discussion</h2>
+    <p>
+        No major changes have been made between SharpNEAT v2.3.1 and v2.4, and therefore the efficacy sampling results were expected to be
+        similar for these two versions. However, the two sets of results are clearly not a close match, and this is thought to be due to two factors.
+    </p>
+    <p>
+        Firstly, the two efficacy sampling runs were performed on two differnt versions of the .NET Framework. The SharpNEAT v2.3.1 run was performed
+        using framework 4.6.1, and the SharpNEAT v2.4 run was run using framework 4.7.1; this is a significant difference because although these two framework 
+        versions report using the same CLR version (CLR 4.0.30319.42000), the CLR does not included the 
+        <a href="https://en.wikipedia.org/wiki/Just-in-time_compilation">JIT compiler</a>, framework classes or garbage collector, and these are all
+         reported to have had numerous performance improvements between 4.6.1 and 4.7.1, e.g. see:
+    </p>
+    <ul>
+        <li><a href="https://blogs.msdn.microsoft.com/alphageek/2017/01/24/significant-garbage-collector-changes-in-net-4-6-2/">Significant Garbage Collector Changes in .NET 4.6.2</a></li>
+        <li><a href="https://blogs.msdn.microsoft.com/dotnet/2017/06/29/performance-improvements-in-ryujit-in-net-core-and-net-framework/">Performance Improvements in RyuJIT in .NET Core and .NET Framework</a></li>
+    </ul>
+    <p>
+        The second factor is a defect that was fixed between v2.3.1 and v2.4 in changeset <a href="https://github.com/colgreen/sharpneat/commit/2d5c0a1184c3b38e11a949c89de04c3f0a1d50c2">2d5c0a1</a>.
+        The neural net activation function used in both sets of results was supposed to be LeakyReLU, but the v2.3.1 results used SReLU, a function with
+        a different shape and a slower execution time. This is very likely the cause of the dramatic fitness improvement on the sinewave task, specifically the 
+        emergence of a peak at the far right of the distribution, representing fitness scores approaching or at the maximum score of 1000 on that task.
+    </p>
+    <p>
+        To be clear, officially the v2.3.1 release did not include the LeakyReLU activation function, but it was tested with that function as part of
+        <a href="../research/activation-fn-review/activation-fn-review.html">A Review of Activation Functions in SharpNEAT</a>, and it is those v2.3.1 results that 
+        are being shown in the above efficacy sampling plots.
+    </p>
+
+    <br/>
+
+    <hr/>
+    <h3>Appendix 1: Test Platform Environment Details</h3>
+    <pre>
+OS Name: Microsoft Windows 10 Home SP0.0
+Architecture: 64-bit
+.NET Framework: 4.7.1 (CLR 4.0.30319.42000)
+
+CPU
+   Brand: GenuineIntel
+   Name: Intel Core i7-6700T CPU @ 2.80GHz
+   Architecture: x64
+   Cores: 4
+   Frequency: 2808
+   RAM: 16 GB
+</pre>
+
+    <br/>
+
+    <hr/>
+    <h3>Appendix 2: Resources</h3>
+
+    <h5>R Scripts</h5>
+    <ul>
+        <li>
+            <a href="sharpneat-2-4-0/generate-binary11-hist.R">R/ggplot script for generating histograms (Binary11 Multiplexer task)</a>
+        </li>
+        <li>
+            <a href="sharpneat-2-4-0/generate-sinewave-hist.R">R/ggplot script for generating histograms (Generative Sinewave task)</a>
+        </li>
+    </ul>
+
+    <h5>Histogram CSV data</h5>
+    <ul>
+        <li>
+            <a href="sharpneat-2-4-0/binary11-samples-v2-3-1.csv">CSV data (Binary11 Multiplexer task, v 2.3.1)</a>
+        </li>
+        <li>
+            <a href="sharpneat-2-4-0/binary11-samples-v2-4-0.csv">CSV data (Binary11 Multiplexer task, v 2.4.0)</a>
+        </li>
+        <li>
+            <a href="sharpneat-2-4-0/sinewave-samples-v2-3-1.csv">CSV data (Generative Sinewave task, v 2.3.1)</a>
+        </li>
+        <li>
+            <a href="sharpneat-2-4-0/sinewave-samples-v2-4-0.csv">CSV data (Generative Sinewave task, v 2.4.0)</a>
+        </li>
+    </ul>
+
+    <br/>
+    <p>
+        <i>
+            Colin,
+            <br />February 10th, 2018
+        </i>
+    </p>
+    <br/>
+    <hr/>
+    <div style="margin-left:10px;">
+        <img src="../creativecommons88x31.png" border="0" align="left" hspace="10" vspace="0" /> Copyright 2018 Colin Green.
+        <br /> This article is licensed under a
+        <a href="http://creativecommons.org/licenses/by/3.0/" rel="nofollow">
+            Creative Commons Attribution 3.0 License
+        </a>
+        <br />
+        <br />
+    </div>
+</body>
+
+</html>
