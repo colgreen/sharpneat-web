@@ -1,0 +1,246 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <title>SharpNEAT 2.4.3</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.75" />
+    <link rel="stylesheet" href="../../sharpneat.css" type="text/css" media="screen" />
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}, });
+    </script>
+    <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_HTMLorMML-full'></script>
+    <style>
+        figure {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px dotted gray;
+        }
+
+        figure img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 100%
+        }
+
+        figcaption {
+            text-align: center;
+            margin: 7px;
+        }
+
+        li {
+            margin: 15px 0;
+        }
+    </style>
+    <style type="text/css">
+        .tg {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        .tg td {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+        }
+
+        .tg th {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: normal;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+        }
+
+        .tg .tg-erlg {
+            font-weight: bold;
+            background-color: #efefef;
+            vertical-align: top
+        }
+
+        .tg .tg-baqh {
+            text-align: center;
+            vertical-align: top
+        }
+
+        .tg .tg-yw4l {
+            vertical-align: top
+        }
+    </style>
+</head>
+
+<body class="research">
+    <div class="articlebanner">
+        <a href="/" title="SharpNEAT">
+            <img src="../../sharpneat-banner-narrow.svg" alt="SharpNEAT" class="articlebannerimage" />
+        </a>
+    </div>
+    <hr/>
+    <h1 align="center">SharpNEAT 2.4.3</h1>
+
+    <p>
+        Download:
+        <a href="https://github.com/colgreen/sharpneat/releases/tag/v2.4.3">Release v2.4.3 on github</a>
+    </p>
+    
+    <h2>Overview</h2>
+    <p>
+        Version 2.4.3 is primarily a maintenance release. The main change in this release is a change to the default number of species
+        in each experiment's configuration XML. Each experiment has had its default number of species changed to 10, which is a reduction
+        for most of the experiments. This reduction generally results in improved performance across all experiments, in terms of execution speed
+        and the average fitness achieved, on average, in a given amount of clock time.
+    </p>
+    <br/>
+
+    <h2>Changes</h2>
+    <ul>
+        <li>SpeciesCount configuration setting changed/reduced to 10 for all experiments.</li><br/>
+        <li>Improved support for use of alternative activation/custom functions, i.e. a function other than those shipped as standard in each release. Addresses issue <a href="https://github.com/colgreen/sharpneat/issues/39">#39</a>.</li>
+    </ul>
+    <br/>
+  
+    <h2>Species Count Changes</h2>
+    <p>
+        The default speciation strategy since SharpNEAT 2.0 is based on <a href="https://en.wikipedia.org/wiki/K-means_clustering">k-means clustering</a> applied
+        to the connection genes of each genome (for more details see <a href="https://sharpneat.sourceforge.io/research/speciation-kmeans.html">Speciation with K-Means Clustering</a>).
+        One side effect of using k-means is that the computational cost of speciation increases with (a) increased genome size, and (b) increased number of species.
+        For some experiments the cost of performing speciation can become a significant proportion of the overall computational work in running a NEAT experiment, especially if 
+        fitness evaluation is relatively lightweight - which happens to be the case with the two current efficacy sampling experiments (Binary 11-multiplexer and Generative Sinewave).
+    </p>
+    <p>
+        In this release all experiments that specified a species count setting in their configuration XML have had that setting reduced to 10.
+        This represents a reduction for most experiments, which previously used a range of species counts from 10 to 50. The two efficacy sampling
+        experiments used a species of count of 40, so this release has reduced this value by a quarter of its previous value, and in turn this
+        approximately reduces the amount of CPU time required to perform speciation by about the same proportion.
+    </p>
+    <br/>
+
+    <h2>Efficacy Sampling Tests</h2>
+    <p>
+        Efficacy sampling was performed on the two standard benchmark tasks and the results compared between this and the previous
+        version (<a href="../sharpneat-2-4-2/release-notes.html">version 2.4.2</a>). The resulting best fitness histograms
+        are shown below. To recap, these histograms show the best fitness achieved on each of a large number of independent SharpNEAT runs,
+        each of which terminates after one minute of execution (clock-time). Histograms are also provided comparing the evaluation counts 
+        achieved in each 60 second run, and (for the first time) mean genome complexity.
+    </p>
+    <h3>Results and Observations</h3>
+    <p>
+        The reduction in species count from 40 to 10 has resulted in NEAT running faster overall, as evidenced by a significant shift to the
+        right in the 'evaluation count' histograms, along with the emergence of a long right-hand tail. The Generative Sinewave task in particular
+        actually has a much longer tail than is shown here, as 20 samples with evaluation counts between 3*10^6 and 8*10^6 have been removed 
+        from the 2.4.3 results to better show the main body of the histograms. These very high evaluation counts occur on 
+        the Generative Sinewave task partly because since v2.4.2 the evaluation code has been vectorized, and this coupled with the a very simple 
+        evaluation scheme overall means that this task can run very fast, e.g. compared to the Binary 11-multiplexer task which incorporates 2,048
+        neural net activations per evaluation.
+    </p>
+    <p>
+        Fitness scores are also much improved on the Binary 11-multiplexer task, as might be expected with the increased number of evaluations;
+        noting that the maximum score on this task is 2,048 (=2^11). The Generative Sinewave task has a maximum score of 1,000, and therefore 
+        the histogram peak near that maximum is clearly showing that the maximum score is achieved in a high proportion of trials. Going forward
+        it will likely be beneficial to switch to an alternative and more difficult task.
+    </p>
+    <p>
+        The new mean complexity histograms are based on population wide means calculated on the number of connection genes in each genome.
+        The Generative Sinewave task shows a shift to the right, i.e. more complex genomes on average, as might be expected given that 
+        NEAT is able to perform more generations in each 60 second evaluation run. Interestingly though, the Binary 11-multiplexer
+        task shows a <i>reduction</i> in complexity on average. One can only speculate on the dynamics that might cause this to occur, but perhaps
+        the reduced number of species is resulting in less protection of variation within each population, and thus less complexity.
+    </p>
+
+    <br/>
+    <figure>
+        <img src="binary11-bestfitness-v242-v243-hist.png" />
+        <img src="sinewave-bestfitness-v242-v243-hist.png" />
+        <figcaption>
+            <b>Figure 1.</b>
+            <br/>Comparison of best fitness histograms obtained from SharpNEAT v2.4.2 and v2.4.3;
+            <br/> on the Binary11 Multiplexer and Generative Sinewave tasks.</figcaption>
+    </figure>
+    <br/>
+    <figure>
+        <img src="binary11-evalcount-v242-v243-hist.png" />
+        <img src="sinewave-evalcount-v242-v243-hist.png" />
+        <figcaption>
+            <b>Figure 2.</b>
+            <br/>Comparison of evaluation count histograms obtained from SharpNEAT v2.4.2 and v2.4.3;
+            <br/> on the Binary11 Multiplexer and Generative Sinewave tasks.</figcaption>
+    </figure>
+    <br/>
+    <figure>
+        <img src="binary11-meancomplexity-v242-v243-hist.png" />
+        <img src="sinewave-meancomplexity-v242-v243-hist.png" />
+        <figcaption>
+            <b>Figure 2.</b>
+            <br/>Comparison of population mean complexity histograms obtained from SharpNEAT v2.4.2 and v2.4.3;
+            <br/> on the Binary11 Multiplexer and Generative Sinewave tasks.</figcaption>
+    </figure>    
+    <br/>
+    <br/>
+
+    <hr/>
+    <h3>Appendix 1: Test Platform Environment Details</h3>
+    <pre>
+OS Name: Microsoft Windows 10 Home SP0.0
+Architecture: 64-bit
+.NET Framework: 4.8 (CLR 4.0.30319.42000)
+
+CPU
+   Brand: GenuineIntel
+   Name: Intel Core i7-6700T CPU @ 2.80GHz
+   Architecture: x64
+   Cores: 4
+   Frequency: 2808
+   RAM: 16 GB
+
+All results obtained from both SharpNEAT 2.4.2 and 2.4.3 are obtained with Spectre and Meltdown mitigations enabled throughout.
+</pre>
+
+    <br/>
+    <hr/>
+    <h3>Appendix 2: Resources</h3>
+    <h5>R Scripts</h5>
+    <ul>
+        <li><a href="generate-binary11-v242-v243-hist.R">R/ggplot script for generating histograms (Binary11 Multiplexer task; v2.4.2 vs v2.4.3)</a></li>
+        <li><a href="generate-sinewave-v242-v243-hist.R">R/ggplot script for generating histograms (Generative Sinewave task; v2.4.2 vs v2.4.3)</a></li>
+    
+    </ul>
+
+    <h5>Histogram CSV data</h5>
+    <ul>
+        <li><a href="binary11-samples-v2-4-2.csv">CSV data (Binary11 Multiplexer task; v2.4.2)</a></li>
+        <li><a href="binary11-samples-v2-4-3.csv">CSV data (Binary11 Multiplexer task; v2.4.3)</a></li>
+        
+        <li><a href="sinewave-samples-v2-4-2.csv">CSV data (Generative Sinewave task; v2.4.2)</a></li>
+        <li><a href="sinewave-samples-v2-4-3.csv">CSV data (Generative Sinewave task; v2.4.3)</a></li>
+    </ul>
+
+    <br/>
+    <p>
+        <i>
+            Colin,
+            <br />July 29th, 2019
+        </i>
+    </p>
+    <br/>
+    <hr/>
+    <div style="margin-left:10px;">
+        <img src="../../creativecommons88x31.png" border="0" align="left" hspace="10" vspace="0" /> Copyright 2019 Colin Green.
+        <br /> This article is licensed under a
+        <a href="http://creativecommons.org/licenses/by/3.0/" rel="nofollow">
+            Creative Commons Attribution 3.0 License
+        </a>
+        <br />
+        <br />
+    </div>
+</body>
+
+</html>
