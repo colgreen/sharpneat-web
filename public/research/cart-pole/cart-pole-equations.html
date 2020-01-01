@@ -1,0 +1,2229 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <title>Equations of Motion for the Cart and Pole Control Task</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.75" />
+    <link rel="stylesheet" href="../../sharpneat.css" type="text/css" media="screen" />
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({ 
+            tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}, 
+            TeX: {Macros:{sgn:"\\operatorname{sgn}"}}});
+    </script>
+    <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_HTMLorMML-full'></script>
+   <style>
+    table.notationTable {
+        border-spacing:1em;
+        
+    }
+
+    table.notationTable td {
+        vertical-align:top;
+    }
+
+    figure {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        border: 1px dotted gray;
+    }
+    figure img {
+        display: flex;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 100%;
+    }
+    figcaption {
+        text-align: center;
+        margin: 7px;
+    }
+    li {
+        margin: 15px 0;
+    }
+    .tg {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+    .tg td {
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        padding: 10px 5px;
+        border-style: solid;
+        border-width: 1px;
+        overflow: hidden;
+        word-break: normal;
+        text-align: center;
+        vertical-align: top        
+    }
+    .tg th {
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        font-weight: normal;
+        padding: 10px 5px;
+        border-style: solid;
+        border-width: 1px;
+        overflow: hidden;
+        word-break: normal;
+        font-weight: bold;
+        background-color: #efefef;
+        vertical-align: top        
+    }  
+   </style>
+</head>
+<body class="research">
+    <div class="articlebanner">
+        <a href="/" title="SharpNEAT">
+            <img src="../../sharpneat-banner-narrow.svg" alt="SharpNEAT" class="articlebannerimage" />
+        </a>
+    </div>
+    <hr/>
+    <h1 style="text-align: center">Equations of Motion for the Cart and Pole Control Task</h1>
+    <h1 style="color: dimgray;text-align: center">Fifth Draft</h1>
+    <br/>
+    <br/>
+
+    <h2>1. Introduction</h2>
+    <p>
+        The cart and pole task is a classical benchmark problem in control theory and reinforcement learning [3,2,4], also known as the
+        inverted pendulum, or pole/stick/broom balancing task. This paper provides derivations for the equations of motion for the 
+        cart and pole task, and accompanying discussions and analyses.
+    </p>
+    <p>
+        From Lunberg and Barton [3]:
+    </p>
+    <blockquote>
+        <i>The inverted-pendulum system is a favourite example system and lecture demonstration of students and educators in 
+        physics, dynamics, and control. This system is a simple and valuable laboratory representation of an unstable mechanical system.
+        It is also often used to model the control problems encountered in the flight of rockets and missiles in the initial stages of launch,
+        when the airspeed is too small for aerodynamic stability.</i>
+    </blockquote>
+    <p> 
+        Section 2 of this paper defines the cart and pole physical model. In section 3 we derive the equations of motion for the model,
+        for a single pole and also for multiple poles. Section 4 discusses a hybrid model that is ubiquitous in the literature, and 
+        presents adapted equations for that hybrid model.
+    </p>
+        Section 5 presents a final complete set of recommended equations, and section 6 discusses the application of numerical 
+        methods in the simulation of the cart and pole task.
+    </p>
+    <p>
+        Appendices C, D and E provide analyses of the cart and pole equations presented in three well cited sources from the literature,
+        highlighting errors, and discussing variations in the published equations.
+    </p>
+    <p>
+        Finally, appendices A and B provide a brief overview of d'Alembert's Principle and Torque, respectively, in support of the
+        derivations in section 3.
+    </p>
+    <br/>
+
+    <h3>1.1 Terminology: Pendulums, Poles, and Sticks</h3>
+    <p>
+        For conciseness we will generally refer to the <i>cart-pole</i> task, model, or system, rather than the 
+        'cart and pole balancing task' or 'inverted pendulum balancing task', etc., and <i>pole</i> is generally preferred 
+        over <i>inverted pendulum</i> or <i>stick</i>.
+    </p>
+    <p>
+        The word <i>pendulum</i> may occasionally be used when discussing oscillation or rotation of the pole around its pivot point,
+        thus emphasising that the pole is behaving as a pendulum. Furthermore, <i>pendulum</i> will generally refer to an ideal
+        pendulum unless otherwise stated, i.e. a point mass attached the end of a massless rod.
+    </p>
+    <br/>
+    <br/>
+
+    <h2>2. The Cart-Pole Physical Model</h2>
+    <p>
+        Consider the physical model shown in figure 1. A cart is positioned on a track running horizontally, and an inverted pendulum is
+        attached to the cart with a hinge that allows rotation around pivot point P in the xy plane only, i.e. the pendulum is free to fall
+        horizontally left-right, but not 'out' of the diagram. The pendulum's initial position is near vertical, and a external variable 
+        horizontal force is applied to the cart to maintain the pendulum in a balanced and upright position.
+    </p>
+    <p>
+        The model is considered to represent an unstable system because an external control force is required to keep the pendulum balanced;
+        as opposed to a downward hanging pendulum in which the force of gravity alone results in stable oscillation about the downward vertical.
+    </p>
+    <p>
+        We will assume an ideal pendulum, in which all of the pendulum's mass is located at a single point (Q) at the end of a massless rigid
+        rod.
+    </p>
+
+    <figure>
+        <br/>
+        <img src="cart-pole-model.svg" />
+        <br/>
+        <figcaption><b>Figure 1.</b><br/>The cart-pole balancing model.</figcaption>
+    </figure>
+    <br/>
+    <blockquote style="background-color:eeeeee; padding:14px">
+        <span><b>Table 1: Symbols used in figure 1 and throughout this paper</b></span>
+        <table class="notationTable">
+            <tr><td>$x, y, O$ &nbsp;</td><td>A Cartesian x, y coordinate frame is shown, with origin O.</td></tr>
+            <tr><td>$C$ &nbsp;</td><td>The cart's centre of mass.</td></tr>
+            <tr><td>$P$ &nbsp;</td><td>Pivot point of the inverted pendulum.</td></tr>
+            <tr><td>$Q$ &nbsp;</td><td>The pendulum's point mass. At distance $l$ from point P.</td></tr>
+            <tr><td>$l$ &nbsp;</td><td>Length of the pendulum rod.</td></tr>
+            <tr><td>$T,R$ &nbsp;</td><td>An alternative coordinate frame with the <i>R</i> axis parallel to the pendulum (vector PQ). I.e. the <i>TR</i> coordinate frame
+                rotates and moves horizontally relative to the fixed (or 'world') Cartesian coordinate frame.</td></tr>
+            <tr><td>$x$ (lower) &nbsp;</td><td>Horizontal position of the cart on the track.</td></tr>
+            <tr><td>$\theta$ &nbsp; </td><td>Angle of the pendulum in radians, measured as a deviation from the vertical. The pendulum is at 0° when oriented vertically straight up,
+                +90° when horizontal and to the right of the pivot point, -90° when horizontal and to the left of the pivot point,
+                 and +-180° when oriented vertically down.</td></tr>
+            <tr><td>$m$ &nbsp;</td><td>Mass of pendulum's point mass at point Q.</td></tr>
+            <tr><td>$g$ &nbsp;</td><td>Gravitational acceleration (in m/s<sup>2</sup>). Here g is taken to be the directionless magnitude of the acceleration caused 
+                by gravity (i.e. approximately 9.8 m/s<sup>2</sup> for gravity on Earth). The direction of gravitational acceleration is taken into account in the 
+                formulation of the equations, therefore the sign of g is positive.</td></tr>
+            <tr><td>$f$ &nbsp;</td><td>An external variable horizontal force applied to the cart (in <a href="https://en.wikipedia.org/wiki/Newton_(unit)">Newtons</a>). A positive
+                value represents a push to the right, and a negative value represents a push to the left.</td></tr>
+        </table>
+        <br/>
+        <br/>
+    
+        <span>Selected additional symbols used throughout this post:</span>
+        <table class="notationTable">
+            <tr><td>$\dot x, \ddot x$ &nbsp;</td><td>The cart's x-axis velocity and acceleration, respectively.</td></tr>
+            <tr><td>$\dot x_q, \ddot x_q$ &nbsp;</td><td>Point Q's x-axis velocity and acceleration, respectively.</td></tr>
+            <tr><td>$m_c$ &nbsp;</td><td>Mass of the cart.</td></tr>
+            <tr><td>$M$ &nbsp;</td><td>Combined mass of the cart and the pendulum, i.e. $m_c + m$</td></tr>
+            <tr><td>$\hat l$ &nbsp;</td><td>Half length of the pendulum rod.</td></tr>
+        </table>       
+        <br/>
+        <br/>
+    
+        <span>Conventions:</span>
+        <table class="notationTable">
+            <tr><td>A positive horizontal force represents a push to the right.</td></tr>
+            <tr><td>A positive vertical force represents a push upwards.</td></tr>
+            <tr><td>A positive angular velocity represents clockwise rotation.</td></tr>
+            <tr><td>A positive angular acceleration represents clockwise acceleration.</td></tr>
+            <tr><td>A positive moment (also know as torque or a rotational force) is a rotational force in the 
+                <b>anticlockwise</b> direction (see appendix B for an explanation). I.e. a positive torque results in negative angular acceleration.</td></tr>
+        </table>
+    </blockquote>
+
+    <br/>
+    <br/>
+
+    <h2>3. Equations of Motion (Derivations)</h2>
+
+    <h3>3.1 Acceleration of point Q relative to point P</h3>
+
+    <p>The position of Q relative to P in the XY coordinate frame, and for a given pendulum angle $\theta$, is given by:</p>
+    <br/>
+    \begin{align}
+        x_{q|p} &= l\sin\theta \tag{1} \\[3ex]
+        y_{q|p} &= l\cos\theta \tag{2}
+    \end{align}
+    <br/>
+
+    <p>
+        Taking the derivative of (1) and (2) with respect to time gives the XY velocity of Q relative to P, for a given
+        pendulum angle $\theta$ and angular velocity $\dot\theta$.
+    </p>
+    <p>Velocity (x-axis):</p>
+    \begin{align}
+
+        \frac{d(x_{q|p})}{dt} &= \frac{d(l\sin\theta)}{dt} \\[3ex]
+
+               &= \frac{d(l\sin\theta)}{d\theta} \cdot \frac{d\theta}{dt} \tag*{Chain rule} \\[3ex]
+
+        \dot x_{q|p} &= l (\cos\theta) (\dot\theta) \tag*{Newton's notation} \\[3ex]
+
+        \dot x_{q|p} &= l\dot\theta \cos\theta \tag{3}
+
+    \end{align}
+    <br/>
+
+    <p>Velocity (y-axis):</p>
+    \begin{align}
+
+        \frac{d(y_{q|p})}{dt} &= \frac{d(l\cos\theta)}{dt} \\[3ex]
+
+               &= \frac{d(l\cos\theta)}{d\theta} \cdot \frac{d\theta}{dt} \tag*{Chain rule} \\[3ex]
+
+        \dot y_{q|p} &= l (-\sin\theta) (\dot\theta) \tag*{Newton's notation} \\[3ex]
+
+        \dot y_{q|p} &= -l\dot\theta \sin\theta \tag{4}
+
+    \end{align}
+    <br/>
+
+    <p>
+        Taking the derivative of (3) and (4) w.r.t. time gives the XY <i>acceleration</i> of Q relative to P, for a given 
+        pendulum angle $\theta$, angular velocity $\dot\theta$ and angular acceleration $\ddot\theta$.
+    </p>
+    <p>Acceleration (x-axis):</p>
+
+    \begin{align}
+
+        \frac{d(\dot x_{q|p})}{dt} = \frac{d^2(x_{q|p})}{dt^2} &= \frac{d(l \dot\theta \cos\theta)}{dt} \\[3ex]
+
+            &= l \left[ \frac{d(\dot\theta \cos\theta)}{dt} \right] \\[3ex]
+
+            &= l \left[ \frac{d\dot\theta}{dt} \cos\theta + \dot\theta \frac{d(\cos\theta)}{dt} \right] \tag*{Product rule} \\[3ex] 
+
+            &= l \left[ \frac{d\dot\theta}{dt} \cos\theta + \dot\theta \frac{d(\cos\theta)}{d\theta} \cdot \frac{d\theta}{dt} \right] \tag*{Chain rule} \\[3ex] 
+
+        \ddot x_{q|p} &= l \left[ \ddot\theta \cos\theta - \dot\theta^2 \sin\theta \right] \tag{5}
+
+    \end{align}
+    <br/>
+    <p>Acceleration (y-axis):</p>
+    \begin{align}
+
+        \frac{d(\dot y_{q|p})}{dt} = \frac{d^2(y_{q|p})}{dt^2} &= \frac{d(-l \dot\theta \sin\theta)}{dt} \\[3ex]
+
+            &= -l \left[ \frac{d(\dot\theta \sin\theta)}{dt} \right] \\[3ex]
+
+            &= -l \left[ \frac{d\dot\theta}{dt} \sin\theta + \dot\theta \frac{d(\sin\theta)}{dt} \right] \tag*{Product rule} \\[3ex]
+
+            &= -l \left[ \frac{d\dot\theta}{dt} \sin\theta + \dot\theta \frac{d(\sin\theta)}{d\theta} \cdot \frac{d\theta}{dt} \right] \tag*{Chain rule} \\[3ex]
+
+        \ddot y_{q|p} &= -l \left[ \ddot\theta \sin\theta + \dot\theta^2 \cos\theta \right] \tag{6}
+
+    \end{align}
+    <br/>
+
+    <blockquote style="background-color:eeeeee; padding:14px">
+        <p>
+            The above equations describe the XY motion of point Q given it's motion stated in polar coordinate system terms of angle and distance from the pivot
+            point. These equations say nothing about the forces acting on the system that are the cause of the motion.
+        </p>
+        <p>
+            Equations (5) and (6) show that there are two distinct effects that contribute to the acceleration of Q relative to P, manifesting as two separate 
+            terms in each equation; a term dependent on rotational velocity ($\dot\theta$), and a term dependent on rotational acceleration ($\ddot\theta$).
+        </p>
+        <p>
+            The terms dependent on velocity describe the <a href="https://en.wikipedia.org/wiki/Centripetal_force">centripetal acceleration</a> acting
+            on Q, continuously pulling Q directly towards the centre of rotation (point P) and thus maintaining circular motion. Noting that the centripetal
+            force $F_c$ for a mass $m$ at a given radius $r$ and angular velocity $\omega$ is given by:
+        </p>
+        
+        $$ F_c = mr\omega^2 $$
+        <br/>
+
+        <p>
+            We can perform a basic check of equation (5) by confirming that the x-axis component of the centripetal term is zero when the pole is vertical,
+            and at its maximum when the pole is horizontal. And similarly for equation (6), the y-axis component of the centripetal term is zero when the pole 
+            is horizontal, and at its maximum when the pole is vertical.
+        </p>
+        <p>
+            The other component of equations (5) and (6) is dependent on <a href="https://en.wikipedia.org/wiki/Angular_acceleration">angular acceleration</a>
+            ($\ddot\theta$). This gives the x and y-axis accelerations of Q for a given angular acceleration and point Q's distance from the centre of rotation (P).
+            A simple check here is to confirm that this acceleration is always perpendicular to the pendulum (line PQ), as opposed to the centripetal acceleration
+            that is always parallel to PQ. These angular acceleration components are essentially describing the relationship between rotational force on the pendulum,
+            i.e. <a href="https://en.wikipedia.org/wiki/Torque">torque</a>, and the resulting force on point Q.
+        </p>
+    </blockquote>
+
+    <br/>
+
+    <h3>3.2 Absolute Acceleration of Point Q</h3>
+
+    <p>
+        Equations (5) and (6) describe the acceleration of point Q relative to P. Therefore to obtain the absolute acceleration of Q (i.e. acceleration
+        relative to point O, or the 'world' XY frame) we add the x-axis acceleration of point P to equation (5). The cart does not move vertically, therefore
+        the absolute y-axis acceleration is given by $\ddot y_{q|p}$.
+    </p>
+
+    <p>Absolute acceleration (x-axis):</p>
+    \begin{align}
+
+        \ddot x_q &= \ddot x_{q|p} + \ddot x \\[3ex]
+
+        \ddot x_q &= l \left( \ddot\theta \cos\theta - \dot\theta^2 \sin\theta \right) + \ddot x \tag{7}
+
+    \end{align}
+    <br/>
+
+    <p>Absolute acceleration (y-axis):</p>
+    
+    \begin{align}
+
+        \ddot y_q &= \ddot y_{q|p} \\[3ex]
+
+        \ddot y_q &= -l \left( \ddot\theta \sin\theta + \dot\theta^2 \cos\theta \right) \tag{8}
+
+    \end{align}
+    <br/>
+
+    <blockquote style="background-color:eeeeee;padding:14px">
+        <p>
+            In Cannon [2] a vector notation is used as well as an alternative coordinate frame TR (shown in figure 1), use of which results in the following more 
+            concise definition of Q's acceleration:
+        </p>
+
+        $$ \mathbf{a}^Q = \mathbf{1}_x(\ddot x) + \mathbf{1}_T(l\ddot\theta) + \mathbf{1}_R(-l \dot\theta^2) \tag{9} \\[2ex]$$
+
+        <p>
+            Where $\mathbf{1}_x()$ denotes a unit vector in the x-axis, $\mathbf{1}_T()$ denotes a unit vector in the T-axis of the RT 
+            coordinate frame, and so on.
+        </p>
+    </blockquote>
+    <br/>
+
+    <h3>3.3 Inertial Force on Point Q</h3>
+    <p>
+        We now adopt d'Alembert's principle (see <a href="#appendixA">appendix A</a>).
+    </p>
+    <p>
+        The pendulum's mass at point Q resists acceleration, resulting in an inertial force (denoted with a superscript i) 
+        with a direction opposite to the direction of acceleration. We obtain this force by multiplying equations
+        (7) and (8) with the pendulum's mass (m) as per Newton's Second Law of motion $F=ma$, and changing the sign to 
+        obtain a force in the opposite direction to the acceleration of Q:
+    </p>
+
+    <p>Inertial force (x-axis)</p>
+
+    \begin{align}
+
+        (F^i_q)_x &= -m \ddot x_q \\[3ex]
+
+        (F^i_q)_x &= -m \left[ l \ddot\theta \cos\theta - l \dot\theta^2 \sin\theta + \ddot x \right] \tag{10}
+
+    \end{align}
+    <br/>
+
+    <p>Inertial force (y-axis)</p>
+
+    \begin{align}
+
+        (F^i_q)_y &= -m \ddot y_q \\[3ex]
+
+        (F^i_q)_y &= ml \left[ \ddot\theta \sin\theta + \dot\theta^2 \cos\theta \right] \tag{11}
+
+    \end{align}    
+    <br/>
+
+    <h3>3.4 Forces on the Cart</h3>
+    <p>
+        The external forces on the cart are the external horizontal force f, and a force transmitted by the pendulum rod at point P
+        resulting from the inertial resistance of the pendulum mass at point Q, and also gravity acting on that same mass.
+        In addition there is the cart's own inertial resistance, i.e. the cart's resistance to acceleration.
+    </p>
+    <p>
+        Given that the cart does not move vertically, it is sufficient to constrain our analysis here to the horizontal forces
+        acting on the cart; these are force f, the horizontal component of the pendulum's inertial force (given by equation 10),
+        and the cart's inertial force. Summing these forces and and equating to zero as per d'Alembert's principle, we obtain:
+    </p>
+    <br/>
+
+    \begin{align}
+
+        f -m_c \ddot x + (F^i_q)_x &= 0 \\[3ex]
+
+        f -m_c \ddot x -m \left[ l \ddot\theta \cos\theta - l \dot\theta^2 \sin\theta + \ddot x \right] &= 0 \\[3ex]
+
+        m_c \ddot x +m \left[ l \ddot\theta \cos\theta - l \dot\theta^2 \sin\theta + \ddot x \right] &= f \tag{12}
+
+    \end{align}
+    <br/>
+
+    <blockquote style="background-color:eeeeee; padding: 14px">
+        <p>
+            Equation (12) matches the first equation of (22.55) in Cannon [2]. This indicates that Cannon used the convention of
+            a positive force being a push to the right for the cart-pole equations, whereas the opposite convention is used elsewhere
+            in that book. I.e. Cannon states (§2.2 pg40) <i>"...it is convenient to choose to make the positive direction for each 
+            force opposite to that for the corresponding motion, and we shall normally do so in this book, purely for convenience."</i>
+        </p>
+        <p>
+            To demonstrate the point, note that the $m_c \ddot x$ term represents the inertial force resulting from acceleration of 
+            the cart; this force is in the opposite direction to the cart's acceleration, thus we see that a positive acceleration 
+            results in a negative inertial force in the two equilibrium equations leading to equation (12).
+        </p>
+    </blockquote>
+    <br/>
+
+    <h3>3.5 Rotational Forces on the Pendulum</h3>
+    <p>
+        We now turn our attention to the rotational forces acting on the pendulum. A rotational force is referred to 
+        as a moment, <a href="https://en.wikipedia.org/wiki/Moment_(physics)">moment of force</a>, or  
+        <a href="https://en.wikipedia.org/wiki/Torque">torque</a> 
+    </p>
+    <p>
+        There are three forces that result in a torque acting on the pendulum, these are (i) gravity acting on the pendulum's
+        point mass at Q; (ii) the inertial force resulting from the inertial resistance of the pendulum's point mass at Q, i.e.
+        as the cart moves left or right beneath the pendulum; and (iii) a rotational inertia force known as the 
+        <a href="https://en.wikipedia.org/wiki/Moment_of_inertia">moment of inertia</a>. The three resulting torques must be in 
+        equilibrium as per d'Alembert's principle, giving an additional equation of motion for the cart and pole model.
+    </p>
+    <p>
+        The inertial force on Q is given by $F^i_q$, as defined in equations (10) and (11). Taking the cross product of vectors $\mathbf{1}_R(l)$ 
+        (i.e. radial vector PQ) and $F^i_q$ gives a vector that points along the axis of rotation, with the magnitude and sign of that result vector
+        giving the magnitude and sign of the torque at pivot point P resulting from force $F^i_q$ (see <a href="#appendixB">appendix B</a> for an 
+        explanation and a brief introduction to torque). Given that we know that the axis of rotation is fixed and is parallel with the z-axis, 
+        the result vector's magnitude and sign is given by its z-axis component alone, as follows:
+    </p>
+    <br/>
+
+    \begin{align}
+
+        \mathbf{M}_q & = \left[ \mathbf{1}_R(l) \times F^i_q \right]_z \tag{13} \\[3ex]
+
+            &= \left[ (l\sin\theta) (ml [\ddot\theta \sin\theta + \dot\theta^2 \cos\theta]) - (l\cos\theta)(-m[l\ddot\theta \cos\theta - l\dot\theta^2 \sin\theta + \ddot x]) \right] \\[3ex]
+
+            &= ml \left[ (\sin\theta) (l [\ddot\theta \sin\theta + \dot\theta^2 \cos\theta]) + (\cos\theta)(l\ddot\theta \cos\theta - l\dot\theta^2 \sin\theta + \ddot x) \right] \\[3ex]
+
+            &= ml \left[ l\ddot\theta \sin^2\theta + l\dot\theta^2 \sin\theta\cos\theta + l\ddot\theta \cos^2\theta - l\dot\theta^2 \sin\theta \cos\theta + \ddot x \cos\theta \right] \\[3ex]
+
+            &= ml \left[ l\ddot\theta (\sin^2\theta + \cos^2\theta) + \ddot x \cos\theta \right] \\[3ex]
+
+        \mathbf{M}_q &= ml ( l\ddot\theta + \ddot x \cos\theta ) \tag{14}
+
+    \end{align}
+    <br/>
+
+    <blockquote style="background-color:eeeeee; padding: 14px">
+        <p>
+            $\mathbf{M}_q$ is the moment of inertia resulting from the point mass at Q.
+        </p>
+        <p>
+            The cross product operation is not <a href="https://en.wikipedia.org/wiki/Commutative_property">commutative</a>, therefore it is 
+            important that the operands in equation (13) are in the correct order; this is determined by the right hand rule. The direction
+            of cross product $a \times b$ can be determined by imagining vector $a$ turning towards vector $b$ (in the direction of the the 
+            smallest angle between those two vectors). If turning $a$ towards $b$ results in a right handed screw advancing into the plane 
+            of rotation, then this is clockwise rotation, and in our model the result vector has a negative z-axis component (see Table 1 - Conventions).
+        </p>
+        <p>
+            Thus, if we imagine a positive force $F^i_q$ pushing an upright pendulum to the right then we would expect this to cause clockwise 
+            rotation, and therefore negative torque (see Table 1 - Conventions).
+        </p>
+        <p>
+            Equation (13) appears as a term in Cannon [2] equation (22.53), and again in the fourth equation of (22.54). The minus signs in 
+            those two equations (from Cannon) are inconsistent and erroneous. Specifically, the moment in (22.53) should not be preceded by a 
+            minus sign, rather, the torque force (with whatever sign it happens to have) should be summed wth the other moments to form the 
+            equilibrium equation. However, the error in (22.53) is cancelled out by another sign error in the last equation (22.54); in that
+            equation the left hand side is prefixed with a minus sign, but the right hand side gives the cross product that results when that
+            minus sign is not applied.
+        </p>
+    </blockquote>
+    <br/>
+
+    <p>
+        The torque resulting from the downward pull of gravity on the pendulum's mass at Q is given by:
+    </p>
+    <br/>
+    $$ \mathbf{M}_g = -mgl \sin\theta \tag{15} $$
+    <br/>
+    <p>
+        Noting that the torque resulting from gravity is zero when the pendulum is fully vertical, and negative when the pendulum is at +90°,
+        i.e. accelerating the pendulum with a negative torque, and therefore in the clockwise direction.
+    </p> 
+    <br/>
+
+    <p>
+        In Cannon [2] the moment of inertia is initially written as some multiple (J) of $\ddot\theta$, to be substituted later;
+        we will do the same here:
+    </p>
+    <br/>
+    $$ \mathbf{M}_i = J \ddot\theta \tag{16} $$
+    <br/>
+
+    <p>
+        Noting that the sign of $M_i$ is positive for positive $\ddot\theta$, representing a positive and thus
+        anticlockwise torque when the pendulum is accelerating clockwise.
+    </p>
+    <p>
+        Summing the three moments and equating to zero as per d'Alembert's principle, gives:
+    </p>
+    <br/>
+    \begin{align}
+
+        \mathbf{M}_q + \mathbf{M}_g + \mathbf{M}_i &= 0 \tag{17} \\[3ex] 
+
+        ml ( l\ddot\theta + \ddot x \cos\theta ) -mgl\, \sin\theta + J \ddot\theta &= 0 \tag{18}
+
+    \end{align}
+    <br/>
+
+    <blockquote style="background-color:eeeeee; padding: 14px">
+        <p>
+            Equation (18) matches the second equation of (22.55) in [2].
+        </p>
+    </blockquote>
+    <br/>
+
+    <h3>3.6 Combining Horizontal and Rotational Force Equations</h3>
+    <p>
+        Equation (12) describes the horizontal forces acting on the cart in equilibrium; and equation (18) describes the moments
+        (rotational forces) acting on the pole in equilibrium. These two equations can be combined and rearranged to arrive at a
+        complete set of equations for the cart-pole model.
+    </p>
+    <p>
+        Firstly, it is useful to rearrange equations (12) and (18) to give the accelerations $\ddot x $ and $\ddot\theta$
+        for a given external force $f$.
+    </p>
+    <p>
+        Rearranging (12) to give $\ddot x$:
+    </p>
+
+    \begin{align}
+
+        m_c \ddot x +m \left[ l \ddot\theta \cos\theta - l \dot\theta^2 \sin\theta + \ddot x \right] &= f \\[3ex]
+
+        m_c \ddot x + ml \ddot\theta \cos\theta - ml \dot\theta^2 \sin\theta + m \ddot x &= f \\[3ex]
+
+        m_c \ddot x + m \ddot x &= f - ml \ddot\theta \cos\theta + ml \dot\theta^2 \sin\theta  \\[3ex]
+
+        (m_c  + m) \ddot x &= \\[3ex]
+
+        \ddot x &= \frac{f - ml \ddot\theta \cos\theta + ml \dot\theta^2 \sin\theta}{m_c  + m} \tag{19} \\[3ex]
+
+    \end{align}
+    <br/>
+    <p>
+            Rearranging (18) to give $\ddot x$:
+    </p>
+    \begin{align}
+
+        ml ( l\ddot\theta + \ddot x \cos\theta ) -mgl\, \sin\theta + J \ddot\theta &= 0 \\[3ex]
+
+        ml^2\ddot\theta + ml \ddot x \cos\theta -mgl\, \sin\theta + J \ddot\theta &= 0 \\[3ex]
+
+        ml \ddot x \cos\theta &= mgl\, \sin\theta - ml^2\ddot\theta - J \ddot\theta \\[3ex]
+
+        \ddot x &= \frac{mgl\sin\theta - (ml^2 + J)\ddot\theta}{ml\cos\theta} \tag{20}
+
+    \end{align}
+    <br/>
+    <br/>
+    <p>
+        Equating the right hand sides of (19) and (20), and rearranging to give $\ddot\theta$:
+    </p>
+    <br/>
+    \begin{align}
+
+        \frac{f - ml \ddot\theta \cos\theta + ml \dot\theta^2 \sin\theta}{m_c  + m} &= \frac{mgl\sin\theta - (ml^2 + J)\ddot\theta}{ml\cos\theta} \\[3ex]
+
+        M &= m_c + m \\[3ex]
+
+        (ml\cos\theta)(f + ml\dot\theta^2\sin\theta) - (ml\cos\theta)^2 \ddot\theta &= Mmgl\sin\theta - M(ml^2 + J)\ddot\theta \\[3ex]
+
+        M(ml^2 + J)\ddot\theta - (ml\cos\theta)^2 \ddot\theta &= Mmgl\sin\theta - (ml\cos\theta)(f + ml\dot\theta^2\sin\theta) \\[3ex]
+
+        \left[M(ml^2 + J) -(ml\cos\theta)^2 \right] \ddot\theta &=  \\[3ex]
+
+        \ddot\theta &= \frac{Mmgl\sin\theta - (ml\cos\theta)(f + ml\dot\theta^2\sin\theta)}{M(ml^2 + J) -(ml\cos\theta)^2} \tag{21} 
+
+    \end{align}        
+    <br/>
+
+    <p>
+        Equation (21) can now be evaluated at each timestep to obtain $\ddot\theta$, and the result substituted into either (19) or (20) to obtain 
+        $\ddot x$; thus equations (19), (20) and (21) are sufficient for simulation of the cart-pole physical model, provided that 
+        a suitable definition for $J$ is substituted in.
+    </p>
+    <p>
+        We can also arrange (12) and (18) such that we evaluate $\ddot x$ first, and substitute its value into an equation for $\ddot\theta$, i.e.
+        a new set of equations that are alternatives to equations (19), (20) and (21):
+    </p>
+    <p>
+        Rearranging (12) to give $\ddot \theta$:
+    </p>
+
+    \begin{align}
+
+        m_c \ddot x +m \left[ l \ddot\theta \cos\theta - l \dot\theta^2 \sin\theta + \ddot x \right] &= f \\[3ex]
+
+        m_c \ddot x + ml \ddot\theta \cos\theta - ml \dot\theta^2 \sin\theta + m \ddot x &= f \\[3ex]
+
+        ml \ddot\theta \cos\theta &= f + ml \dot\theta^2 \sin\theta - m \ddot x - m_c \ddot x \\[3ex]
+
+        \ddot\theta &= \frac{f + ml \dot\theta^2 \sin\theta - m \ddot x - m_c \ddot x}{ml\cos\theta} \\[3ex]
+
+        \ddot\theta &= \frac{f + ml \dot\theta^2 \sin\theta - M \ddot x}{ml\cos\theta} \tag{22}
+
+    \end{align}
+    <br/>
+    <p>
+        Rearranging (18) to give $\ddot \theta$:
+    </p>
+
+    \begin{align}
+
+        ml (l\ddot\theta + \ddot x \cos\theta) -mgl\sin\theta + J \ddot\theta &= 0 \\[3ex] 
+
+        ml^2\ddot\theta + ml \ddot x \cos\theta -mgl\sin\theta + J \ddot\theta &= 0 \\[3ex]
+
+        ml^2\ddot\theta + J \ddot\theta &= mgl\sin\theta - ml \ddot x \cos\theta \\[3ex]
+
+        (ml^2 + J)\ddot\theta &= \\[3ex]
+
+        \ddot\theta &= \frac{ml (g \sin\theta - \ddot x \cos\theta)}{ml^2 + J} \tag{23}
+
+    \end{align}
+    <br/>
+
+    <p>
+        Equating the right hand sides of (22) and (23), and rearranging to give $\ddot x$:
+    </p>
+    <br/>
+    \begin{align}
+
+        \frac{f + ml \dot\theta^2 \sin\theta - M \ddot x}{ml\cos\theta} &= \frac{ml (g \sin\theta - \ddot x \cos\theta)}{ml^2 + J} \\[3ex]
+
+        (ml^2 + J)(f + ml \dot\theta^2 \sin\theta - M \ddot x) &= (ml\cos\theta)(mgl\sin\theta - ml \ddot x \cos\theta) \\[3ex]
+
+        (ml^2 + J)(f + ml \dot\theta^2 \sin\theta) - (ml^2 + J) M \ddot x &= (ml)^2 g \sin\theta \cos\theta - (ml\cos\theta)^2 \ddot x \\[3ex]
+
+        (ml\cos\theta)^2 \ddot x - (ml^2 + J)M\ddot x &= (ml)^2 g \sin\theta\cos\theta - (ml^2 + J)(f + ml\dot\theta^2\sin\theta) \\[3ex]
+
+        \left[(ml\cos\theta)^2 - (ml^2 + J)M \right] \ddot x &=  \\[3ex]
+
+        \ddot x &= \frac{(ml)^2 g \sin\theta\cos\theta - (ml^2 + J)(f + ml\dot\theta^2\sin\theta)}{(ml\cos\theta)^2 - (ml^2 + J)M} \tag{24} \\[3ex]
+
+    \end{align}
+    <br/>
+    <blockquote style="background-color:eeeeee; padding: 14px">
+        <p>
+            Note. Equations (20) and (22) have an undefined result when $\cos\theta$ is zero, therefore these equations should be avoided for 
+            obtaining $\ddot x$ and $\ddot\theta$. Equations (19) and (23) serve the same purpose and therefore these are preferred.
+        </p>
+    </blockquote>
+    <br/>
+
+    <h3>3.7 Applying a Rotational Inertia Constant</h3>
+    <p>
+        The rotational inertia of a point mass at fixed distance $l$ from the axis of rotation (as per our pendulum),
+        is given by (see <a href="https://en.wikipedia.org/wiki/List_of_moments_of_inertia">List of moments of inertia</a>):
+    </p>
+
+    $$ J = ml^2  $$
+    <br/>
+    <p>
+        However, the following alternative definition for $J$ is given by Cannon [2]:
+    </p>
+    <br/>
+    $$ J = \frac{ml^2}{3} $$
+    <br/>
+    <p>
+        This is the moment of inertia for a pole of length $l$ with uniformly distributed mass along its length, and although not 
+        stated explicitly elsewhere the use of this definition is ubiquitous in the literature (see appendices C, D and E). The 
+        reasoning for this choice is discussed in Appendix C: <i>The Equations of Cannon</i>, but regardless of that reasoning,
+        what we can say is that of the various definitions of $J$ that we may elect to apply for a pendulum, they are all some 
+        constant multiple of $ml^2$. As such the above equations may be simplified with the following substitution:
+    </p>
+    $$ J = kml^2 \tag{25} $$
+    <br/>
+    <p>
+        Where $k$ is some constant to be substituted later. Substituting (25) into (21), (23) and (24), and repeating (19) to 
+        show the final set of equations together:
+    </p>
+
+    $$ \ddot x = \frac{f - ml \ddot\theta \cos\theta + ml \dot\theta^2 \sin\theta}{m_c  + m} \tag{19} $$
+    <br/>
+
+    <p>(25) into (21):</p>
+
+    $$ \ddot\theta = \frac{Mg\sin\theta - \cos\theta (f + ml\dot\theta^2\sin\theta)}{(1+k)Ml - ml\cos^2\theta} \tag{26} $$
+    <br/>
+
+    <p>(25) into (23):</p>
+
+    $$ \ddot\theta = \frac{g\sin\theta - \ddot x \cos\theta}{(1+k)l} \tag{27} $$
+    <br/>
+
+    <p>(25) into (24):</p>
+
+    $$ \ddot x = \frac{mg\sin\theta\cos\theta - (1+k)(f + ml \dot\theta^2 \sin\theta)}{m\cos^2\theta - (1+k)M} \tag{28} $$
+    <br/>
+
+    <blockquote style="background-color:eeeeee; padding: 14px">
+        <p>
+            These equations present the following three options for finding values for $\ddot x$ and $\ddot\theta$.
+        </p>
+        <ol>
+            <li>
+                Equation (26) can be evaluated to obtain a value for $\ddot\theta$, and the result substituted into equation (19) to obtain a
+                value for $\ddot x$.
+            </li>
+            <br/>
+            <li>
+                Equation (28) can be evaluated to obtain a value for $\ddot x$, and the result substituted into equation (27) to obtain a value 
+                for $\ddot\theta$.
+            </li>
+            <br/>
+            <li>
+                Equations (26) and (28) can be evaluated to directly obtain $\ddot\theta$ and $\ddot x$, respectively. 
+            </li>
+        </ol>
+        <p>
+            Options 1 and 2 are generally preferred as they avoid redundant recalculation of intermediate results.
+        </p>
+    </blockquote>
+    <br/>
+
+    <h3>3.8 Friction</h3>
+    <p>
+        The most significant sources of friction in the cart-pole system are (i) friction between the cart and the track, (ii) friction in 
+        the pendulum's  pivot joint, and (iii) air resistance. The equations given in the literature generally model the first two types of friction, or no
+        friction at all; here we will examine the first two types, omitting air friction.
+    </p>
+    <p>
+        Friction is necessarily modelled with an approximation as it is the result of many complex processes at many scales, such as atomic 
+        forces, microscopic and macroscopic structure, and factors such as vibration, dirt and dust ingress between moving surfaces,
+        fluid dynamics (if lubrication is used), etc.
+    </p>
+    <p>
+        For sliding/translational friction between two flat surfaces we employ the <a href="https://en.wikipedia.org/wiki/Friction#Dry_friction">
+        Coulomb approximate model of friction</a>. This model defines a friction force given by the product of (i) the force pressing the two surfaces
+        together (know as the normal force), and (ii) the coefficient of friction between the two surfaces (with a rough surface having a higher 
+        coefficient of friction than a smooth surface). Notably, Coulomb friction is not proportional to contact surface area or velocity of the 
+        sliding object.
+    </p>
+    <p>
+        For rotational friction (also know as torsional friction) Cannon [2] suggests a model (§2.2, figure 2.4e, pg 42) that defines a 
+        friction force that is proportional to angular velocity; this is consistent with a lubricated ball bearing joint in which the lubricant surrounding
+        the bearings reduces friction greatly, but also introduces fluid friction caused by viscosity of the lubricant. The friction in such a 
+        bearing is typically very low (e.g. compared to sliding dry friction) therefore although the friction increases with angular velocity, the 
+        coefficient of friction will typically be so low as to result in only a small friction force, especially at the relatively low angular 
+        velocities expected in the cart-pole system.
+    </p>
+    <p>
+        Regarding static friction, we have chosen not to model this. For one, the cart-pole system could be considered to be in constant motion,
+        or we could claim that static friction is minimal in the wheels and the pole pivot joint. From a practical point of view an exact zero 
+        velocity will occur (i) when the cart-pole system begins from a stationary state, and (ii) when the cart and pole change direction of motion
+        as they oscillate back and forth during balancing. Scenario (i) exists only for a single initial instant and therefore doesn't affect the overall
+        dynamics of the system thereafter.
+    </p>
+    <p>
+        Scenario (ii) is more problematic, it will hardly ever (or never) be observed precisely upon a simulation timestep (see §6 Numerical Integration),
+        rather, it will occur between timesteps, resulting in an instantaneous and discontinuous change in the forces acting on the system partway between
+        two consecutive timesteps. As such, the proper handling of static friction (occurring as the result of instantaneous zero velocities) requires
+        additional complexity around the detection and handling of the zero velocity states, in exchange for what is likely a minimal improvement 
+        in modelling quality. Hence the choice to not model static friction is in keeping with Cannon's guidance regarding judgement of which real
+        world physical characteristics to model and which to omit (see appendix C for further discussion on this point).
+    </p>
+    <p>
+        Finally, note that friction is always a force that acts in the opposite direction to the direction of motion, i.e. friction is always a
+        retarding force on motion; we can use this fact to make basic sign checks on the friction force terms.
+    </p>
+    <br/>
+
+    <b>Cart-Track Friction</b>
+    <p>
+        Figure 1 shows a cart with wheels which would typically contain lubricated low friction wheel bearings as the primary source of friction
+        between the cart and the track. Alternatively we could choose to model the cart as a solid block sliding along a flat surface (with horizontal
+        guides to prevent the cart sliding sideways).
+    </p>
+
+    <p>
+        Cart-track sliding friction as defined by Coulomb's law is given by:
+    </p>
+    <br/>
+    $$ F_f = -\mu_c |N_c| \sgn(\dot x) \tag{29}$$
+    <br/>
+    <p>
+        Where $N_c$ is the normal force between the cart and the track, and $\mu_c$ is the coefficient of friction between the cart and the track. The
+        normal force consists of two counteracting forces; the downward vertical force being applied by the cart onto the track, and an opposing 
+        upwards force being applied by the track onto the cart, preventing it from falling through the ground. The magnitude of these two forces is 
+        equal, with the downward force having a negative sign, and the upward force having a positive sign. We take the absolute value of this force 
+        and therefore either of the two forces can be used as the value for $N_c$.
+    </p>
+
+    <p>
+        Alternatively we could model cart-track friction as originating from rotation of the cart's wheel bearings:
+    </p>
+    <br/>
+    $$ F_f = -\mu_c |N_c| \frac{\dot x}{r} \tag{29-R}$$
+    <br/>
+    <p>
+        I.e. in this model cart-track friction is proportional to cart velocity. Note that we divide cart velocity by wheel radius $r$ to obtain the 
+        wheel angular velocity, and that the coefficient of friction in this model will tend to be much lower than for sliding friction.
+    </p>
+
+    <br/>
+    <blockquote style="background-color:eeeeee; padding: 14px">
+        <p>
+            Here we treat $N_c$ as a scalar that represents the magnitude and sign of the vertical normal force. As an alternative we could have 
+            treated it as a vector. Either way, $|N_c|$ gives the magnitude of the normal force between the cart and the track, i.e. the vertical bar 
+            notation defines the absolute value of a scalar, and the length of a vector (also known as the modulus or magnitude of the vector).
+        </p>
+        <p>
+            In principle a pendulum with a very high rotational velocity and/or a high mass could result in enough centripetal force to overcome gravity
+            and therefore pull the cart upwards and off the track. In that scenario the normal force applied by the cart onto the track changes
+            to a positive sign (upwards force) and our friction equations become invalid. To address this we could say that we expect the system to never
+            approach such a state, or we could say that a special kind of cart-track system is in use that prevents the cart from derailing, e.g. roller
+            coasters use <a href="https://en.wikipedia.org/wiki/Underfriction">up-stop wheels</a> to prevent the car from derailing. When the up-stop wheels
+            are applying a force they will also produce friction, and if we assume that their co-efficient of friction is the same as for the normal wheels
+            then equation (29) remains valid.
+        </p>
+        <p>
+            This may seem to be an unnecessary discussion about a model state that is generally not of interest, but it's important to be aware of such 
+            details. A computer simulation could experience such states unexpectedly, and if they aren't properly considered then the fact that such
+            a state occurred and potentially invalidated the whole model may go unnoticed.
+        </p>
+    </blockquote>    
+    <br/>
+
+    <p>
+        The vertical/normal force applied by the cart onto the track is the result of the combined weight of the cart and pole (i.e. the gravitational pull
+        on the cart and pole), and a varying force resulting from motion of the pole.
+    </p>
+    <br/>
+
+    \begin{align}
+
+        N_c &= (F^i_q)_y - mg - m_c g \\[3ex]
+
+        N_c &= ml \left[ \ddot\theta \sin\theta + \dot\theta^2 \cos\theta \right] - Mg \tag{30} \\[3ex]
+
+    \end{align}
+    <br/>
+
+    <blockquote style="background-color:eeeeee; padding: 14px">
+        <p>
+            Note the sign of the force resulting from the pendulum mass at $Q$ resisting the centripetal pull towards pivot point $P$ (given by the $\dot\theta^2$ term);
+            this is a positive (upwards) force when the pendulum rod is upright, i.e. the pendulum mass pulls the cart up as expected.
+        </p>
+    </blockquote>
+    <br/>
+    <p>
+        Substituting (30) into (29):
+    </p>
+    <br/>
+
+    $$ F_f = -\mu_c \left| \left(ml ( \ddot\theta \sin\theta + \dot\theta^2 \cos\theta) - Mg \right) \right| \sgn(\dot x) \tag{31} $$
+    <br/>
+
+    <p>
+        Alternatively, if the pendulum mass is low and/or its angular velocity is always low, then a reasonable approximation of (31)
+        can be obtained by dropping the component of the normal force resulting from motion of the pendulum, giving:
+    </p>
+    <br/>
+    $$ F_f = -\mu_c Mg \sgn(\dot x) \tag{32} $$
+    <br/>
+    <p>
+        Noting that if the pendulum is being successfully balanced, its angle will tend to vary only slightly and with moderate angular 
+        velocity, i.e. this approximate normal force will only deviate significantly from the true force if the pendulum is swinging 
+        wildly. If the pendulum does happen to swing with high angular velocity then perhaps a more appropriate normal force approximation 
+        is based on the weight of the cart only, not including the pole.
+    </p>
+    <br/>
+    $$ F_f = -\mu_c m_c g \sgn(\dot x) \tag{33} $$
+
+    <br/>
+    <p>
+        I.e. in general some constant magnitude with a sign opposite to the cart's direction of motion is a reasonable approximation for 
+        the cart-track friction force.
+    </p>
+    <p>
+        However, a constant friction force based on the sign of the velocity term is not conducive to simulation of the cart-pole system. This
+        is because simulation requires use of a numerical method (see §6) to obtain updates to the model state variables (i.e. the position and
+        velocity of both the cart and the pole) at successive discrete timesteps, and such numerical methods are based on calculating the gradient 
+        (i.e. instantaneous rate of change) of each state variable and projecting those gradients forward in time to obtain a new model state 
+        one timestep in the future. The use of a constant friction term that changes sign only, results in a discontinuity in the gradients 
+        about velocity zero, and this discontinuity greatly impedes the ability of any numerical method to accurately project forward to the 
+        correct state at the next timestep.
+    </p>
+    <p>
+        I.e. e.g. if the velocity zero crossing occurs halfway between two timesteps, then the friction force may be applied in the wrong 
+        direction for the latter half of the timestep interval, thus propelling the cart rather than retarding its motion. As such, a friction
+        force that is proportional to velocity is a more practical approximation, as it results in a continuous gradient about zero velocity:
+    </p>
+    <br/>
+    $$ F_f = -\mu_c \dot x \tag{34} $$
+    <br/>
+    <br/>
+    <br/>
+
+    <b>Cart-Pole Friction</b>
+    <p>
+        The joint that connects the pole to the cart will also exhibit friction, resulting in an additional moment (rotational force)
+        that retards rotation of the pole. This friction is the result of surface contact within the joint, and as such this rotational 
+        friction can also be modelled with Coulomb's Law.
+    </p>
+    <br/>
+    $$ \mathbf{M}_f = \mu_p|N_p|sgn(\dot\theta) \tag{35}$$
+    <br/>
+
+    <p>
+        Where $\mathbf{M}_f$ is the moment of friction, $\mu_p$ is the joint's coefficient of friction, and $N_p$ is the normal force between the 
+        pole and the cart. Note that a positive (clockwise) angular velocity will result in a positive (anticlockwise) torque/moment 
+        (see table 1 - Conventions), hence no minus sign is required.
+    </p>
+    <p> 
+        The normal force in this case is a force with varying direction, i.e. the internal surfaces within the joint that meet under force depend 
+        on the angle of the pole and the direction of the force being applied by the pole onto the cart. As such $N_p$ should be considered to be 
+        vector. Here we treat the x and y components of that vector separately:
+    </p>
+    <br/>
+    \begin{align}
+
+        (N_p)_x &= (F^i_q)_x  \tag{36} \\[3ex]
+
+        (N_p)_y &= (F^i_q)_y - mg \tag{37}
+
+    \end{align}
+    <br/>
+
+    <p>
+        The magnitude of vector $N_p$ is given by Pythagoras' theorem:
+    </p>
+    <br/>
+
+    \begin{align}
+
+        |N_p| &= \sqrt{[(N_p)_x]^2 + [(N_p)_y]^2} \\[3ex]
+
+        |N_p| &= \left[\left(ml\dot\theta^2\sin\theta -ml\ddot\theta\cos\theta -m\ddot x \right)^2 + \left(ml \ddot\theta \sin\theta + ml \dot\theta^2 \cos\theta -mg \right)^2\right]^\frac{1}{2} \tag{38} \\[3ex]
+
+    \end{align}
+    <br/>
+    <p>
+        As with cart-track friction we may wish to employ a simpler approximation of cart-pole friction by replacing the normal force equation
+        with a constant normal force. In this case the average normal force that is observed depends very much on the dynamics of the system, i.e. e.g.
+        whether the pole remains balanced or swings wildly. As such there is no clear obvious choice for a single constant normal force that is
+        reasonable in all scenarios. In light of this a positive value somewhere in the interval $(0,mg]$ is the next best option, e.g.:
+    </p>
+    <br/>
+    $$ \mathbf{M}_f = \mu_p \frac{mg}{2} sgn(\dot\theta) \tag{39}$$
+    <br/>
+
+    <p>
+        As another alternative Cannon suggests modelling rotational friction as being directly proportional to angular velocity 
+        ([2] §2.2, figure 2.4e, pg 42). 
+    </p>
+    <br/>
+    $$ \mathbf{M}_f = \mu_p \dot\theta \tag{40} $$
+    <br/>
+
+    <p>
+        As discussed above (§3.8, ¶4), this model is more consistent with a lubricated ball bearing joint, which we may consider to be more
+        appropriate in situations where high angular velocities are expected, perhaps in the hundreds or thousands of
+        <a href="https://en.wikipedia.org/wiki/Revolutions_per_minute">rpm</a> range, such as in a motor car engine.
+    </p>
+    <p>
+        We could also choose to extend equation (40) with a normal force term, as the force being applied through the bearing will affect 
+        its behaviour. E.g. perhaps one reasonable choice is:
+    </p>
+    <br/>
+    $$ \mathbf{M}_f = \mu_p \dot\theta + \tilde\mu_p |N_p| sgn(\dot\theta) \tag{41} $$
+    <br/>
+    <p>
+        Where $\tilde\mu_p$ is an additional coefficient of friction that applies to the normal force only. This independent linear scaling may
+        be appropriate for low forces, whereas high forces may cause the bearing to distort, resulting in non-linear changes in friction that 
+        also affect the first (angular velocity) term. 
+    </p>
+    <p>
+        Overall we expect the forces through the pole's pivot joint to be minimal and to have a minimal affect on joint friction. Furthermore,
+        the use of a friction force based only on the sign of the angular velocity will result in a discontinuity in the equations of motion (as 
+        discussed above in relation to the cart-track friction), therefore we prefer a friction force proportional to velocity as given 
+        by equation (40).
+    </p>
+    <p>
+        As a final alternative, we may consider pivot joint friction to be so low as to be inconsequential, especially if cart-track friction
+        is being modelled, i.e. so long as there is friction somewhere in the model.
+    </p>
+    <br/>
+    <br/>
+
+    <b>Equations of Motion with Friction</b>
+    <p>
+        The force equilibrium equations (12) and (18) can be extended to include the friction forces $F_f$ and $\mathbf{M}_f$, giving the  
+        following equations of motion. These are equations (19), (26), (27) and (28) extended to incorporate friction forces:
+    </p>
+    <br/>
+
+    <p>Equation (19) extended to include friction:</p>
+
+    $$ \ddot x = \frac{f - ml \ddot\theta \cos\theta + ml \dot\theta^2 \sin\theta + F_f}{M} \tag{19-F} $$
+    <br/>
+
+    <p>Equation (26) extended to include friction:</p>
+
+    $$ \ddot\theta = \frac{Mg\sin\theta - \cos\theta (f + ml\dot\theta^2\sin\theta + F_f) - \cfrac{M\mathbf{M}_f}{ml}}{(1+k)Ml - ml\cos^2\theta} \tag{26-F} $$
+    <br/>
+
+    <p>Equation (27) extended to include friction:</p>
+
+    $$ \ddot\theta = \frac{g\sin\theta - \ddot x \cos\theta - \cfrac{\mathbf{M}_f}{ml}}{(1+k)l} \tag{27-F} $$
+    <br/>
+
+    <p>Equation (28) extended to include friction:</p>
+
+    $$ \ddot x = \frac{mg\sin\theta\cos\theta - (1+k)(f + ml\dot\theta^2 \sin\theta + F_f) - \cfrac{\mathbf{M}_f \cos\theta}{l}}{m\cos^2\theta - (1+k)M} \tag{28-F} $$
+    <br/>
+    <br/>
+
+    <h3>3.9 Multiple Poles</h3>
+    <p>
+        The task of balancing the inverted pendulum can be made more difficult by attaching a second pendulum to the cart. This new two pole
+        task becomes increasingly difficult as the two pole lengths approach the same length, becoming impossible when they have identical 
+        lengths. Extending the task to three or more poles provides a further option for increasing task difficulty in a different way. Here 
+        we derive the equations of motion for N poles.
+    </p>
+    <p>
+        Equation (10) gives the horizontal force applied by a single pole onto the cart; we rewrite this to give the horizontal force 
+        applied by the i'th pole:
+    </p>
+    <br/>
+    
+    $$ \tilde{F_i} = -m_i \left[l_i \ddot\theta_i \cos\theta_i - l_i \dot\theta^2_i \sin\theta_i + \ddot x \right] \tag{42} $$ 
+    <br/>
+
+    <p>
+        Equation (12) is the equilibrium equation for horizontal forces acting on the cart; this can now be extended to incorporate forces
+        from N poles:
+    </p>
+    <br/>
+    \begin{align}
+
+        f -m_c\ddot x + \sum_i \tilde{F_i} &= 0 \\[3ex]
+
+        m_c\ddot x - \sum_i \tilde{F_i} &= f \tag{43}
+
+    \end{align}
+    <br/>
+
+    <p>
+        Equation (18) is the equilibrium equation for torque forces acting on a pole; we rewrite this to give the torque forces 
+        for the i'th pole:
+    </p>
+    <br/>
+    \begin{align}
+
+        m_i l_i (l_i \ddot\theta_i + \ddot x \cos\theta_i ) -m_i g l_i\, \sin\theta_i + J_i \ddot\theta_i = 0 \\[3ex]
+
+        m_i l_i (l_i \ddot\theta_i + \ddot x \cos\theta_i ) -m_i g l_i\, \sin\theta_i +  k m_i l_i^2 \ddot\theta_i = 0 \tag{44}
+
+    \end{align}
+    <br/>
+
+    <p>
+        Rearranging (43) to give $\ddot x$:
+    </p>
+    \begin{align}
+
+        m_c\ddot x - \sum_i \tilde{F_i} &= f \\[3ex]
+
+        m_c\ddot x + \sum_i \left[m_i \left(l_i \ddot\theta_i \cos\theta_i - l_i \dot\theta^2_i \sin\theta_i + \ddot x \right)\right] &= f \\[3ex]
+
+        m_c\ddot x + \sum_i \left[m_i l_i \left( \ddot\theta_i \cos\theta_i - \dot\theta^2_i \sin\theta_i \right)\right] + \ddot x \sum_i m_i &= f \\[3ex]
+
+        m_c\ddot x + \ddot x \sum_i m_i &= f - \sum_i \left[m_i l_i \left( \ddot\theta_i \cos\theta_i - \dot\theta^2_i \sin\theta_i \right)\right] \\[3ex]
+
+        \ddot x &= \frac{f - \sum_i \left[m_i l_i \left( \ddot\theta_i \cos\theta_i - \dot\theta^2_i \sin\theta_i \right)\right]}{m_c + \sum_i m_i} \tag{45} \\[3ex]
+
+    \end{align}
+    <br/>
+    <blockquote style="background-color:eeeeee; padding: 14px">
+        <p>
+            Equation (45) is essentially (19) extended to multiple poles.
+        </p>
+    </blockquote>
+    <br/>
+    <p>
+        Rearranging (44) to give $\ddot\theta$:
+    </p>
+    <br/>
+
+    \begin{align}
+
+        m_i l_i (l_i \ddot\theta_i + \ddot x \cos\theta_i ) -m_i g l_i \sin\theta_i +  k m_i l_i^2 \ddot\theta_i &= 0 \\[3ex]
+
+        m_i l_i^2 \ddot\theta_i +  k m_i l_i^2 \ddot\theta_i &= m_i g l_i \sin\theta_i - m_i l_i \ddot x\cos\theta_i \\[3ex]
+
+        (1+k)m_i l_i^2 \ddot\theta_i &= \\[3ex]
+
+        \ddot\theta_i &= \frac{m_i g l_i \sin\theta_i - m_i l_i \ddot x\cos\theta_i}{(1+k)m_i l_i^2} \\[3ex]
+
+        \ddot\theta_i &= \frac{g\sin\theta_i - \ddot x\cos\theta_i}{(1+k)l_i} \tag{46} \\[3ex]
+
+    \end{align}
+    <br/>
+
+    <blockquote style="background-color:eeeeee; padding: 14px">
+        <p>
+            Equation (46) is (27) with the addition of pole index subscripts.
+        </p>
+    </blockquote>
+    <br/>
+    <p>
+        Substituting (46) into (45):
+    </p>
+    <br/>
+    \begin{align}
+
+        \ddot x &= \frac{f - \sum_i \Biggl[m_i l_i \left( \left[ \frac{g\sin\theta_i - \ddot x\cos\theta_i}{(1+k)l_i} \right] \cos\theta_i - \dot\theta^2_i \sin\theta_i \right) \Biggr]}{m_c + \sum_i m_i} \\[3ex]
+
+        \ddot x &= \frac{f - \left(\frac{g}{1+k}\right) \sum_i\left(m_i\sin\theta_i\cos\theta_i\right) + \left(\frac{\ddot x}{1+k}\right) \sum_i\left(m_i\cos^2\theta_i \right) + \sum_i\left(m_i l_i \dot\theta_i^2\sin\theta_i\right)}{m_c + \sum_i m_i} \\[3ex]
+
+        \Bbb M &= m_c + \sum_i m_i \\[3ex]
+
+        \Bbb M \ddot x &= f - \left(\frac{g}{1+k}\right) \sum_i\left(m_i\sin\theta_i\cos\theta_i\right) + \left(\frac{\ddot x}{1+k}\right) \sum_i\left(m_i\cos^2\theta_i \right) + \sum_i\left(m_i l_i \dot\theta_i^2\sin\theta_i\right) \\[3ex]
+
+        \Bbb M \ddot x - \left(\frac{1}{1+k}\right) \sum_i\left(m_i\cos^2\theta_i \right)\, \ddot x &= f - \left(\frac{g}{1+k}\right) \sum_i\left(m_i\sin\theta_i\cos\theta_i\right) + \sum_i\left(m_i l_i \dot\theta_i^2\sin\theta_i\right) \\[3ex]
+
+        \left[\Bbb M - \left(\frac{1}{1+k}\right) \sum_i\left(m_i\cos^2\theta_i \right)\right] \ddot x &= \\[3ex]
+
+        \ddot x &= \frac{f - \left(\frac{g}{1+k}\right) \sum_i\left(m_i\sin\theta_i\cos\theta_i\right) + \sum_i\left(m_i l_i \dot\theta_i^2\sin\theta_i\right)}{\Bbb M - \left(\frac{1}{1+k}\right) \sum_i\left(m_i\cos^2\theta_i \right)} \tag{47} \\[3ex] 
+
+    \end{align}
+    <br/>
+    <blockquote style="background-color:eeeeee; padding: 14px">
+        <p>
+            This presents the following evaluation procedure for a cart with multiple poles:
+        </p>
+        <ol>
+            <li>Evaluate (47) to obtain $\ddot x$</li><br/>
+            <li>Evaluate (46) separately for each of the N poles (using the previously calculated value for $\ddot x$) to obtain each of the $\ddot\theta_i$</li>
+        </ol>
+    </blockquote>
+    <br/>
+
+    <p>
+        If we include friction terms in the equilibrium equations (43) and (44), and repeat the same derivation steps, we obtain:
+    </p>
+
+    <br/>
+    $$ \ddot x = \frac{f - \left(\frac{g}{1+k}\right) \sum_i\left(m_i\sin\theta_i\cos\theta_i\right) + \sum_i\left(m_i l_i \dot\theta_i^2\sin\theta_i\right) + \left(\frac{1}{1+k}\right) \sum_i \left( \cfrac{{\mathbf{M}_f}_i \cos\theta_i}{l_i} \right) + F_f}{\Bbb M - \left(\frac{1}{1+k}\right) \sum_i\left(m_i\cos^2\theta_i \right)} \tag{48} $$
+    <br/>
+    $$ \ddot\theta_i = \frac{g\sin\theta_i - \ddot x\cos\theta_i - \cfrac{{\mathbf{M}_f}_i}{m_i l_i}}{(1+k)l_i} \tag{49} $$    
+    <br/>
+    <br/>
+    <br/>
+
+
+    <h2>4. A Hybrid Model for Approximating a Pole with Uniform Mass</h2>
+    <p>
+        The above derivations in section 3 are based on an ideal pendulum, i.e. the pole consists of a massless rod with a point mass 
+        attached at one end (at point Q). In contrast to this the equations appearing in the literature apply a hybrid approach (see appendix C)
+        whereby a pole with uniformly distributed mass is approximated by a point mass halfway along its length, and a rotational inertia term 
+        based on a uniform mass. We will now adapt the equations presented in section 3 to follow this hybrid approach.
+    </p>
+    <p>
+        A point mass halfway along the pole can be modelled simply be replacing every instance of $l$ in our equations with $l/2$, however, to
+        avoid clutter we prefer to represent the pole's half length with $\hat l$. This is in contrast to the literature where $l$ is generally 
+        used to represent the half-length; we believe our approach makes a clearer distinction between when the pole's full length and half length
+        is to be used.
+    </p>
+    <br/>
+
+    <h3>4.1 Rotational Inertia</h3>
+    <p>
+        As discussed in section 3.7, the moment of inertia for a pole with length $l$ and uniformly distributed mass is given by:
+    </p>
+    <br/>
+    $$ J = \frac{ml^2}{3} $$
+    <br/>
+    <p>
+        Also in section 3.7 we chose to represent the constant factor with constant $k$, giving:
+    </p>
+    <br/>
+    $$ J = kml^2 $$
+    <br/>
+    <p>
+        This allows us to apply the same equations for a point mass and a uniform mass, with the only difference being the choice of
+        value for $k$.
+    </p>
+    <p>
+        For our hybrid model we wish to continue to apply the rotational inertia for a pole of length $l$, even though all other terms
+        will be based on a point mass halfway along the pole. Therefore we simply rewrite the rotational inertia terms as functions
+        of $\hat{l}$ instead of $l$, maintaining equivalence:
+    </p>
+    <br/>
+    \begin{align}
+
+        J &= kml^2 \\[3ex]
+        J &= km(2\hat{l})^2 \\[3ex]
+        J &= 4km\hat{l}^2 \\[3ex]
+    \end{align}
+    <br/>
+
+    <p>
+        And given that we wish to apply the rotational inertia of a pole with uniform mass, we can also substitute in $k=1/3$, giving:
+    </p>
+    <br/>
+    $$ J = \frac{4}{3}m\hat{l}^2 $$
+    <br/>
+
+    <p>
+        In summation, to produce the hybrid model equations we take the equations from section 3 and substitute each instance of $l$ 
+        with $\hat{l}$, and each instance of $k$ with $4/3$.
+    </p>
+    <br/>
+
+    <h3>4.2 Single Pole Equations for the Hybrid Model</h3>
+    <p>
+        We now apply the above substitutions to equations (19-F), (26-F), (27-F) and (28-F), to give the hybrid equations for a single pole
+        (including friction terms):
+    </p>
+    <br/>
+    <p>Equation (19-F) adapted for the hybrid model:</p>
+
+    $$ \ddot x = \frac{f - m\hat{l} \ddot\theta \cos\theta + m\hat{l} \dot\theta^2 \sin\theta + F_f}{M} \tag{50} $$
+    <br/>
+
+    <p>Equation (26-F) adapted for the hybrid model:</p>
+
+    $$ \ddot\theta = \frac{Mg\sin\theta - \cos\theta (f + m\hat{l}\dot\theta^2\sin\theta + F_f) - \cfrac{M\mathbf{M}_f}{m\hat{l}}}{\frac{7}{3} M\hat{l} - m\hat{l}\cos^2\theta} \tag{51} $$
+    <br/>
+
+    <p>Equation (27-F) adapted for the hybrid model:</p>
+
+    $$ \ddot\theta = \frac{g\sin\theta - \ddot x \cos\theta - \cfrac{\mathbf{M}_f}{m\hat{l}}}{\frac{7}{3}\hat{l}} \tag{52} $$
+    <br/>
+
+    <p>Equation (28-F) adapted for the hybrid model:</p>
+
+    $$ \ddot x = \frac{mg\sin\theta\cos\theta - \frac{7}{3}(f + m\hat{l}\dot\theta^2 \sin\theta + F_f) - \cfrac{\mathbf{M}_f \cos\theta}{\hat{l}}}{m\cos^2\theta - \frac{7}{3}M} \tag{53} $$
+    <br/>
+    <br/>
+
+    <h3>4.3 Multiple Pole Equations for the Hybrid Model</h3>
+    <p>
+        We now apply the above substitutions to equations (48) and (49), to give the hybrid equations for multiple poles (including friction terms):
+    </p>
+    <br/>
+
+    <p>Equation (48) adapted for the hybrid model:</p>
+    <br/>
+    $$ \ddot x = \frac{f - \frac{3}{7} g \sum_i\left(m_i\sin\theta_i\cos\theta_i\right) + \sum_i\left(m_i \hat{l}_i \dot\theta_i^2\sin\theta_i\right) + \frac{3}{7} \sum_i \left( \cfrac{{\mathbf{M}_f}_i \cos\theta_i}{\hat{l}_i} \right) + F_f}{\Bbb M - \frac{3}{7} \sum_i\left(m_i\cos^2\theta_i \right)} \tag{54} $$
+    <br/>
+
+    <p>Equation (49) adapted for the hybrid model:</p>
+    <br/>
+    $$ \ddot\theta_i = \frac{g\sin\theta_i - \ddot x\cos\theta_i - \cfrac{{\mathbf{M}_f}_i}{m_i \hat{l}_i}}{\frac{7}{3}\hat{l}_i} \tag{55} $$
+    <br/>
+
+    <br/>
+
+    <h2>5. Recommended Equations</h2>
+    <p>
+        The derived equations in section 3 present some options when assembling a final set of equations for the cart-pole system, and section 4 
+        presents the option of a hybrid model with a modified rotational inertia term. In this section a recommendation is made for each option,
+        thus arriving at a final complete set of recommended equations.
+    </p>
+    <br/>
+
+    <h3>5.1 Assumptions</h3>
+
+    <b>Rotational Inertia</b>
+
+    <p>
+        Firstly, we recommend adoption of the hybrid model discussed in section 4. This choice is in the spirit of the equations used
+        elsewhere in the literature over a number of decades, but corrected to represent the inertia of a pole with the specified length.
+        The alternative is to use the exact inertia term for a point mass, which reverts the entire set of equations back to modelling an 
+        ideal pendulum (point mass pendulum).
+    </p>
+    <p>
+        As such we will use hybrid model equations (52) and (53) for the single pole task, and equations (54) and (55) for the multiple pole 
+        equations.
+    </p>
+    <br/>
+
+    <b>Cart-Track Friction</b>
+    <p>
+        For cart-track friction we recommend a simplified approximation based on cart velocity as per equation (34) (repeated here):
+    </p>
+    <br/>
+    $$ F_f = -\mu_c \dot x \tag{34} $$
+    <br/>
+
+    <b>Cart-Pole Friction</b>
+    <p>
+        For cart-pole friction we recommend a simplified approximation based on angular velocity as per equation (40) (repeated here):
+    </p>
+    <br/>
+    $$ \mathbf{M}_f = \mu_p \dot\theta \tag{40} $$
+    <br/>
+
+    <h3>5.2 Single Pole Equations</h3>
+    <p>
+        Therefore the final recommended equations for a single pole are:
+    </p>
+    <p>Substituting (34) and (40) into (53):</p>
+    <br/>
+
+    $$ \ddot x = \frac{mg\sin\theta\cos\theta - \frac{7}{3}\left[f + m\hat{l}\dot\theta^2 \sin\theta -\mu_c \dot x\right] - \cfrac{\mu_p \dot\theta \cos\theta}{\hat{l}}}{m\cos^2\theta - \frac{7}{3}M} \tag{56} $$
+    <br/>
+    
+    <p>Substituting (40) into (52):</p>
+    <br/>
+    $$ \ddot\theta = \frac{3}{7\hat{l}} \left(g\sin\theta - \ddot x \cos\theta - \cfrac{\mu_p \dot\theta}{m\hat{l}}\right) \tag{57} $$
+    <br/>
+
+    <blockquote style="background-color:eeeeee; padding:14px">
+        <span><b>Table 2: Symbols used in equations (56) and (57)</b></span>
+        <br/>
+        <table class="notationTable">
+
+            <tr><td>$\dot x$ &nbsp;</td><td>Horizontal velocity of the cart. A positive value represents movement to the right.</td></tr>
+
+            <tr><td>$\ddot x$ &nbsp;</td><td>Horizontal acceleration of the cart. A positive value represents acceleration to the right.</td></tr>
+
+            <tr><td>$m$&nbsp;</td><td>Mass of the pole (in kilograms).</td></tr>
+
+            <tr><td>$m_c$&nbsp;</td><td>Mass of the cart (in kilograms).</td></tr>
+
+            <tr><td>$M$ &nbsp;</td><td>Combined mass of the cart and the pole, i.e. $m + m_c$.</td></tr>
+
+            <tr><td>$\hat{l}$&nbsp;</td><td>Half the length of the pole (in metres).</td></tr>
+
+            <tr><td>$g$ &nbsp;</td><td>Gravitational acceleration (in m/s<sup>2</sup>). Here $g$ is taken to be the directionless magnitude of the acceleration caused 
+                by gravity (i.e. approximately 9.8 m/s<sup>2</sup> for gravity on Earth). The direction of gravitational acceleration is taken into account in the 
+                formulation of the equations, therefore the sign of g is positive.</td></tr>
+
+            <tr><td>$f$ &nbsp;</td><td>An external horizontal force applied to the cart (in Newtons). A positive
+                value represents a push to the right, and a negative value represents a push to the left.</td></tr>
+
+
+            <tr><td>$\theta$ &nbsp;</td><td>Angle of the pole. The pole is at 0° when oriented vertically straight up, 
+                +90° when horizontal and to the right of the pivot point, -90° when horizontal and to the left of the pivot point,
+                and +-180° when oriented vertically down.</td></tr>
+
+            <tr><td>$\dot \theta$ &nbsp;</td><td>Angular velocity of the pole. A positive value represents clockwise rotation.</td></tr>
+
+            <tr><td>$\ddot \theta$ &nbsp;</td><td>Angular acceleration of the pole. A positive value represents clockwise acceleration.</td></tr>
+
+            <tr><td>$\mu_c$&nbsp;</td><td>Coefficient of friction between the cart and the track.</td></tr>
+
+            <tr><td>$\mu_p$&nbsp;</td><td>Coefficient of friction between the pole and the cart, i.e. friction at the pole's pivot joint.</td></tr>
+            
+        </table>       
+    </blockquote>
+    <br/>
+
+    <h3>5.3 Multiple Pole Equations</h3>
+    <p>
+        The final recommended equations for multiple poles are:
+    </p>
+    <p>
+        Substituting (34) and (40) into (54) and rearranging:
+    </p>
+    <br/>
+    $$ \ddot x = \frac{g\sum_i\left(m_i\sin\theta_i\cos\theta_i\right) - \frac{7}{3} \left[f + \sum_i\left(m_i \hat{l}_i \dot\theta^2_i \sin\theta_i\right) - \mu_c \ddot x \right] - \sum_i\left(\cfrac{\mu_p\dot\theta_i\cos\theta_i}{\hat{l}_i}\right)}{ \sum_i\left(m_i\cos^2\theta_i\right) - \frac{7}{3}\Bbb{M}} \tag{58} $$
+    <br/>
+
+    <p>Substituting (40) into (55):</p>
+    <br/>
+    $$ \ddot\theta_i = \frac{3}{7\hat{l}_i} \left(g\sin\theta_i - \ddot x\cos\theta_i - \frac{\mu_p \dot\theta_i}{m_i \hat{l}_i} \right) \tag{59} $$
+    <br/>
+
+    <blockquote style="background-color:eeeeee; padding:14px">
+        <span><b>Table 3: Symbols used in equations (58) and (59)</b> [in addition to the symbols defined in table 2]</span>
+        <br/>
+        <table class="notationTable">
+
+            <tr><td>$m_i$&nbsp;</td><td>Mass of the i'th pole (in kilograms).</td></tr>
+
+            <tr><td>$\hat{l}_i$&nbsp;</td><td>Half the length of the i'th pole (in metres).</td></tr>
+
+            <tr><td>$\Bbb{M}$&nbsp;</td><td>Combined mass of the cart and all of the poles (in kilograms).</td></tr>
+
+            <tr><td>$\theta_i$ &nbsp;</td><td>Angle of the i'th pole. The pole is at 0° when oriented vertically straight up, 
+                +90° when horizontal and to the right of the pivot point, -90° when horizontal and to the left of the pivot point,
+                and +-180° when oriented vertically down.</td></tr>
+
+            <tr><td>$\dot \theta_i$ &nbsp;</td><td>Angular velocity of the i'th pole. A positive value represents clockwise rotation.</td></tr>
+
+            <tr><td>$\ddot \theta_i$ &nbsp;</td><td>Angular acceleration of the i'th pole. A positive value represents clockwise acceleration.</td></tr>
+
+            <tr><td>$\mu_p$&nbsp;</td><td>Coefficient of friction between the pole and the cart. We assume the same value for all of the poles.</td></tr>
+
+        </table>       
+    </blockquote>
+    <br/>
+
+    <h2>6. Numerical Integration</h2>
+    <p>
+        The equations of motion presented in this paper describe the rate of change (gradient) of each state variable for a given model state,
+        and therefore at a given instant in time. To apply the calculated gradients when simulating the cart-pole system it is necessary to 
+        resort to a <a href="https://en.wikipedia.org/wiki/Numerical_integration">numerical integration</a> method, whereby the system's change 
+        in state over time is <a href="https://en.wikipedia.org/wiki/Discretization">discretized</a> into timesteps, the gradients are computed
+        at each timestep and projected forward in time to obtain the model state at the next timestep.
+    </p>
+    <p>
+        However, numerical methods are not exact and therefore introduce an approximation error at each timestep. If this error is sufficiently
+        large then the dynamics of the simulated system may not be faithful to the dynamics of an equivalent real world system with identical 
+        model parameters.
+    </p>
+    <p>
+        The size of the approximation error depends on (i) the timestep size, and (ii) the numerical method that is used. E.g. the simplest numerical
+        integration method is <a href="https://en.wikipedia.org/wiki/Euler_method">Euler's method</a>, which employs a linear projection of the 
+        gradients to obtain the model state at the next timestep. Therefore, if a gradient is steadily increasing over time then its linear projection 
+        will be too low, as the projection does not take into account the change in gradient between the timesteps. However, alternative numerical 
+        methods are designed to mitigate this type of gradient projection undershoot (or overshoot), most notably the Runge-Kutta methods, which 
+        we will now briefly discuss.
+    </p>
+    <br/>
+
+    <h3>6.1 Runge-Kutta Methods</h3>
+    <p>
+        The <a href="https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods">Runge–Kutta methods</a> are a family of iterative numerical 
+        integration methods designed to minimise gradient projection error. These methods can be classified by the 
+        <a href="https://en.wikipedia.org/wiki/Big_O_notation"> order of</a> the approximation error they produce. E.g. first-order 
+        Runge-Kutta (which is simply Euler's method) produces errors with order $O(\tau)$ (where $\tau$ is the timestep size), whereas 
+        fourth-order Runge-Kutta produces errors with order $O(\tau^4)$. Hence for a timestep of 0.01 seconds, the fourth-order method produces errors that are in the order of 
+        $0.01^4/0.01 = 10^6$ times smaller than the first-order method.
+    </p>
+    <p>
+        However, the higher order methods require multiple evaluations of the gradients at intermediate model states (i.e. states between 
+        consecutive timesteps), hence there is a trade-off between increased accuracy and algorithmic complexity (CPU work per timestep).
+    </p>
+    <p>
+        Runge-Kutta is widely used, although alternative methods exist, such as
+        <a href="https://en.wikipedia.org/wiki/Linear_multistep_method">Adams-Bashfourth</a>.
+    </p>
+    <br/>
+
+    <h3>6.2 Comparing the Accuracy of Numerical Methods</h3>
+    <p>
+        We now devise an experiment to demonstrate the importance of the choice of timestep size and numerical method. We define a fixed set of
+        cart-pole model parameters, and run multiple simulations from the same initial model state, each with a different combination of timestep 
+        size and numerical method. The experiment model has a single pole, and utilises equations (56) and (57) from section 5.2. The model parameters 
+        are as follows:
+    </p>
+    <br/>
+    <blockquote style="background-color:eeeeee; padding:14px">
+        <span><b>Table 4: Model parameters for the numerical integration experiments</b></span>
+        <br/>
+        <table class="notationTable">
+            <tr><td>Cart mass ($m_c$)&nbsp;</td><td>10 kg</td></tr>
+            <tr><td>Pole mass ($m$)&nbsp;</td><td>0.1 kg</td></tr>
+            <tr><td>Pole length&nbsp;</td><td>1 metre</td></tr>
+            <tr><td>Initial pole angle ($\theta$)&nbsp;</td><td>90° (i.e. pointing horizontally to the right)</td></tr>
+            <tr><td>Cart-track coefficient of friction ($\mu_c$)&nbsp;</td><td>0.01</td></tr>
+            <tr><td>Cart-pole coefficient of friction ($\mu_p$)&nbsp;</td><td>0.001</td></tr>
+        </table>       
+    </blockquote>
+    <br/>
+    <p>
+        All other model parameters are initialised to zero, specifically, the cart position and the cart and pole velocities.
+    </p>
+    <p>
+        For each experiment run the cart-pole system is simulated for a number of seconds, and the pole angle is recorded at each timestep. No external
+        force is applied to the cart, therefore we expect the pole to fall and swing back and forth as a pendulum would, but noting that the cart is
+        free to move left-right and therefore it will also oscillate back and forth slightly in unison with the swinging of the pole, dampening the pole's
+        swinging motion somewhat.
+    </p>
+    <br/>
+
+    <figure>
+        <br/>
+        <img src="eulers-method.png"/>
+        <br/>
+        <figcaption><b>Figure 2.</b><br/>Cart-pole Simulations in which Euler's method is applied with three different timestep durations.</figcaption>
+    </figure>
+    <br/>
+
+    <p>
+        Figure 2 shows pole angle plots for three simulations based on Euler's method, with three different timestep durations of 1/1000th, 1/200th and
+        1/100th of a second, respectively. Note that the three simulations deviate significantly from each other within the 15 second simulation. Furthermore,
+        in the two simulations with the largest timestep size (and thus largest approximation error) the pole is very clearly swinging to a higher maximum angle
+        on each swing up, i.e. the pole is gaining energy on each swing in defiance of 
+        the law of <a href="https://en.wikipedia.org/wiki/Conservation_of_energy">conservation of energy</a>, despite the presence of friction and the absence of
+        any external forces adding energy to the system. This is a highly undesirable characteristic for a physical model that we may wish to simulate for longer 
+        than just a few seconds, as it makes the model in no way representative of the real world system it is attempting to simulate.
+    </p>
+
+    <p>
+        We now perform another set of three experiments, this time using the more accurate fourth-order Runge-Kutta method (RK4). For the three
+        timestep sizes used in Figure 2, the three RK4 plots trace each other more or less exactly (not shown), i.e. there is no significant 
+        deviation between the three simulations. This is a strong indication that these plots are each tracing a path that is faithful to an 
+        equivalent real world experiment. 
+    </p>
+    <p>
+        The logic here is that for the Runge-Kutta methods (and numerical methods generally) the approximation error decreases with decreases in 
+        timestep size, therefore if we observe a large reduction in timestep size <i>not</i> significantly reducing error, this implies the 
+        amount of error was negligible to begin with, i.e. there is no error (or only minimal error) in the simulations with the higher timestep size.
+    </p>
+    <p>Figure 3 compares Euler's method and RK4 for the 1/1000th of a second timestep size:</p>
+    <br/>
+    <figure>
+        <br/>
+        <img src="euler-vs-RK4.png"/>
+        <br/>
+        <figcaption><b>Figure 3.</b><br/>Euler's method vs. fourth-order Runge-Kutta (RK4); timestep size 0.001 seconds.</figcaption>
+    </figure>
+    <br/>    
+
+    <p>
+        Figure 3 shows that Euler's method deviates from the RK4 path by a modest but significant amount even at a timestep size of 1/1000th of second,
+        noting that we established above that the RK4 plot follows the correct path at the more coarse timestep size of 1/100th of a second. Note also that
+        the maximum pole angle on each swing up is lower on each successive oscillation (both methods), as we would expect for a freely swinging pendulum 
+        with friction and no external force to maintain its motion.
+    </p>
+    <p>
+        We might now ask what the timestep size threshold is at which RK4 begins to deviate significantly from the correct path (in our limited experimental 
+        model that runs for just 15 seconds). Furthermore, we might ask what that threshold is for Euler's method, and for good measure we also include the
+        standard form of the second-order Runge-Kutta method (RK2):
+    </p>
+    <br/>
+
+    <blockquote style="padding:14px">
+        <span><b>Table 5: Approximate maximum timestep size per method that results in an absolute pole angle error (at a simulation time of 15 seconds) less than 0.01 radians (approx. 0.57°)</b></span>
+        <br/>
+        <br/>
+        <table class="tg" align="center">
+            <tr><th>Method</th><th>timestep (seconds)</th><th>Pole angle error at 15 seconds (radians, to 5 d.p.)</th> </tr>
+            <tr><td>RK4</td><td>0.16(6) (1/6th)</td><td>-0.00836<sup>c</sup></td></tr>
+            <tr><td>RK2</td><td>0.04 (1/25th)</td><td>0.00669<sup>c</sup></td></tr>
+            <tr><td>Euler</td><td>0.0001 (1/10,000th)</td><td>0.00840<sup>c</sup></td></tr>
+        </table>      
+    </blockquote>
+
+    <br/> 
+    <p>
+        Euler's method requires a timestep size in the order of 1000 times smaller than either RK2 or RK4 to ensure the approximation error remains below
+        our chosen level. Therefore we do not recommend Euler's method if any degree of accuracy or faithfulness to an equivalent real world cart-pole
+        system is required, especially over timescales longer than a few seconds. As such, the recommendation given here is to prefer RK2 or RK4 over 
+        Euler's method, and to choose a timestep size similar to those given in table 5.
+    </p>
+    <br/>
+
+    <h3>6.3 General Procedure for Numerical Integration</h3>
+    <p>
+        The general procedure for applying the equations of motion in a simulation of the cart-pole system, is as follows:
+    </p>
+    <ol>
+        <li>Update the cart position $x$ based on the current cart velocity $\dot x$.</li><br/>
+        <li>Update the pole angle $\theta$ based on the current pole angular velocity $\dot\theta$. Repeat for each pole in the multiple pole scenario.</li><br/>
+        <li>Evaluate $\ddot x$ (based on the current state/positions, not the updated state).</li><br/>
+        <li>Evaluate $\ddot\theta$, substituting in the calculated value for $\ddot x$ (again, based on the current state, not the updated state). Repeat for each pole in the multiple pole scenario.</li><br/>
+        <li>Update the cart velocity $\dot x$ based on the current cart acceleration $\ddot x$, ready for use in the next timestep.</li><br/>
+        <li>Update the pole velocity $\dot\theta$ based on the current pole angular acceleration $\ddot\theta$, ready for use in the next timestep. Repeat for each pole in the multiple pole scenario.</li><br/>
+    </ol>
+    <p>
+        This procedure is essentially Euler's method applied to the cart-pole model state variables. Implementing a simulation using this procedure stands as a good
+        first step towards implementing and understanding the higher order Runge-Kutta methods. A detailed description of those methods is outside the scope of
+        this paper, but the high level procedure is essentially the same, with the difference being that the incremental changes applied to the state variables (the positions and velocities)
+        are calculated by application of an iterative algorithm, whereas Euler's method applies a simple linear projection of the gradients. More details can be obtained by
+        examination of the accompanying source code repository for this paper [6]:
+    </p>
+    <br/>
+
+    <h3>6.4 Floating-point Precision Considerations</h3>
+    <p>
+        The simulations for obtaining the data for figures 2 and 3 utilised
+        <a href="https://en.wikipedia.org/wiki/Double-precision_floating-point_format">double-precision floating-point</a> arithmetic and state variables. A repeat of those
+        simulations based on single precision floating-point arithmetic showed no significant deviation in state from the double-precision simulations, with the RK2 and RK4 
+        simulations being particularly robust when running in the lower precision mode. I.e. the errors inherent in Euler's method may be moderately exacerbated by the use of
+        lower precision arithmetic, whereas the stability of the higher order RK2 and RK4 methods lends those methods to use of single precision arithmetic with no 
+        notable degradation in simulation fidelity.
+    </p>
+    <br/>
+
+    <h2>7. Conclusions</h2>
+    <p>
+        We have presented step by step derivations for the equations of motion for the cart-pole system, with detailed supporting discussions. 
+        The below appendices provide further analysis and discussion of the equations appearing in the literature, and how they relate to the equations
+        derived here. We hope that these in-depth derivations, analyses and discussions will provide a firm foundation for future research 
+        that utilises the cart and pole task in some capacity.
+    </p>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <hr/>
+    <h2 id="appendixA">Appendix A: d'Alembert's Principle and Dynamic Equilibrium</h2>
+    <p>
+        As per Cannon [2] (§2.2, p.40) we adopt <a href="https://www.britannica.com/science/dAlemberts-principle">d'Alembert's view of dynamic equilibrium</a>,
+        whereby, for a system of rigid bodies, Newton's Second Law is written:
+    </p>
+
+    $$ F - ma = 0$$
+
+    <p>
+        Where the $-ma$ term is considered to represent an <a href="https://en.wikipedia.org/wiki/Fictitious_force">inertial force</a> that 
+        acts in the opposite direction to the external force F, and with equal magnitude. The inertial force is typically denoted with an asterisk,
+        like so:
+    </p>
+
+    $$ F* = -ma$$
+
+    <p>Giving:</p>
+
+    $$ F + F* = 0$$
+
+    <p>Or more generally:</p>
+
+    $$ \sum f* = 0 \tag{A1} $$
+
+    <p>
+        Where $f*$ represents all forces, external and inertial. I.e. for a system that is considered to be in a state of dynamic 
+        equilibrium, the sum of all external and inertial forces equals zero. This applies to the cart-pole compound body, and also
+        to the cart and pole individually, considered in isolation from each other.
+    </p>
+    <p>
+        The same approach is adopted for rotational forces (moments, or torques), which can also be categorised as external and 
+        inertial forces. Where an inertial moment is a rotating mass' resistance to a change in the angular velocity.
+    </p>
+
+    $$ \sum \mathbf{M}* = 0 \tag{A2} $$
+    <br/>
+    <br/>
+    <br/>
+
+    <hr/>
+    <h2 id="appendixB">Appendix B: Torque, or the Moment of Force</h2>
+    <p>
+        Torque is the rotational equivalent of force (or more specifically, the rotational equivalent of <i>translational</i> force).
+    </p>
+    <p>
+        If a force F is applied to the pendulum in figure 1 somewhere along its length, then the component of that force that is perpendicular
+        to the pendulum rod (i.e. tangential to the current direction of rotation) will result in a rotational force on the pendulum; that 
+        rotational force is known as torque, or the <a href="https://en.wikipedia.org/wiki/Torque">moment of force</a>. All other components
+        of F that are not in the direction of rotation have no effect on its rotation.
+    </p>
+    <p>
+        The torque (moment) resulting from force F is given by the product of the aforementioned tangential component of F, and the distance
+        from the rotational pivot point at which F is applied. E.g. a doubling of the distance from the pivot point at which F is applied 
+        results in a doubling of the resulting torque. 
+    </p>
+    <p>
+        Torque is typically calculated by application of the <a href="https://en.wikipedia.org/wiki/Cross_product">cross product</a> between 
+        a force vector (F) and a 'radial' vector projecting out from the pivot point to the point where force F is applied. The result is 
+        a vector parallel to the axis of rotation (i.e. perpendicular to the plane of rotation), the magnitude of which gives the torque's 
+        magnitude, and the direction of which gives the torque's direction (clockwise or anticlockwise).
+    </p>
+    <p>
+        By convention a positive torque describes an anticlockwise force (moment), and thus negative torque a clockwise moment; this convention
+        is encompassed by the <a href="https://en.wikipedia.org/wiki/Right-hand_rule#Cross_products">right hand rule</a>, sometimes referred
+        to as the right-handed screw rule; where a right-handed screw is one that advances into the material being screwed into when it is 
+        turned clockwise.
+    </p>
+    <p>
+        In our model (shown in figure 1) the axis of rotation is parallel to the z-axis, i.e. coming out of the page/screen, noting that the 
+        the convention for the z-axis is for a point coming out of the page to have a positive z coordinate, and a point going into 
+        the page to have negative z coordinate. Therefore, a right handed screw being turned clockwise into the page has a <i>negative</i> torque.
+        This is somewhat inconsistent with our chosen scheme of the pendulum angle and angular velocity being positive in the clockwise direction,
+        therefore some care needs to be taken with the signs of the torque equation terms.
+    </p>
+    <p>
+        Summarising; the moment of force, or torque $\boldsymbol{\tau}$, that results from a force $\mathbf{F}$ applied at position
+        $\mathbf{r}$ relative to the centre of rotation, is given by the formula:
+    </p>
+
+    $$ \boldsymbol{\tau} = \mathbf{r} \times \mathbf{F} $$
+    <br/>
+
+    <p>
+        Where $\mathbf{F}$ and $\mathbf{r}$ are vectors, and $\times$ is the <a href="https://en.wikipedia.org/wiki/Cross_product">cross product</a>.
+        The result ($\boldsymbol{\tau}$) of this formula is a vector that projects along the rotation axis (i.e. in our model the vector projects
+        out of, or into, the page at point P), and with a magnitude that represents the torque force (which is the quantity we are interested in,
+        since we know the orientation of the fixed rotation axis).
+    </p>
+    <br/>
+
+    <b>Law of the Lever</b>
+    <p>
+        There follows a short introduction to the concept of torque to provide some intuition and explanation of how the rotational
+        force terms are derived.
+    </p>
+    <p>
+        Consider our pendulum rod with the mass removed and pivoted halfway along its length. 
+        The <a href="https://en.wikipedia.org/wiki/Lever#Law_of_the_lever">Law of the lever </a> tells us how much a force $F_a$ applied on one
+        side of the pivot point (at point $A$) translates to a force $F_b$ on the other side (at point $B$), given the distances $a, b$ of the two
+        force points from the pivot:
+    </p>
+
+    $$ a F_a = b F_b $$
+    <br/>
+    
+    <p>
+        I.e. $F_b$ varies linearly with the distance of $F_a$ from the pivot point. This is because for a given circular displacement of $A$,
+        the resulting circular displacement of $B$ diminishes as $a$ increases. Those circular displacements are given by $ r\theta$, i.e. for an
+        angular change of 360° ($= 2\pi^c$) the displacement becomes the circumference of a circle given its radius ($2\pi r$).
+        Thus we can write the circular displacements $D_a, D_b$ in terms of $a, b$ and an angular change $\theta$: 
+    </p>
+    
+    \begin{align}
+
+        D_a &= a\theta \\[2ex]
+        D_b &= b\theta \\[2ex]
+
+    \end{align}
+    <br/>
+
+    <p>
+        We now express distance $b$ as a constant proportion of distance $a$:
+    </p>
+
+    \begin{align}
+
+        b &= ka \\[2ex]
+
+        \therefore\, 
+         D_b &= ka\theta \\[2ex]
+
+         D_b &= k D_a \\[2ex]
+
+    \end{align}
+    <br/>
+
+    <p>
+        I.e. the circular displacements of $A$ and $B$ are linearly proportional, and with the same linear factor as the 
+        relative distances of $A$ and $B$ from the pivot point. 
+    </p>
+    <br/>
+
+    <b>Torque</b>
+    <p>
+        Now consider change of circular displacement over time, taking the second derivative to give the circular 
+        <i>acceleration</i> of $A$ and $B$:
+    </p>
+    <br/>
+
+    \begin{align}
+
+        \frac{d(D_a)}{dt} &= \frac{d(D_a)}{\theta} \cdot \frac{d\theta}{t} \\[2ex] 
+
+                         &= a \dot\theta \\[2ex] 
+
+        \frac{d^2{D_a}}{dt^2} &= \frac{d(a\dot\theta)}{dt} = a \ddot\theta  \\[6ex] 
+
+        \frac{d^2{D_b}}{dt^2} &= b \ddot\theta
+
+    \end{align}
+    <br/>
+
+    <p>
+        Once again expressing distance $b$ as a constant proportion of distance $a$:
+    </p>
+
+    \begin{align}
+
+        b &= ka \\[2ex]
+
+        \therefore\, 
+
+        \frac{d^2{D_a}}{dt^2} &= a \ddot\theta \\[2ex] 
+
+        \frac{d^2{D_b}}{dt^2} &= k a \ddot\theta \\[2ex] 
+
+        \frac{d^2{D_b}}{dt^2} &= k \frac{d^2{D_a}}{dt^2} 
+
+    \end{align}
+    <br/>
+
+    <p>
+        Newton's Second Law ($F=ma$) tells us that force is proportional to acceleration, therefore a
+        force $F_a$ applied at point A and perpendicular to the rod, will result in force $F_b = F_a / k$
+        at point B.
+    </p>
+
+    <br/>
+    <br/>
+    <br/>
+
+    <hr/>
+    <h2>Appendix C: The Equations of Cannon</h2>
+    <p>
+        As noted above in section 3.4 and 3.5, equations (12) and (18) match the two equations of (22.55) in Cannon [2]. However, Cannon 
+        gives the following definition for the moment of inertia:
+    </p>
+    <br/>
+    $$ J = \frac{ml^2}{3} \tag{C1} $$
+    <br/>
+    <p>
+        This is the moment of inertia for a pole with uniformly distributed mass, whereas all other aspects of Cannon's equations are 
+        based on a pendulum with a <i>point</i> mass at distance $l$ from the pivot point. This hybrid approach of combining equations 
+        for point and uniform mass is a deliberate choice, as it results in a set of equations that approximate the dynamics of the
+        system reasonably well, without the additional complexity of the exact rotational force equations for a pole with uniform mass.
+    </p>
+    <p>
+        Cannon discusses in the book the importance of such simplifying approximations in the practical analysis of dynamic systems. A 
+        real world cart and pole system will be subject to many additional tiny forces that would be impractical if not impossible to 
+        accurately model in their entirety, such as forces caused by the rotation of the earth, the pull of gravity from the sun and moon,
+        electro-magnetic forces caused by metal components interacting with the Earth's magnetic field, etc. Thus, the idealised cart and 
+        pole model is already a simplification of any real world system, and the choice to model the pole's rotational forces with a point
+        mass results in equations that are broadly representative of the true dynamics, even if they are not exact. 
+    </p>
+    <p>
+        However, there is a problem with Cannon's choice of definition for $J$ which goes beyond the choice to employ modelling 
+        approximations. Cannon derived equations based on a point mass halfway along the pole, representing the centre of mass of a pole with
+        uniformly distributed mass; as such Cannon defined $l$ as the <i>half</i> length of the pole rather than full length as in the 
+        equations derived in this paper. The equations in [2] §22.55 match equations (12) and (18) above because both sets of equations are 
+        modelling a point mass at distance $l$ from the pivot point. The difference in the definition of $l$ manifests only in the choice of
+        equation for $J$.
+    </p>
+    <p>
+        To properly apply equation (C1) to Cannon's model we must use the full length of the pole in that model, i.e. the rotational inertia 
+        for a pole with length $2\hat{l}$ is given by (where $\hat{l}$ represents the half length of the pole):
+    </p>
+    <br/>
+    \begin{align}
+    
+        J &= \frac{m(2\hat{l})^2}{3} \\[3ex] 
+
+        J &= \frac{4m\hat{l}^2}{3} \tag{C2}
+
+    \end{align}
+    <br/>
+
+    <p>
+        I.e. Using the half length $\hat l$ requires that $k=\frac{4}{3}$ is used, rather than $k=\frac{1}{3}$ as given by Cannon, and subsequently
+        adopted elsewhere [1,5] (as discussed in appendices D and E).
+    </p>
+    <p>
+        As such, substituting $k=\frac{4}{3}$ into (26), (27) and (28) gives the following correct equations of Cannon:
+    </p>
+
+    <p>From (26):</p>
+
+    $$ \ddot\theta = \frac{Mg\sin\theta - \cos\theta (f + m\hat{l}\dot\theta^2\sin\theta)}{\frac{7}{3}M\hat{l} - m\hat{l}\cos^2\theta} \tag{C6} $$
+    <br/>
+
+    <p>From (27):</p>
+
+    $$ \ddot\theta = \frac{3}{7\hat{l}} (g\sin\theta - \ddot x \cos\theta) \tag{C7} $$
+    <br/>
+
+    <p>From (28):</p>
+
+    $$ \ddot x = \frac{mg\sin\theta\cos\theta - \frac{7}{3}(f + m\hat{l} \dot\theta^2 \sin\theta)}{m\cos^2\theta - \frac{7}{3}M} \tag{C8} $$
+    <br/>
+
+    <p>
+        Noting the presence of $\frac{7}{3}$ factors rather than $\frac{4}{3}$. The $\hat{l}$ symbol acts as a reminder to use the pole's half 
+        length in these equations, and that these equations are intended to approximately model a pole with uniformly distributed mass, rather
+        than exactly model a pendulum with a point mass.
+    </p>
+    <br/>
+
+    <b>Cross Product Sign Errors</b>
+    <p>
+        Cannon [2] also contains two sign errors in the cross product terms that give the torque resulting from the inertial force caused by the
+        inertial resistance of point mass Q. These errors are discussed in the notes box in section 3.5, but we shall discuss them further here.
+        Fortunately these errors cancel each other out in the final equations, but they may result in some confusion for anyone wishing to follow
+        the derivations given by Cannon.
+    </p>
+    <p>
+        The problem equations in Cannon are:
+    </p>
+    <br/>
+    $$ \sum {M_p}* = 0 = M_i - [(\mathbf{1}_Rl) \times f_i]_z - mgl\sin\theta \tag{Cannon, 22.53} $$
+    <br/>
+
+    $$ -[\mathbf{1}_R(l) \times (f_i)]_z = +lm[\ddot x \cos\theta + l\ddot\theta] \tag{Cannon, 22.54}$$
+    <br/>
+    <p>
+        The corrected forms of these equations are:
+    </p>
+    <br/>
+    $$ \sum {M_p}* = 0 = M_i + [\mathbf{1}_R(l) \times f_i]_z - mgl\sin\theta \tag{Cannon, 22.53, corrected} $$
+    <br/>
+
+    $$ [\mathbf{1}_R(l) \times (f_i)]_z = +lm[\ddot x \cos\theta + l\ddot\theta] \tag{Cannon, 22.54, corrected}$$
+    </br>
+    <p>
+        I.e. in (22.53) the cross product term should not be prefixed with a minus sign; the resulting moment/torque
+        from the cross product should be summed with the other moments to form the equilibrium equation. Noting that the 
+        last term has a minus sign only because the full definition for that term has been substituted in already, and 
+        that full term happens to have a minus sign (i.e. e.g. gravity pulling down on the pendulum at 90° results in a
+        clockwise torque, and a clockwise torque has a negative sign).
+    </p>
+    <p>
+        Also note the minor typographic anomaly of $(\mathbf{1}_Rl)$ instead of $\mathbf{1}_R(l)$, which is the form used
+        elsewhere in the book, and indeed in equation (22.54) which we discuss next.
+    </p>
+    <br/>
+    <p>
+        The left hand side of equation (22.54) is prefixed with a minus sign. However, the right hand side is equivalent to 
+        the cross product <i>without</i> applying that minus sign. We believe that the cross product on the left hand side 
+        should not contain a minus sign, and thus the right hand side result is correct despite the left hand side error. 
+        Therefore when the right hand side is substituted into (22.53) the two sign errors cancel, giving the correct equations 
+        of motion given in (22.55).
+    </p>
+    <br/>
+    <br/>
+
+    <hr/>
+    <h2>Appendix D: The Equations of Barto et al.</h2>
+    <p>
+        Barto et al. [1] gives the following equations of motion for a cart with a single pole, incorporating cart-track and cart-pole friction.
+    <br/>
+    <br/>
+    \begin{align}
+
+        \ddot\theta &= \frac{g\sin\theta + \cos\theta \left[ \cfrac{-f -m\hat{l}\dot\theta^2\sin\theta + \mu_c\sgn(\dot x)}{m_c + m} \right] - \cfrac{\mu_p\dot\theta}{m\hat{l}}}{\hat{l} \left[ \cfrac{4}{3} - \cfrac{m\cos^2\theta}{m_c + m} \right]} \tag{D1} \\[6ex]
+
+        \ddot x & = \frac{f + m\hat{l} \left[\dot\theta^2\sin\theta - \ddot\theta\cos\theta\right] - \mu_c\sgn(\dot x)}{m_c + m} \tag{D2} \\[6ex]
+
+        g &= -9.8 \,m/s^2 \tag{D3}
+
+    \end{align}
+    <br/>
+    <blockquote style="background-color:eeeeee; padding:14px">
+        <span>Symbols</span>
+        <table class="notationTable">
+            <tr><td>$\tilde l$ &nbsp;</td><td>Half length of the pole.</td></tr>
+            <tr><td>$m$ &nbsp;</td><td>Mass of the pole.</td></tr>
+            <tr><td>$g$ &nbsp;</td><td>Gravitational acceleration. <b>-9.8 m/s<sup>2</sup></b></td></tr>
+        </table>       
+    </blockquote>
+    <br/>
+    <p>
+        Cannon [2] is cited as the origin of these equations, however, the cart-pole equations provided by Cannon do not include
+        terms for friction forces. Cannon does discuss various models of friction (see [2] §2.2, pg42-43), and therefore
+        it is likely that the cart-pole equations provided in [1] were extended using additional equations also from Cannon.
+    </p>
+    <p>
+        Equation (D1) can be rederived by rearranging equation (26-F) (with $l$ substituted with $\hat{l}$):
+    </p>
+    <br/>
+
+    \begin{align}
+
+        \ddot\theta &= \frac{Mg\sin\theta - \cos\theta (f + m\hat{l}\dot\theta^2\sin\theta + F_f) - \cfrac{M\mathbf{M}_f}{m\hat{l}}}{(1+k)M\hat{l} - m\hat{l}\cos^2\theta} \tag{26-F} \\[6ex]
+
+        \ddot\theta &= \frac{g\sin\theta - \cos\theta \left[\cfrac{f + m\hat{l}\dot\theta^2\sin\theta + F_f}{M}\right] - \cfrac{\mathbf{M}_f}{m\hat{l}}}{ \hat{l} \left[(1+k) - \cfrac{m\cos^2\theta}{M} \right]} \\[6ex]
+
+        \ddot\theta &= \frac{g\sin\theta + \cos\theta \left[\cfrac{-f - m\hat{l}\dot\theta^2\sin\theta - F_f}{M}\right] - \cfrac{\mathbf{M}_f}{m\hat{l}}}{ \hat{l} \left[(1+k) - \cfrac{m\cos^2\theta}{M} \right]} \tag{D4} \\[6ex]
+
+    \end{align}
+    <br/>
+    <br/>
+    <p>
+        Equation (D2) is obtained with a minor rearrangement of (19-F) (again, with $l$ substituted with $\hat{l}$):
+    </p>
+    <br/>
+    \begin{align}
+
+        \ddot x &= \frac{f - m\hat{l} \ddot\theta \cos\theta + m\hat{l} \dot\theta^2 \sin\theta + F_f}{M} \tag{19-F} \\[6ex]
+
+        \ddot x &= \frac{f + m\hat{l} \left[\dot\theta^2 \sin\theta - \ddot\theta \cos\theta\right] + F_f}{m_c  + m} \tag{D5}
+
+    \end{align}
+    <br/>
+    <br/>
+    <p>
+        The rederived equations exhibit some discrepancies when compared to the equations given in [1], which we will now discuss.
+    </p>
+    <br/>
+    <b>Inverted Gravity</b>
+    <p>
+        Barto et al. [1] gives the wrong sign for $g$ in the table of symbols, i.e. equation (D1) is written in such a way that gravity is a downward force for a 
+        positive value of g. E.g. the $g\sin\theta$ term makes a positive contribution towards $\ddot\theta$ when the pole angle is between 
+        0 and 180°, and g has a positive sign. Note also that in figure 1 of [1] $\theta$ is defined as the pole angle measured clockwise from
+        the upright vertical, matching the scheme used in this paper, therefore the discrepancy with the sign of g hasn't come about through use
+        of a different baseline/origin orientation for the pole.
+    </p>
+    <p>
+        It is not known if this gravity inversion was employed in the research performed in [1], or how many of the subsequent papers that 
+        adopted these equations also adopted the error (noting that at time of writing in November 2019, google scholar reports a citation
+        count of 3,783). What can be said is that the cart-pole system was chosen as the subject of research because it is an unstable
+        system, requiring an external dynamic controller to maintain stability. Whereas with inverted gravity the inverted pendulum becomes 
+        a normal pendulum, and is therefore no longer unstable. I.e. the system naturally settles into a state with the pole vertically up 
+        without an external controller.
+    </p>
+    <br/>
+
+    <b>Moment of Inertia</b>
+    <p>
+        Note that the $\frac{4}{3}$ term in (D1) is consistent with a value of $\frac{1}{3}$ for constant $k$ in equation (D4). Hence, 
+        equation (D1) has adopted the problematic moment of inertia term from Cannon [2], i.e. (D1) employs the moment of inertia for a 
+        pole of length $\hat{l}$, which is half of the pole's actual length (see appendix C for details).
+    </p>
+    <br/>
+
+    <b>Cart-Track Friction</b>
+    <p>
+        The cart-track friction term of $\mu_c\sgn(\dot x)$ in (D1) and (D2) is consistent with equations (32) and (33), i.e. alternative
+        simplified cart-track friction terms that do not take into account motion of the pole. This simplified friction force is in the opposite
+        direction to the cart's movement (as expected), and is scaled by some constant, hence $\mu_c$ in [1] is essentially a combination of the 
+        co-efficient of friction and some other constant that represents a constant normal force. We prefer a cart-track friction term that is
+        proportional to cart velocity [as per equation (34)] in order to avoid a discontinuity in the equations about zero velocity (see §3.8).
+    </p>
+    <br/>
+
+    <b>Cart-Pole Friction</b>
+    <p>
+        The cart-pole friction term in (D1) is proportional to the pendulum's angular velocity, and is therefore consistent with equation (40).
+    </p>
+    <br/>
+    <b>Numerical Integration</b>
+    <p>
+        From Barto et al. [1]:
+    </p>
+    <blockquote>
+        <i>
+            We initially used the Adams-Moulton predictor-corrector method to approximate numerically the solution of these equations,
+            but the results reported in this article were produced using Euler's method with a time step of 0.02 s for the sake of
+            computational speed. Comparisons of solutions generated by the Adams-Moulton methods and the less accurate Euler method did 
+            not reveal discrepancies that we deemed significant for the purposes of this article.
+        </i>
+    </blockquote>
+    <p>
+        As per the discussion in section 6.2 and the results in table 5, it is likely that the experiments performed experienced some 
+        level of approximation error due to use of the simpler Euler method, but the authors did no consider the amount of error to 
+        be significant in the context of their experiments.
+    </p>
+    <br/>
+    <br/>    
+
+    <hr/>
+    <h2>Appendix E: The Equations of Wieland</h2>
+    <p>
+        Wieland [5] gives the following equations of motion for the cart-pole model, incorporating cart-track and cart-pole friction.
+        These equations are structured to allow for a cart with multiple poles attached, however here will consider a single pole only:
+    </p>
+
+    <br/>
+    \begin{align}
+
+        \ddot x &= \frac{f - \mu_c\sgn(\dot x) + \tilde F_i}{m_c + \tilde m_i} \tag{E1} \\[3ex]
+
+        \ddot\theta &= -\frac{3}{4\hat{l}}\left(\ddot x\cos\theta + g\sin\theta + \frac{\mu_p\dot\theta}{m\hat{l}}\right) \tag{E2} \\[3ex]
+
+        \tilde F_i &= m\hat{l}\dot\theta^2\sin\theta + \frac{3}{4}m\cos\theta \left(\frac{\mu_p\dot\theta}{m\hat{l}} + g\sin\theta \right)  \tag{E3} \\[3ex]
+
+        \tilde m_i &= m_i \left(1 - \cfrac{3}{4}\cos^2\theta_i \right) \tag{E4} \\[3ex]
+
+    \end{align}
+    <br/>
+
+    <blockquote style="background-color:eeeeee; padding:14px">
+        <span>Symbols</span>
+        <table class="notationTable">
+            <tr><td>$\tilde l$ &nbsp;</td><td>Half length of the pole.</td></tr>
+            <tr><td>$\tilde F_i$ &nbsp;</td><td>The effective horizontal force of the i'th pole on the cart.</td></tr>
+            <tr><td>$m$ &nbsp;</td><td>Mass of the pole (for equations that relevant to a pole considered individually).</td></tr>
+            <tr><td>$m_i$ &nbsp;</td><td>Mass of the i'th pole.</td></tr>
+            <tr><td>$\tilde m_i$ &nbsp;</td><td>Effective mass of the i'th pole.</td></tr>
+            <tr><td>$\tilde\theta_i$ &nbsp;</td><td>Angle of the i'th pole.</td></tr>
+            <tr><td>$g$ &nbsp;</td><td>Gravitational acceleration. <b>-9.8 m/s<sup>2</sup></b></td></tr>
+        </table>       
+    </blockquote>
+    <br/>
+    <p>
+        To obtain the equations for a single pole we substitute (E3) and (E4) into (E1), and rearrange:
+    </p>
+    <br/>
+    \begin{align}
+
+        \ddot x &= \frac{f - \mu_c\sgn(\dot x) + m\hat{l}\dot\theta^2\sin\theta + \frac{3}{4}m\cos\theta \left(\cfrac{\mu_p\dot\theta}{m\hat{l}} + g\sin\theta \right)}{m_c +  m (1 - \frac{3}{4}\cos^2\theta)} \\[6ex]
+
+                &= \frac{\frac{4}{3} \left[ f + m\hat{l}\dot\theta^2\sin\theta - \mu_c\sgn(\dot x) \right] + m\cos\theta \left(\cfrac{\mu_p\dot\theta}{m\hat{l}} + g\sin\theta \right)}{\frac{4}{3}M - m\cos^2\theta} \\[6ex]
+
+                &= \frac{\frac{4}{3} \left[ f + m\hat{l}\dot\theta^2\sin\theta - \mu_c\sgn(\dot x) \right] + mg\sin\theta\cos\theta + \cfrac{\mu_p\dot\theta\cos\theta}{\hat{l}}}{\frac{4}{3}M - m\cos^2\theta} \\[6ex]
+
+        \ddot x &= \frac{- mg\sin\theta\cos\theta -\frac{4}{3} \left[ f + m\hat{l}\dot\theta^2\sin\theta - \mu_c\sgn(\dot x) \right] - \cfrac{\mu_p\dot\theta\cos\theta}{\hat{l}}}{m\cos^2\theta - \frac{4}{3}M} \tag{E5} \\[6ex]
+
+    \end{align}
+    <br/>
+    <p>
+        Equation (E5) is compatible with (28-F), except for a difference in sign on the $mg\sin\theta\cos\theta$ term. Note however that Wieland [5] 
+        gives a negative value for g in table 1, therefore the two negatives cancel and thus (E5) is indeed compatible with (28-F).
+    </p>
+    <p>
+        Rearranging (E2) gives:
+    </p>
+    $$ \ddot\theta = \frac{-g\sin\theta - \ddot x\cos\theta - \cfrac{\mu_p\dot\theta}{m\hat{l}}}{\cfrac{4}{3}\hat{l}}  \tag{E6} $$
+    <br/>
+
+    <p>
+        Equation (E6) is compatible with equation (27-F), noting once again that this form of the equation requires a negative value for g.
+    </p>
+    <br/>
+    <br/>
+
+    <b>Moment of Inertia</b>
+    <p>
+        Note the $\frac{4}{3}$ terms in equations (E5) and (E6), these are consistent with a value of $\frac{1}{3}$ for constant $k$ in equations
+        (27-F) and (28-F), hence the Wieland equations have adopted the problematic moment of inertia term from Cannon [2]. I.e. Wieland employs
+        the moment of inertia for a pole of length $\hat{l}$, which is half of the pole's actual length (see Appendix C for details).
+    </p>
+
+    <br/>
+    <b>Cart-Track Friction</b>
+    <p>
+        Equation (E5) gives a cart-track friction term compatible with equations (32) and (33) as per Barto et al. (see Appendix D for further 
+        discussion).
+    </p>
+    <br/>
+    <b>Cart-Pole Friction</b>
+    <p>
+        The cart-pole friction term in equations (E5) and (E6) is proportional to the pendulum's angular velocity, and is therefore consistent 
+        with equation (40) as per Barto et al. (see Appendix D for further discussion).
+    </p>
+    <br/>
+    <b>Numerical Integration</b>
+    <p>
+        From Wieland [5]:
+    </p>
+    <blockquote>
+        <i>
+            The single (unjointed) pole problems were modeled[sic] using the Euler method and a time step on[sic] 0.02 seconds.
+            The multiple pole and jointed pole problems were modeled[sic] with a time step of 0.01 seconds and a fourth order Runge-Kutta model.
+        </i>
+    </blockquote>
+    <p>
+        The numerical method applied for the single pole experiments mirrors the approach of Barto et al.[1], and therefore, as per the above 
+        discussion in section 6.2 and the results in table 5, it is likely that those experiments experienced some level of approximation error
+        due to use of the simpler Euler method.
+    </p>
+    <br/>
+    <br/>
+    
+    <hr/>
+    <br/>
+    <blockquote>
+        <span>References</span>
+        <table class="notationTable">
+
+            <tr><td>[1] Barto, Andrew G.; Sutton, Richard S. (1983) Neuronlike Adaptive Elements that can Solve Difficult Learning Problems.
+                IEEE Transactions on Systems, Man, and Cybernetics, Vol. SMC-13 No.5, (1983) pp. 834-846
+                <br/>&nbsp;&nbsp;&nbsp;
+                <a href="http://incompleteideas.net/papers/barto-sutton-anderson-83.pdf">[link1]</a>
+            </td></tr>
+
+            <tr><td>[2] Cannon, Robert H. Dynamics of physical systems. New York: McGraw-Hill (1967)
+                <br/>&nbsp;&nbsp;&nbsp;
+                <a href="https://isbnsearch.org/isbn/0070097542">[link1]</a>
+                <a href="https://isbnsearch.org/isbn/9780486428659">[link2]</a>
+                <a href="https://www.amazon.co.uk/Dynamics-Physical-Systems-Mechanical-Engineering/dp/0486428656">[link3]</a>
+                <a href="https://books.google.co.uk/books?hl=en&lr=&id=u3VyPpz7SJcC">[link4]</a>
+            <br/>
+
+            <tr><td>[3] Lunberg, Kent H.; Barton, Taylor W. (2009) History of Inverted-Pendulum Systems.
+                IFAC Proceedings Volumes, Volume 42, Issue 24, 2010, pp. 131-135
+                <br/>&nbsp;&nbsp;&nbsp;
+                <a href="https://www.sciencedirect.com/science/article/pii/S1474667015316049">[link1]</a>
+            </td></tr>
+
+            <tr><td>[4] Michie, D.; Chambers, R. A. (1968) BOXES: An Experiment in Adaptive Control
+                <br/>&nbsp;&nbsp;&nbsp;
+                <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.474.2430">[link1]</a>
+                <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.474.2430&rep=rep1&type=pdf">[link2]</a>
+            </td></tr>
+
+            <tr><td>[5] Wieland, Alexis P. (1991) Evolving neural network controllers for unstable systems.
+                Connectionist Models: Proceedings of the 1990 Summer School, ISBN 0-55860-156-2, pp. 91-102
+                <br/>&nbsp;&nbsp;&nbsp;
+                <a href="https://books.google.co.uk/books?hl=en&lr=&id=_Z6jBQAAQBAJ&oi=fnd&pg=PA91">[link1]</a>
+                <a href="https://ieeexplore.ieee.org/abstract/document/155416">[link2]</a>
+            </td></tr>
+        </table>
+        <br/>
+        <br/>
+        
+        <span>External Resources</span>
+        <table class="notationTable">
+            <tr><td>[6] Accompanying source code: <a href="https://github.com/colgreen/cartpole-physics">https://github.com/colgreen/cartpole-physics</a>
+            </td></tr>
+        </table>
+    </blockquote>
+
+    <br/>
+    <hr/>
+    <br/>
+    <p>
+        <i>
+            Colin,
+            <br />January 2nd, 2020
+        </i>
+    </p>
+    <br/>
+    <hr/>
+    <div style="margin-left:10px;">
+        <img src="../../creativecommons88x31.png" border="0" align="left" hspace="10" vspace="0" /> Copyright 2020 Colin Green.<br
+        /> This article is licensed under a <a href="http://creativecommons.org/licenses/by/3.0/" rel="nofollow">
+            Creative Commons
+            Attribution 3.0 License
+        </a>
+        <br />
+        <br />
+    </div>
+</body>
+
+</html>
