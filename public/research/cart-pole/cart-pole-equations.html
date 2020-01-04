@@ -14,13 +14,11 @@
    <style>
     table.notationTable {
         border-spacing:1em;
-        
+        font-size: 18;
     }
-
     table.notationTable td {
         vertical-align:top;
     }
-
     figure {
         display: block;
         margin-left: auto;
@@ -71,16 +69,12 @@
    </style>
 </head>
 <body class="research">
-    <div class="articlebanner">
-        <a href="/" title="SharpNEAT">
-            <img src="../../sharpneat-banner-narrow.svg" alt="SharpNEAT" class="articlebannerimage" />
-        </a>
-    </div>
+    <a href="/" title="SharpNEAT">
+        <img src="../../sharpneat-banner-narrow.svg" alt="SharpNEAT" style="max-width:220px; margin-left:auto; margin-right:auto; display:block; padding:15px;" />
+    </a>
     <hr/>
     <h1 style="text-align: center">Equations of Motion for the Cart and Pole Control Task</h1>
-    <h1 style="color: dimgray;text-align: center">Fifth Draft</h1>
-    <br/>
-    <br/>
+    <h3 style="text-align: center">Colin D. Green</h3>
 
     <h2>1. Introduction</h2>
     <p>
@@ -152,7 +146,7 @@
         <figcaption><b>Figure 1.</b><br/>The cart-pole balancing model.</figcaption>
     </figure>
     <br/>
-    <blockquote style="background-color:eeeeee; padding:14px">
+    <blockquote style="background-color:eeeeee; padding:20px">
         <span><b>Table 1: Symbols used in figure 1 and throughout this paper</b></span>
         <table class="notationTable">
             <tr><td>$x, y, O$ &nbsp;</td><td>A Cartesian x, y coordinate frame is shown, with origin O.</td></tr>
@@ -176,7 +170,7 @@
         <br/>
         <br/>
     
-        <span>Selected additional symbols used throughout this post:</span>
+        <span>Selected additional symbols used throughout this paper:</span>
         <table class="notationTable">
             <tr><td>$\dot x, \ddot x$ &nbsp;</td><td>The cart's x-axis velocity and acceleration, respectively.</td></tr>
             <tr><td>$\dot x_q, \ddot x_q$ &nbsp;</td><td>Point Q's x-axis velocity and acceleration, respectively.</td></tr>
@@ -281,7 +275,7 @@
     \end{align}
     <br/>
 
-    <blockquote style="background-color:eeeeee; padding:14px">
+    <blockquote style="background-color:eeeeee; padding:20px">
         <p>
             The above equations describe the XY motion of point Q given it's motion stated in polar coordinate system terms of angle and distance from the pivot
             point. These equations say nothing about the forces acting on the system that are the cause of the motion.
@@ -344,7 +338,7 @@
     \end{align}
     <br/>
 
-    <blockquote style="background-color:eeeeee;padding:14px">
+    <blockquote style="background-color:eeeeee;padding:20px">
         <p>
             In Cannon [2] a vector notation is used as well as an alternative coordinate frame TR (shown in figure 1), use of which results in the following more 
             concise definition of Q's acceleration:
@@ -1341,7 +1335,7 @@
     $$ \ddot\theta = \frac{3}{7\hat{l}} \left(g\sin\theta - \ddot x \cos\theta - \cfrac{\mu_p \dot\theta}{m\hat{l}}\right) \tag{57} $$
     <br/>
 
-    <blockquote style="background-color:eeeeee; padding:14px">
+    <blockquote style="background-color:eeeeee; padding:20px">
         <span><b>Table 2: Symbols used in equations (56) and (57)</b></span>
         <br/>
         <table class="notationTable">
@@ -1398,7 +1392,7 @@
     $$ \ddot\theta_i = \frac{3}{7\hat{l}_i} \left(g\sin\theta_i - \ddot x\cos\theta_i - \frac{\mu_p \dot\theta_i}{m_i \hat{l}_i} \right) \tag{59} $$
     <br/>
 
-    <blockquote style="background-color:eeeeee; padding:14px">
+    <blockquote style="background-color:eeeeee; padding:20px">
         <span><b>Table 3: Symbols used in equations (58) and (59)</b> [in addition to the symbols defined in table 2]</span>
         <br/>
         <table class="notationTable">
@@ -1473,7 +1467,7 @@
         are as follows:
     </p>
     <br/>
-    <blockquote style="background-color:eeeeee; padding:14px">
+    <blockquote style="background-color:eeeeee; padding:20px">
         <span><b>Table 4: Model parameters for the numerical integration experiments</b></span>
         <br/>
         <table class="notationTable">
@@ -1549,7 +1543,7 @@
     </p>
     <br/>
 
-    <blockquote style="padding:14px">
+    <blockquote style="padding:20px">
         <span><b>Table 5: Approximate maximum timestep size per method that results in an absolute pole angle error (at a simulation time of 15 seconds) less than 0.01 radians (approx. 0.57°)</b></span>
         <br/>
         <br/>
@@ -1943,7 +1937,7 @@
 
     \end{align}
     <br/>
-    <blockquote style="background-color:eeeeee; padding:14px">
+    <blockquote style="background-color:eeeeee; padding:20px">
         <span>Symbols</span>
         <table class="notationTable">
             <tr><td>$\tilde l$ &nbsp;</td><td>Half length of the pole.</td></tr>
@@ -2072,7 +2066,7 @@
     \end{align}
     <br/>
 
-    <blockquote style="background-color:eeeeee; padding:14px">
+    <blockquote style="background-color:eeeeee; padding:20px">
         <span>Symbols</span>
         <table class="notationTable">
             <tr><td>$\tilde l$ &nbsp;</td><td>Half length of the pole.</td></tr>
