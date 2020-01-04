@@ -142,7 +142,7 @@ p1 = ggplot(data.frame(x = c(-2, 2)), aes(x)) +
          legend.direction="horizontal",
          legend.title=element_blank())
 
-ggsave(filename="actfn-logisticsteep-softsignsteep.png", plot=p1, height=4, width=4, units="in", dpi=100)
+ggsave(filename="actfn-logisticsteep-softsignsteep.png", plot=p1, height=4, width=4, units="in", dpi=100, type="cairo")
 
 # generate plot and save png
 p1 = ggplot(data.frame(x = c(-2, 2)), aes(x)) + 
@@ -154,7 +154,7 @@ p1 = ggplot(data.frame(x = c(-2, 2)), aes(x)) +
          legend.direction="horizontal",
          legend.title=element_blank())
 
-ggsave(filename="actfn-logisticsteep-polyapproxsteep.png", plot=p1, height=4, width=4, units="in", dpi=100)
+ggsave(filename="actfn-logisticsteep-polyapproxsteep.png", plot=p1, height=4, width=4, units="in", dpi=100, type="cairo")
 
 # generate plot and save png
 p1 = ggplot(data.frame(x = c(-2, 2)), aes(x)) + 
@@ -166,7 +166,7 @@ p1 = ggplot(data.frame(x = c(-2, 2)), aes(x)) +
          legend.direction="horizontal",
          legend.title=element_blank())
 
-ggsave(filename="actfn-logisticsteep-quadratic.png", plot=p1, height=4, width=4, units="in", dpi=100)
+ggsave(filename="actfn-logisticsteep-quadratic.png", plot=p1, height=4, width=4, units="in", dpi=100, type="cairo")
 
 
 # generate plot and save png
@@ -181,7 +181,7 @@ p1 = ggplot(data.frame(x = c(-2, 2)), aes(x)) +
    guides(col = guide_legend(reverse = TRUE), fill = guide_legend(reverse = TRUE)) +
    scale_colour_manual(values = c("leakyrelu" = "#00BFC4", "logistic-steep" = "#F8766D"))
 
-ggsave(filename="actfn-logisticsteep-leakyrelu.png", plot=p1, height=4, width=4, units="in", dpi=100)
+ggsave(filename="actfn-logisticsteep-leakyrelu.png", plot=p1, height=4, width=4, units="in", dpi=100, type="cairo")
 
 
 # generate plot and save png
@@ -196,7 +196,7 @@ p1 = ggplot(data.frame(x = c(-2, 2)), aes(x)) +
    guides(col = guide_legend(reverse = TRUE), fill = guide_legend(reverse = TRUE)) +
    scale_colour_manual(values = c("leakyrelu-shifted" = "#00BFC4", "logistic-steep" = "#F8766D"))
 
-ggsave(filename="actfn-logisticsteep-leakyrelu-shifted.png", plot=p1, height=4, width=4, units="in", dpi=100)
+ggsave(filename="actfn-logisticsteep-leakyrelu-shifted.png", plot=p1, height=4, width=4, units="in", dpi=100, type="cairo")
 
 
 # generate plot and save png
@@ -209,7 +209,7 @@ p1 = ggplot(data.frame(x = c(-2, 2)), aes(x)) +
          legend.direction="horizontal",
          legend.title=element_blank())
 
-ggsave(filename="actfn-logisticsteep-srelu.png", plot=p1, height=4, width=4, units="in", dpi=100)
+ggsave(filename="actfn-logisticsteep-srelu.png", plot=p1, height=4, width=4, units="in", dpi=100, type="cairo")
 
 
 # generate plot and save png
@@ -222,7 +222,7 @@ p1 = ggplot(data.frame(x = c(-2, 2)), aes(x)) +
          legend.direction="horizontal",
          legend.title=element_blank())
 
-ggsave(filename="actfn-logisticsteep-srelushifted.png", plot=p1, height=4, width=4, units="in", dpi=100)
+ggsave(filename="actfn-logisticsteep-srelushifted.png", plot=p1, height=4, width=4, units="in", dpi=100, type="cairo")
 
 
 # generate plot and save png
@@ -235,7 +235,7 @@ p1 = ggplot(data.frame(x = c(-2, 2)), aes(x)) +
          legend.direction="horizontal",
          legend.title=element_blank())
 
-ggsave(filename="actfn-logisticsteep-relu.png", plot=p1, height=4, width=4, units="in", dpi=100)
+ggsave(filename="actfn-logisticsteep-relu.png", plot=p1, height=4, width=4, units="in", dpi=100, type="cairo")
 
 # generate plot and save png
 p1 = ggplot(data.frame(x = c(-2, 2)), aes(x)) + 
@@ -247,7 +247,7 @@ p1 = ggplot(data.frame(x = c(-2, 2)), aes(x)) +
          legend.direction="horizontal",
          legend.title=element_blank())
 
-ggsave(filename="actfn-logisticsteep-selu.png", plot=p1, height=4, width=4, units="in", dpi=100)
+ggsave(filename="actfn-logisticsteep-selu.png", plot=p1, height=4, width=4, units="in", dpi=100, type="cairo")
 
 # generate plot and save png
 p1 = ggplot(data.frame(x = c(-2, 2)), aes(x)) + 
@@ -262,7 +262,7 @@ p1 = ggplot(data.frame(x = c(-2, 2)), aes(x)) +
    scale_colour_manual(values = c("arcsinh" = "#00BFC4", "logistic-steep" = "#F8766D"))
 
 
-ggsave(filename="actfn-logisticsteep-arcsinh.png", plot=p1, height=4, width=4, units="in", dpi=100)
+ggsave(filename="actfn-logisticsteep-arcsinh.png", plot=p1, height=4, width=4, units="in", dpi=100, type="cairo")
 
 # generate plot and save png
 p1 = ggplot(data.frame(x = c(-2, 2)), aes(x)) + 
@@ -275,7 +275,7 @@ p1 = ggplot(data.frame(x = c(-2, 2)), aes(x)) +
          legend.title=element_blank()) 
 
 
-ggsave(filename="actfn-logisticsteep-maxminusone.png", plot=p1, height=4, width=4, units="in", dpi=100)
+ggsave(filename="actfn-logisticsteep-maxminusone.png", plot=p1, height=4, width=4, units="in", dpi=100, type="cairo")
 
 # generate plot and save png
 p1 = ggplot(data.frame(x = c(-2, 2)), aes(x)) + 
@@ -289,7 +289,7 @@ p1 = ggplot(data.frame(x = c(-2, 2)), aes(x)) +
    guides(col = guide_legend(reverse = TRUE), fill = guide_legend(reverse = TRUE)) +
    scale_colour_manual(values = c("arctan" = "#00BFC4", "logistic-steep" = "#F8766D"))
 
-ggsave(filename="actfn-logisticsteep-arctan.png", plot=p1, height=4, width=4, units="in", dpi=100)
+ggsave(filename="actfn-logisticsteep-arctan.png", plot=p1, height=4, width=4, units="in", dpi=100, type="cairo")
 
 
 # generate plot and save png
@@ -302,7 +302,7 @@ p1 = ggplot(data.frame(x = c(-2, 2)), aes(x)) +
          legend.direction="horizontal",
          legend.title=element_blank())
 
-ggsave(filename="actfn-logisticsteep-tanh.png", plot=p1, height=4, width=4, units="in", dpi=100)
+ggsave(filename="actfn-logisticsteep-tanh.png", plot=p1, height=4, width=4, units="in", dpi=100, type="cairo")
 
 
 
@@ -321,4 +321,4 @@ p1 = ggplot(data = fndata, aes(x=x, y=y, color="logistic-approx-steep")) +
    guides(col = guide_legend(reverse = TRUE), fill = guide_legend(reverse = TRUE)) +
    scale_colour_manual(values = c("logistic-approx-steep" = "#00BFC4", "logistic-steep" = "#F8766D"))
 
-ggsave(filename="actfn-logisticsteep-logisticapproxsteep.png", plot=p1, height=4, width=4, units="in", dpi=100)
+ggsave(filename="actfn-logisticsteep-logisticapproxsteep.png", plot=p1, height=4, width=4, units="in", dpi=100, type="cairo")
