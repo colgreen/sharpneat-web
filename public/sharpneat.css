@@ -26,6 +26,14 @@ a:hover {
    margin-right: auto;
    display: block;
 }
+.articlebannerimage	
+{	
+    max-width: 220px;	
+    margin-left: auto;	
+    margin-right: auto;	
+    display: block;
+    padding:15px;
+}
 .centralcolumn {
    width:100%;
    max-width: 1200px;
@@ -57,7 +65,6 @@ a:hover {
     margin-left: auto;
     margin-right: auto;
     font-size: 0.9em;
-    /*text-align: center;*/
 }
 .frontpagebubble ul {list-style-type: none; -webkit-padding-start : 0}
 .frontpagebubble li {margin: 24px 0; }
@@ -108,10 +115,6 @@ a:hover {
     body.research {
         margin: 0px 15px;
     }
-    .bannercolumn
-    {
-       width:100%;
-    }
     .banner {
         max-width: 460px;
         width: auto;
@@ -120,19 +123,16 @@ a:hover {
     .frontpagebubble {
         background-color: #ffffff;
         padding: 15px;
-        border-radius: 5px;
         width:100%;
     }
     .frontpagebubbletop {
         background-color: #ffffff;
         padding: 15px;
-        border-radius: 5px;
         width:100%;
     }
     .textbubble {
         background-color: #ffffff;
         padding: 15px;
-        border-radius: 5px;
         width:100%;
     }    
 }

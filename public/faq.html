@@ -4,7 +4,8 @@
     <title>SharpNEAT</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=0.75"/>
-    <link rel="stylesheet" href="sharpneat.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="sharpneat.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="sharpneat-print.css" type="text/css" media="print"/>
 </head>
 <body>
     <div class="banner">      
@@ -27,7 +28,7 @@
             </div>
             <br />
             <br />
-            <h4>1. What is ShapNEAT</h4>
+            <h4>1. What is SharpNEAT</h4>
             <p>
                 In a nutshell, SharpNEAT provides an implementation of an
                 <a href="http://en.wikipedia.org/wiki/Evolutionary_algorithm">Evolutionary Algorithm</a> (EA)
@@ -39,7 +40,7 @@
             </p>
             <p>
                 A notable point is that NEAT and SharpNEAT search both neural network structure (network nodes and connectivity)
-                and connection weights (inter-node connection strength). This is distinct from algorithms such as back-propogation
+                and connection weights (inter-node connection strength). This is distinct from algorithms such as back-propagation
                 that generally attempt to discover good connection weights for a given structure.
             </p>
             <p>
@@ -58,13 +59,13 @@
             <br />
             <h4>2. What is NEAT?</h4>
             <p>
-                NEAT is Neuro-Evolution of Augmenting Topologies, a neuro-evolution technique
+                NEAT is Neuro-Evolution of Augmenting Topologies, a neuroevolution technique
                 devised by Kenneth Stanley while part of the Neural Networks Research Group, University
                 of Texas at Austin (Now at the University of Central Florida School of Electrical Engineering and Computer Science).
                 The main NEAT website is hosted by Ken Stanley at <a href="http://www.cs.ucf.edu/~kstanley/">http://www.cs.ucf.edu/~kstanley/</a>
             </p>
             <p>
-                One of major features of NEAT is its genetic coding of networks, each node and conenction is assigned a number, this
+                One of major features of NEAT is its genetic coding of networks, each node and connection is assigned a number, this
                 numeber can then be used to 'line-up' the structural parts of each networks when performing genetic recombination. This feature
                 of NEAT addresses the problem of how to perform meaningful genetic recombination between two network structures without having
                 to perform computationally expensive structural matching/alignment.
@@ -154,7 +155,7 @@
                 mutations are disabled and deletion mutation rates are increased, this
                 causes the average structural complexity of genomes in the population to fall
                 but without loosing the best genomes. This can give rise to new bursts
-                of improvement in fitness and also a speedup of the search, since more
+                of improvement in fitness and also a speed up of the search, since more
                 complex genomes take longer to evaluate. For a more complete explanation
                 see the experimental write-up see - <a href="phasedsearch.html">
                     Phased Searching

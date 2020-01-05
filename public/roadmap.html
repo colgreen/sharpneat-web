@@ -4,7 +4,8 @@
     <title>SharpNEAT Project Roadmap</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=0.75"/>
-    <link rel="stylesheet" href="sharpneat.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="sharpneat.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="sharpneat-print.css" type="text/css" media="print"/>
 </head>
 <body>
     <div class="banner">      
@@ -32,25 +33,6 @@
             <!-- Short / Near Term -->
             <div class="textbubble">
                 <h3 align="center">Short / Near Term</h2>
-
-                <h4>Activation Functions Review</h4>
-
-                <ul style="list-style-type:disc">
-                    <li>Review the set of activations provided. Add new functions, remove unuseful functions.</li>
-                    <li>Review naming of functions in line with adopted terminology in recent years, e.g. ReLU, Softmax.</i>
-                    <li>Modify activation function curves where necessary, in particular ensure there is a gradient to follow over
-                        wide range instead of using hard truncation at the output range extremes.</li>
-                    <li>Performance tuning.</li>
-                    <li>Efficacy sampling tests.
-                        <ul>
-                            <li>May result in changing the global default activation fn in SharpNEAT, and/or the defaults for each task. 
-                                In turn this may result in performance improvements, e.g. ReLU versus Logistic function.</li>
-                        </ul>
-                    </li>
-
-                </ul>
-                <br/>
-                <hr/>
 
                 <h4>Performance Tuning</h4>
                 <ul style="list-style-type:disc">

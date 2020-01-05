@@ -4,12 +4,13 @@
     <title>Phased Searching with NEAT</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=0.75" />
-    <link rel="stylesheet" href="sharpneat.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="sharpneat.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="sharpneat-print.css" type="text/css" media="print"/>
 </head>
 
 <body class="research">
     <a href="/" title="SharpNEAT">
-        <img src="sharpneat-banner-narrow.svg" alt="SharpNEAT" style="max-width:220px; margin-left:auto; margin-right:auto; display:block; padding:15px;" />
+        <img src="sharpneat-banner-narrow.svg" alt="SharpNEAT" class="articlebannerimage" />
     </a>  
     <hr/>
     <h1 align="center">Phased Searching with NEAT:<br/> Alternating Between Complexification And Simplification</h1>
@@ -29,7 +30,7 @@
         mutations that add new connections and neurons. Others[1] have shown that NEAT's
         ability to find solutions can be improved by using subtractive mutations concurrently
         with the normal additive mutations. Here I describe a variation whereby the
-        NEAT search switches between pure complexifying(additive) and pure simplifying(subtractive)
+        NEAT search switches between pure complexifying (additive) and pure simplifying (subtractive)
         phases. It is suggested that this technique better preserves NEAT's ability
         to search complex topologies but also allows the search to periodically prune
         away redundant structures. This pruning has the benefit of allowing NEAT to

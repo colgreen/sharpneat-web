@@ -1,0 +1,115 @@
+body {
+   margin-top: 0px;
+   width:80%;
+   margin-left: auto;
+   margin-right: auto;   
+   font-family:  Arial, Helvetica;
+}
+body.research {
+    margin: 0px 15px;
+    width:80%;
+    margin-left: auto;
+    margin-right: auto;       
+    font-family:  'Times New Roman', Times, serif;
+    font-size: 16;
+}
+a {
+    text-decoration:none;
+}
+a:hover {
+    text-decoration: underline;
+}
+.banner {
+    padding: 15px 0px;
+    margin: 0 auto;
+    background-color: 111111
+}
+.bannerimage {
+   max-width:230px; 
+   margin-left: auto;
+   margin-right: auto;
+   display: block;
+}
+.articlebannerimage	
+{	
+    max-width: 220px;	
+    margin-left: auto;	
+    margin-right: auto;	
+    display: block;
+    padding:15px;
+}
+.centralcolumn {
+   width:100%;
+   max-width: 1200px;
+   margin: 0 auto;
+   border-radius:3px;
+}
+.centralcolumninner {
+   margin-top:20px;
+   width:100%;
+   max-width: 1200px;
+   overflow:hidden;
+}
+.frontpagebubbletop {
+    background-color: #ffffff;
+    padding: 15px;
+    box-sizing:border-box;
+    border-radius: 5px;
+    width:100%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 0.9em;
+}
+.frontpagebubble {
+    background-color: #ffffff;
+    padding: 15px;
+    box-sizing:border-box;
+    border-radius: 5px;
+    width:100%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 0.9em;
+}
+.frontpagebubble ul {list-style-type: none; -webkit-padding-start : 0}
+.frontpagebubble li {margin: 24px 0; }
+.frontpagebubble a {font-size: 1em; font-weight: bold;}
+.frontpagebubble p {padding: 0px 15px}
+.research li {margin: 0px 25px;}
+
+.frontpagefooter {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+.textbubble {
+    background-color: #ffffff;
+    padding: 15px;
+    box-sizing:border-box;
+    border-radius: 5px;
+    width:100%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 0.9em;
+}
+.textbubble ul {list-style-type: none; margin: 10px 0px 0px 0px;}
+.textbubble li {margin: 25px 0;}
+
+.articlebodyouter {
+   width:97%;
+   max-width: 1200px;
+   margin: 10px auto;
+}
+.articlebodyinner {
+   padding: 0px 48px;
+   border-radius:3px;
+   background-color:#ffffff;
+}
+.code {
+   line-height: 1em;
+   display: block;
+   font-family: monospace;
+   white-space: pre;
+   margin: 1em 0px;
+   border: 1px dotted black;
+}
+
