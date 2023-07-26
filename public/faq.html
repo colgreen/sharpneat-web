@@ -30,10 +30,10 @@
             <br />
             <h4>1. What is SharpNEAT</h4>
             <p>
-                In a nutshell, SharpNEAT provides an implementation of an
+                SharpNEAT provides an implementation of an
                 <a href="http://en.wikipedia.org/wiki/Evolutionary_algorithm">Evolutionary Algorithm</a> (EA)
                 with the specific goal of evolving neural networks. The EA uses the evolutionary mechanisms of mutation,
-                recombination and selection to search for neural networks with behaviour that satisfies some formally defined
+                recombination, and selection to search for neural networks with behaviour that satisfies some formally defined
                 problem. Example problems might be how to control the limbs of a simple biped or quadruped to make it walk,
                 how to control a rocket to maintain vertical flight, or finding a network that implements some desired digital logic
                 (such as a multiplexer).
@@ -61,12 +61,11 @@
             <p>
                 NEAT is Neuro-Evolution of Augmenting Topologies, a neuroevolution technique
                 devised by Kenneth Stanley while part of the Neural Networks Research Group, University
-                of Texas at Austin (Now at the University of Central Florida School of Electrical Engineering and Computer Science).
-                The main NEAT website is hosted by Ken Stanley at <a href="http://www.cs.ucf.edu/~kstanley/">http://www.cs.ucf.edu/~kstanley/</a>
+                of Texas at Austin. The main NEAT website is hosted by Ken Stanley at <a href="http://www.cs.ucf.edu/~kstanley/">http://www.cs.ucf.edu/~kstanley/</a>
             </p>
             <p>
-                One of major features of NEAT is its genetic coding of networks, each node and connection is assigned a number, this
-                numeber can then be used to 'line-up' the structural parts of each networks when performing genetic recombination. This feature
+                One of major features of NEAT is its genetic coding of networks, each node and connection is assigned an ID, this
+                can be used to 'line-up' the structural parts of networks when performing genetic recombination. This feature
                 of NEAT addresses the problem of how to perform meaningful genetic recombination between two network structures without having
                 to perform computationally expensive structural matching/alignment.
             </p>
@@ -74,7 +73,7 @@
                 Another major feature of NEAT is the use of speciation - the clustering of genomes into species, each of which exists as a partially
                 independent sub-population that aims to partially protect its members from competition with the wider population. The motivation for this
                 mechanism is the desire to foster genetic diversity, that is, to allow low scoring (weak) genomes to survive if they represent some degree
-                novelty when compare to the wider population.
+                of novelty compared to the wider population.
             </p>
             <br />
 
@@ -96,14 +95,14 @@
                 method of evaluating fitness must be available for the problem at hand.
                 This is so that NEAT can evaluate as many candidate networks as possible
                 within a given time period. The more evaluations that can be performed
-                the greater the probability of finding a good solution (all other factors beign equal).
-                e.g. if the fitness function is a simple mathematical equation or if it involves playing a short/fast
-                game(such as tic-tac-toe) entirely within code, then we can evaluate networks
+                the greater the probability of finding a good solution (all other factors being equal).
+                E.g. if the fitness function is a simple mathematical equation, or if it involves playing a short/fast
+                game (such as tic-tac-toe) entirely within code, then we can evaluate networks
                 very quickly and therefore evaluate a large number of networks in a given
-                period. If however the fitness function requires interaction with a person
-                or some physical system external to the CPU then the chances are that
+                time period. If however the fitness function requires interaction with a person
+                or some physical system external to the CPU, then the chances are that
                 not enough evaluations can be performed for NEAT to be successful within
-                a reasonable amount of time. However there may be exceptions to even this
+                a reasonable amount of time. However, there may be exceptions to even this
                 rule, if say a very simple topology is capable of solving a problem then
                 it may be discoverable within very few evaluations.
             </p>
@@ -118,7 +117,6 @@
                 <li>Logical XOR (NEAT)</li>
                 <li>Boxes - Visual Discrimination Task</li>
                 <li>Predator-Prey</li>
-                <li>2D Walker</li>
             </ul>
             <p>
                 An explanation for each experiment is available within the SharpNEAT
@@ -129,7 +127,7 @@
 
             <h4>5. How do I perform an experimental run using one of the provided problem domains?</h4>
             <ol>
-                <li>Run the SharpNEAT GUI executable (SharpNEAT.exe)</li>
+                <li>Run the SharpNEAT GUI executable (SharpNeat.Windows.App.exe)</li>
                 <li>Select an experiment in the drop-down list.</li>
                 <li>Click the button marked 'Load Default Search Parameters'.</li>
                 <li>
@@ -147,12 +145,12 @@
 
             <h4>6. What is Phased Searching?</h4>
             <p>
-                Within the SharpNEAT GUI on the 2nd tab page there is a checkbox with
+                Within the SharpNEAT Windows UI, on the 2nd tab page there is a checkbox with
                 the label 'Enable Pruning' which is checked by default. This enables a
                 process whereby the average complexity of genomes in the population is
                 tracked, and if it passes some threshold then the search switches to a
                 'pruning' mode. In pruning mode the search continues as normal but additive
-                mutations are disabled and deletion mutation rates are increased, this
+                mutations are disabled and deletion mutation rates are increased; this
                 causes the average structural complexity of genomes in the population to fall
                 but without loosing the best genomes. This can give rise to new bursts
                 of improvement in fitness and also a speed up of the search, since more
