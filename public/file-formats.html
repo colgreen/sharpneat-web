@@ -1,0 +1,144 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>SharpNEAT</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.75"/>
+    <link rel="stylesheet" href="sharpneat.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="sharpneat-print.css" type="text/css" media="print"/>
+</head>
+<body>
+    <div class="banner">      
+        <a href="/" title="SharpNEAT">
+            <img src="sharpneat_logo_banner.svg" alt="SharpNEAT" class="bannerimage" />
+        </a>
+    </div>
+    <div class="centralcolumn">
+        <div class="centralcolumninner">
+            <!-- Column divider -->
+            <div style="float: left; width: 3.3%">
+                <br />
+            </div>
+            <!-- Pagetop Blurb -->
+            <div class="frontpagebubble">
+                <div style="font-weight:bold; font-size:x-large" align="center">
+                    File Formats
+                </div>
+                <p align="center">File formats used by SharpNEAT for saving and loading of genomes and populations of genomes</p>
+            </div>
+            <br />
+            <br />
+            <p>
+                SharpNEAT 4.0 uses a custom file format for storing genome data; this format is designed to strike a balance between
+                compactness and human readability, allowing for easy editing with a text editor.
+            </p>
+
+                Form comparison, SharpNEAT 1.x and 2.x employed an XML-based file format, reflecting XML's popularity in the early 2000s.
+                For SharpNEAT 4.x, JSON was considered, given its current widespread use and its position as the successor to XML for
+                self-descriptive data formats in many cases. However, the self-descriptive nature of JSON (and XML) results in lots of 
+                repeated property names, and therefore the custom format described below was chosen instead.
+            </p>
+            <br/>
+
+            <h2>Genome File Format</h2>
+
+            <p>
+                Here is an example of a file SharpNEAT 4.0 genome file:
+            </p>
+
+            <hr/>
+<pre>
+    # Input and output node counts.
+    4 1
+    
+    # Cyclic/acyclic indicator.
+    acyclic
+    
+    # Connections (source target weight).
+    3 4 0.54541057893432454
+    1 4 0.15195519160615445
+    0 4 -0.0502328519854705
+    2 5 0.19291160459252371
+    5 4 5.0
+    1 5 -0.15965014531430288
+    
+    # Activation functions (functionId functionCode).
+    0 LeakyReLU
+</pre>
+            <hr/>
+            <br/>
+            <p>
+                The format contains four sections:
+            </p>
+
+            <ul>
+                <li>Input and output node counts.</li>
+                <li>Cyclic/acyclic indicator, and optional cyclic activation count.</li>
+                <li>The list of connections that make up the neural net / genome.</li>
+                <li>Activation function(s)</li>
+            </ul>
+
+            <p>
+                The lines beginning with `#` are comments; these are not required, but SharpNEAT will write the comments as shown above to
+                help make the files reasonably self-descriptive.
+            </p>    
+
+
+            <h4>Input and output node counts</h4>
+
+            In the above example the file describes a neural net with four inputs and one output. The input nodes/neurons will have node IDs 0-3,
+            and the output node will be assigned ID 4. Arranging nodes and IDs in the order of inputs, outputs, and hidden nodes is a convention
+            used by SharpNEAT (all versions), and was originally chosen as an optimisation, as the input and outputs nodes are fixed and are
+            allocated a contiguous range of nodes ID starting at zero, whereas hidden nodes can be added and deleted as evolution progresses,
+            resulting in a variable number of hidden nodes, and gaps in the node IDs defined for a given neural net.
+
+
+            <h4>Cyclic/acyclic indicator</h4>
+
+            In the above example neural net definition file, the single word <b>acyclic</b> indicates that the file is describing an acyclic neural net.
+            I.e., a network that does not contain any connectivity cycles; as such the nodes can be arranged in layers that can be evaluated one 
+            layer at a time in a feedforward manner.
+
+            When 'acyclic' is specified, SharpNEAT checks for cycles in the connectivity graph upon loading a file and will throw an exception if
+            one is detected.
+
+            For cyclic network, the word <b>cyclic</b> is used. This must be followed by a single number, indicating how many neural net time-steps 
+            are executed per activation of the neural net. E.g.
+
+            <pre>
+            cyclic 2
+            </pre>
+
+            <h4>Connections</h4>
+            <p>
+                In this section, each line represents a single connection. The first two integer numbers are the IDs of the source and target nodes respectively.
+                The next number is the connection's weight.
+            </p>
+
+            <h4>Activation functions</h4>
+
+            Currently this is a single line that describes the activation function to use for all nodes in the neural net. In future SharpNEAT may extended to 
+            support specifying the activation function to use at each node. Hence the activation in the above example as an ID assigned of '0'; this 0 must be
+            specified, but serves no purpose at this time.
+            <br/>
+            <br/>
+
+            <h2>Population File Format</h2>
+
+            SharpNEAT 4.x allows for saving of genome populations. The file format used for this is a ZIp file containing one file per genome in the population,
+            where each file is as described above.
+
+            <br/>
+            <br/>
+            <br/>
+        </div>
+        <br />
+        <hr />
+        <div class="frontpagefooter">
+            Contact: <a href="mailto:colin.green1@gmail.com">Colin Green</a><br /></li>
+            SharpNEAT is a <a href="http://heliosphan.org/">Heliosphan.org</a> project.<br /></li>
+        </div>
+        <br />
+    </div>
+</body>
+</html>
