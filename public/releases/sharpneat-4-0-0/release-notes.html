@@ -1,0 +1,303 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <title>SharpNEAT 4.0.0</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.75" />
+    <link rel="stylesheet" href="../../sharpneat.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="../../sharpneat-print.css" type="text/css" media="print"/>
+    <style>
+        figure {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px dotted gray;
+        }
+        figure img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 100%
+        }
+        figcaption {
+            text-align: center;
+            margin: 7px;
+        }
+        li {
+            margin: 15px 0;
+        }
+    </style>
+    <style type="text/css">
+        .tg {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+        .tg td {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+        }
+        .tg th {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: normal;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+        }
+        .tg .tg-erlg {
+            font-weight: bold;
+            background-color: #efefef;
+            vertical-align: top
+        }
+        .tg .tg-baqh {
+            text-align: center;
+            vertical-align: top
+        }
+        .tg .tg-yw4l {
+            vertical-align: top
+        }
+    </style>
+</head>
+
+<body class="research">
+    <a href="/" title="SharpNEAT">
+        <img src="../../sharpneat-banner-narrow.svg" alt="SharpNEAT" class="bannerimage" />
+    </a>
+    <hr/>
+    <h1 align="center">SharpNEAT 4.0.0, 4.0.1</h1>
+
+    <p>
+        <a href="https://github.com/colgreen/sharpneat/releases/tag/v4.0.0">SharpNEAT v4.0.0 release on github</a>
+        <br/>
+        <a href="https://github.com/colgreen/sharpneat/releases/tag/v4.0.1">SharpNEAT v4.0.1 release on github</a>
+    </p>
+    
+    <h2>Overview</h2>
+    <p>
+        SharpNEAT 4.0 represents a comprehensive overhaul of the project, worked on over a period of six years from
+        2017 through to 2022. The headline improvements are:
+    </p>
+    <ul>
+        <li>Upgraded from the legacy .NET Framework to .NET Core (.NET 7).</li>
+        <li>A comprehensive overhaul of the entire codebase and project structure/architecture.</li>
+        <li>Numerous performance improvements.</li>
+    </ul>
+    <p>
+        Work on SharpNEAT 4.0 also included an overhaul and ongoing development of the
+        <a href="https://github.com/colgreen/Redzen">Redzen</a> project (that SharpNEAT uses), and a rederivation of the equations
+        for the inverted pole balancing task 
+        (see <a href="https://sharpneat.sourceforge.io/research/cart-pole/cart-pole-equations.html">Equations of Motion for the Cart and Pole Control Task</a>).
+    </p>
+    <p> 
+        As a matter of record, the major version has jumped from 2 to 4 because there was a previous attempt at a v3 version
+        (circa 2014-15) that was never completed. There are some citations to SharpNEAT v3 in the academic literature despite
+        that version never being completed or officially released, and therefore v4 was chosen as the major version number for this 
+        release.
+    </p>
+    <p>
+        The SharpNEAT 4.0.1 patch version release makes a small change/fix to the variance of the connection weight mutations,
+        to match the weight mutation scheme in SharpNEAT 2.x. This is beneficial when comparing the efficacy of this release with
+        the previous 2.4.4 release (see the <a href="#stochastic-efficacy-comparison">Stochastic Efficacy Comparison</a> section below).
+    </p>
+
+    <br/>
+
+    <h2>Upgrade to .NET Core and .NET 7</h2>
+    <p>
+        With this release SharpNEAT makes the leap from the legacy .NET Framework to .NET Core, now known simply as <i>.NET</i>,
+        and with a current version of .NET 7. This upgrade gives a boost to the project by moving away from a legacy platform
+        that is essentially in maintenance mode, to a platform that is being heavily invested in by Microsoft and the open source community.
+    </p>
+    <p>
+        The .NET platform also brings technical benefits, with new language features being added in each release, a constantly
+        improving JIT compiler (RyuJIT) that targets x64, x86, and Arm64 CPU architectures,
+        and <a href="https://github.com/dotnet/core/blob/main/release-notes/7.0/supported-os.md">support for multiple operating systems</a>.
+    </p>
+    <br/>
+
+    <h2>Comprehensive Overhaul of the Codebase</h2>
+    <p>
+        SharpNEAT 4.0 was rewritten from the ground up rather being the product of iterative changes to the existing codebase.
+        This became necessary because architectural and API changes simply made the new codebase incompatible with the old one.
+    </p>
+    <p>
+        This overhaul, combined with the .NET 7 platform update, provides a cleaner architecture and API, and a solid base for 
+        future development of the project and NEAT research. This release represents the biggest update to the project since its
+        inception in 2004.
+    </p>
+    <br/>
+
+    <h2>Summary of Changes</h2>
+    <p>
+        Some of the key changes in this major release are as follows (not an exhaustive list):
+    </p>
+    <ul>
+        <li>Refactored <i>NeatEvolutionAlgorithm</i> class, that properly separates the core algorithm from the thread that executes it.</li>
+        <li>Updated and performance tuned neural net classes, that leverage features such as <i>Span&lt;T&gt;</i> and <i>Vector&lt;T&gt</i>.</li>
+        <li>New compact genome and neural net data format, that moves away from the old XML format (see <a href="../../file-formats.html">File Formats</a>).</li>
+        <li>Proper separation of core code and UI code.</li>
+        <li>Revised API interfaces throughout, e.g. for fundamental interfaces such as <i>IBlackBox&lt;T&gt;</i>, <i>IActivationFunction&lt;T&gt;</i>, <i>INeatExperiment&lt;T&gt;</i>.</li>
+    </ul>
+    <br/>
+
+    <h2 id="stochastic-efficacy-comparison">Stochastic Efficacy Comparison</h2>
+    <p>
+        The performance (or 'efficacy') of this release was compared to the previous release (<a href="https://github.com/colgreen/sharpneat/releases/tag/v2.4.4">v2.4.4</a>).
+        The resulting best fitness histograms are shown below.
+    </p>
+    <p>
+        To recap, these histograms show the best fitness achieved on each of a large number of independent SharpNEAT runs, each of which terminates after one
+        minute of execution (clock-time). Histograms are also provided comparing the evaluation counts achieved in each 60 second run, and mean genome complexity
+        (see <a href="../../research/efficacy-sampling.html">Efficacy Sampling</a> for a more detailed explanation).
+    </p>
+    <p>
+        The PC hardware used to run these tests is listed at the bottom of the page; and is new compared to the hardware used for previous releases. However, the
+        data used here for the v2.4.4 release was obtained on the new hardware, therefore any differences in Efficacy are due to software differences (a) between the
+        v4.0.1 and v2.4.4 SharpNEAT releases, and (b) between the legacy .NET Framework and .NET [Core] 7.
+    </p>
+    <p>
+        Eight CPU cores were used these test runs, this is an increase from the four cores used in previous Efficacy Sampling runs for previous releases. This change
+        reflects the wider availability of higher core counts in consumer PC hardware.
+    </p>
+    <p>
+        As in previous releases, the two problem tasks used for comparing efficacy are the Binary 11-Multiplexer, and Generative Sinewave. Binary 11-Multiplexer uses
+        acyclic neural networks, and Generative Sinewave uses cyclic networks.
+    </p>
+    <br/>
+
+    <h3>Results and Observations</h3>
+    <h5>Evaluation Count Histograms</h5>
+    <p>
+        For both problem tasks the evaluation count histograms show significant shifts to the right, with the histogram modes (peaks) shifting
+        from around 550k to 1.1M for the binary11 task, and from about 1.3M to 4M for the sinewave task. So roughly a doubling in the number of genome
+        evaluations within each 60 second run, on average. The histogram shapes remain similar, although the binary11 histogram has broadened out
+        somewhat, and the sinewave task histogram has a long tail to the right, with at least one evaluation count over 11M. This long tail was evident
+        previously (see <a href="../sharpneat-2-4-3/release-notes.html">SharpNEAT 2.4.3</a>), but the tail seems to be even more extended now.
+    </p>
+
+    <h5>Best Fitness Histograms</h5>
+    <p>
+        The binary11 fitness histograms are very similar in shape between the two SharpNEAT versions, but with a significant shift to the right
+        for v4.0.1, with the mode increasing from a fitness of about 1830 to 1935. Also note that the right hand tail of the v4.0.1 histogram
+        is very close (or indeed equal to) to the maximum fitness score for this task (max = 2048). This suggests that in future this task may start to 
+        saturate at the right hand side of the histogram, and we may need a new more difficult task for measuring efficacy of SharpNEAT.
+    </p>
+    <p>
+        The sinewave task histogram has already begun to saturate at the right hand side of the histogram, with the max fitness for this task being 1000.
+        This issue was already becoming evident in release v2.4.3 (the last release that efficacy sampling was performed on) using the older hardware 
+        platform and four CPOu cores, and this issue has become more pronounced with the upgrade in hardware, CPU cores counts, .NET platform, and SharpNEAT
+        improvements. This task wil need to be replaced with a more difficult task for future releases.
+    </p>
+
+    <h5>Mean Complexity Histograms</h5>
+    <p>
+        The sinewave task histograms show a shift to the right for the v4.0.1 release, with the histogram shape broadly similar between v2.4.4 and v4.0.1. The shift
+        to the right is likely due to  the accumulation of redundant nodes and connections, caused by the increased number of generations achieved in each 60 second
+        run, as these test runs have pruning disabled.
+    </p>
+    <p>
+        The binary11 task histograms show a change in shape, and a shift to the left (i.e., smaller genomes) for the v4.0.1 release compare to v2.4.4. The v4.0.1 histogram
+        is less broad. The reason for this difference is not clear, it may be the result of the increased number of generations per 60 second run, or some difference in
+        the NEAT algorithm implementation between the v2.4.4 and v4.0.1 releases. A similar but less pronounced shift was observed previously 
+        (see <a href="../sharpneat-2-4-3/release-notes.html">SharpNEAT 2.4.3</a>)
+    </p> 
+    <br/>
+
+    <figure>
+        <img src="binary11-bestfitness-v244-v401-hist.png" />
+        <img src="sinewave-bestfitness-v244-v401-hist.png" />
+        <figcaption>
+            <b>Figure 1.</b>
+            <br/>Comparison of best fitness histograms obtained from SharpNEAT v2.4.4 and v4.0.1;
+            <br/> on the Binary11 Multiplexer and Generative Sinewave tasks.</figcaption>
+    </figure>
+    <br/>
+    <figure>
+        <img src="binary11-evalcount-v244-v401-hist.png" />
+        <img src="sinewave-evalcount-v244-v401-hist.png" />
+        <figcaption>
+            <b>Figure 2.</b>
+            <br/>Comparison of evaluation count histograms obtained from SharpNEAT v2.4.4 and v4.0.1;
+            <br/> on the Binary11 Multiplexer and Generative Sinewave tasks.</figcaption>
+    </figure>
+    <br/>
+    <figure>
+        <img src="binary11-meancomplexity-v244-v401-hist.png" />
+        <img src="sinewave-meancomplexity-v244-v401-hist.png" />
+        <figcaption>
+            <b>Figure 2.</b>
+            <br/>Comparison of population mean complexity histograms obtained from SharpNEAT v2.4.4 and v4.0.1;
+            <br/> on the Binary11 Multiplexer and Generative Sinewave tasks.</figcaption>
+    </figure>    
+    <br/>
+    <br/>
+
+    <hr/>
+    <h3>Appendix 1: Test Platform Environment Details</h3>
+
+    <span>CPU / Hardware</span>
+    <ul>
+        <li>Brand: AuthenticAMD</li>
+        <li>Name: AMD Ryzen 7 PRO 5750GE with Radeon Graphics</li>
+        <li>Architecture: x64</li>
+        <li>Cores: 8</li>
+        <li>Hyperthreading: Enabled</li>
+        <li>Frequency: 3194 MHz</li>
+        <li>RAM: 16 GB</li>
+    </ul>
+    <br/>
+
+    <span>Software Platform</span>
+    <ul>
+        <li>OS Name: Microsoft Windows 10 Pro (10.0.19045)</li>
+        <li>.NET Runtime 7.0.9</li>
+    </ul>
+
+    <br/>
+    <hr/>
+    <h3>Appendix 2: Resources</h3>
+    <h5>R Scripts</h5>
+    <ul>
+        <li><a href="generate-binary11-v244-v401-hist.R">R/ggplot script for generating histograms (Binary11 Multiplexer task; v2.4.4 vs v4.0.1)</a></li>
+        <li><a href="generate-sinewave-v244-v401-hist.R">R/ggplot script for generating histograms (Generative Sinewave task; v2.4.4 vs v4.0.1)</a></li>
+    
+    </ul>
+
+    <h5>Histogram CSV data</h5>
+    <ul>
+        <li><a href="binary11-samples-v2-4-4.csv">CSV data (Binary11 Multiplexer task; v2.4.4)</a></li>
+        <li><a href="binary11-samples-v4-0-0.csv">CSV data (Binary11 Multiplexer task; v4.0.0)</a></li>
+        
+        <li><a href="sinewave-samples-v2-4-4.csv">CSV data (Generative Sinewave task; v2.4.4)</a></li>
+        <li><a href="sinewave-samples-v4-0-0.csv">CSV data (Generative Sinewave task; v4.0.0)</a></li>
+    </ul>
+
+    <br/>
+    <p>
+        <i>
+            Colin,
+            <br />August 6th, 2023
+        </i>
+    </p>
+    <br/>
+    <hr/>
+    <div style="margin-left:10px;">
+        <img src="../../creativecommons88x31.png" border="0" align="left" hspace="10" vspace="0" /> Copyright 2023 Colin Green.
+        <br /> This article is licensed under a
+        <a href="http://creativecommons.org/licenses/by/3.0/" rel="nofollow">
+            Creative Commons Attribution 3.0 License
+        </a>
+        <br />
+        <br />
+    </div>
+</body>
+
+</html>

@@ -6,8 +6,7 @@ body.research {
     margin: 0px auto;
     width:97%;
     max-width: 900px;
-    font-family:  'Times New Roman', Times, serif;
-    font-size: larger;
+    font-size: large;
 }
 a {
     text-decoration:none;
