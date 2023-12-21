@@ -1,0 +1,244 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+
+<head>
+    <title>SharpNEAT 4.1.0</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.75" />
+    <link rel="stylesheet" href="../../sharpneat.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="../../sharpneat-print.css" type="text/css" media="print"/>
+    <style>
+        figure {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px dotted gray;
+        }
+        figure img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 100%
+        }
+        figcaption {
+            text-align: center;
+            margin: 7px;
+        }
+        li {
+            margin: 15px 0;
+        }
+    </style>
+    <style type="text/css">
+        .tg {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+        .tg td {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+        }
+        .tg th {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: normal;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+        }
+        .tg .tg-erlg {
+            font-weight: bold;
+            background-color: #efefef;
+            vertical-align: top
+        }
+        .tg .tg-baqh {
+            text-align: center;
+            vertical-align: top
+        }
+        .tg .tg-yw4l {
+            vertical-align: top
+        }
+    </style>
+</head>
+
+<body class="research">
+    <a href="/" title="SharpNEAT">
+        <img src="../../sharpneat-banner-narrow.svg" alt="SharpNEAT" class="bannerimage" />
+    </a>
+    <hr/>
+    <h1 align="center">SharpNEAT 4.1.0</h1>
+
+    <p>
+        <a href="https://github.com/colgreen/sharpneat/releases/tag/v4.1.0">SharpNEAT v4.0.0 release on github</a>
+    </p>
+    
+    <h2>Overview</h2>
+    <p>
+        SharpNEAT 4.1.0 is a minor release. The most significant change is an upgrade to the target platform from .NET 7 to .NET 8,
+        which provides some general performance improvements.
+    </p>
+    <br/>
+
+    <h2>Summary of Changes</h2>
+    <ul>
+        <li>Upgrade from .NET 7 to .NET 8; this provides some general performance improvements, particularly in the quality of the machine code produced by the JIT compiler.</li>
+        <br/>
+        <li>Some core classes updated to make use of <a href="https://learn.microsoft.com/en-us/dotnet/standard/generics/math">generic math[s]</a> 
+            (search for uses of <a href="https://learn.microsoft.com/en-us/dotnet/api/system.numerics.ibinaryfloatingpointieee754-1">IBinaryFloatingPointIeee754&lt;T&gt;</a>).</li>
+        <br/>
+        <li>Upgraded <a href="https://github.com/colgreen/Redzen">Redzen</a> dependency from 14.0 to 15.0, to make use of new generic math functions.</li>
+        <br/>
+        <li>New Binary 20-multiplexer task. The plan is to use this to compare performance and efficacy of releases as a replacement for the binary-11
+             task in that role. This is becoming necessary as the speed of SharpNEAT, .NET, and CPUs in general improves, such that binary-11 is becoming too simple a task for comparing releases.</li>
+        <br/>
+        <li>Added the 'Generative Beat Sinewave' task to the EfficacySampler app, again, to use in future release performance comparisons in place of the 'Generative Sinewave' task,
+             which is already far too easy to provide good performance and efficacy comparisons between releases.</li>
+        <br/>
+        <li>Fix/improvement: FuncRegressionEvaluator now handles the neural net output producing NaN and Infinity values, which can happen in cyclic networks when using certain activations, such as ReLU 
+            (because it doesn't naturally truncate the response value, thus allowing 'runaway' values.</li>
+    </ul>
+    <br/>
+
+    <h2 id="stochastic-efficacy-comparison">Stochastic Efficacy Comparison</h2>
+    <p>
+        The performance (or 'efficacy') of this release was compared to the previous release (<a href="https://github.com/colgreen/sharpneat/releases/tag/v4.0.1">v4.0.1</a>).
+        The resulting best fitness histograms are shown below.
+    </p>
+    <p>
+        To recap, these histograms show the best fitness achieved on each of a large number of independent SharpNEAT runs, each of which terminates after one
+        minute of execution (clock-time). Histograms are also provided comparing the evaluation counts achieved in each 60 second run, and mean genome complexity
+        (see <a href="../../research/efficacy-sampling.html">Efficacy Sampling</a> for a more detailed explanation).
+    </p>
+    <p>
+        The PC hardware used to run these tests is listed at the bottom of the page, and is unchanged from the v4.0.1 release.
+        However, the host PC has been upgraded from Windows 10 to Windows 11.
+    </p>
+    <p>
+        As in previous releases, the two problem tasks used for comparing efficacy are the Binary 11-Multiplexer and Generative Sinewave. Binary 11-Multiplexer uses
+        acyclic neural networks, and Generative Sinewave uses cyclic networks. The plan is for future releases to move to the more difficult 'Generative Beat Sinewave',
+        and Binary 20-Multiplexer tasks.
+    </p>
+    <br/>
+    
+    <h3>Results and Observations</h3>
+    <h5>Evaluation Count Histograms</h5>
+    <p>
+        For both problem tasks the evaluation count histograms show significant shifts to the right, with the histogram modes (peaks) shifting
+        from around 1.1M to 1.2M for the binary11 task, and from about 4.2M to 4.7M for the sinewave task. So roughly a 10% increase overall.
+        The histogram shapes remain similar, i.e., there no surprise changes that might occur due to accidental changes to the SharpNEAT algorithm
+        or parameters; these histograms provide a good baseline check in that respect.
+    </p>
+
+    <h5>Best Fitness Histograms</h5>
+    <p>
+        The binary11 fitness histograms are very similar in shape between the two SharpNEAT versions, but with a significant shift to the right
+        for v4.1.0, with the mode increasing from a fitness of about 1935 to &gt;1950. Also note that the right hand tail of the v4.1.0 histogram
+        has reached the maximum score of 2048, and indeed there were several sample that 'solved' the binary-11 task within the 60 seconds allocated.
+    </p>
+    <p>
+        The sinewave task histogram continues to saturate at the maximum fitness of 1000, and as such there is a plan to move to the more difficult 
+        'Generative beat sinewave' task for comparing future releases.
+    </p>
+
+    <h5>Mean Complexity Histograms</h5>
+    <p>
+        The histograms remain similar between releases, with small shifts to the right for teh v4.1.0 release; this is expected for sharpneat runs that 
+        are able to perform more generations within the allotted 60 seconds.
+    </p>
+    <br/>
+
+    <figure>
+        <img src="binary11-bestfitness-v401-v410-hist.png" />
+        <img src="sinewave-bestfitness-v401-v410-hist.png" />
+        <figcaption>
+            <b>Figure 1.</b>
+            <br/>Comparison of best fitness histograms obtained from SharpNEAT v4.0.1 and v4.1.0;
+            <br/> on the Binary11 Multiplexer and Generative Sinewave tasks.</figcaption>
+    </figure>
+    <br/>
+    <figure>
+        <img src="binary11-evalcount-v401-v410-hist.png" />
+        <img src="sinewave-evalcount-v401-v410-hist.png" />
+        <figcaption>
+            <b>Figure 2.</b>
+            <br/>Comparison of evaluation count histograms obtained from SharpNEAT v4.0.1 and v4.1.0;
+            <br/> on the Binary11 Multiplexer and Generative <Samp></Samp>inewave tasks.</figcaption>
+    </figure>
+    <br/>
+    <figure>
+        <img src="binary11-meancomplexity-v401-v410-hist.png" />
+        <img src="sinewave-meancomplexity-v401-v410-hist.png" />
+        <figcaption>
+            <b>Figure 2.</b>
+            <br/>Comparison of population mean complexity histograms obtained from SharpNEAT v4.0.1 and v4.1.0;
+            <br/> on the Binary11 Multiplexer and Generative Sinewave tasks.</figcaption>
+    </figure>    
+    <br/>
+    <br/>
+
+    <hr/>
+    <h3>Appendix 1: Test Platform Environment Details</h3>
+
+    <span>CPU / Hardware</span>
+    <ul>
+        <li>Brand: AuthenticAMD</li>
+        <li>Name: AMD Ryzen 7 PRO 5750GE with Radeon Graphics</li>
+        <li>Architecture: x64</li>
+        <li>Cores: 8</li>
+        <li>Hyperthreading: Enabled</li>
+        <li>Frequency: 3194 MHz</li>
+        <li>RAM: 16 GB</li>
+    </ul>
+    <br/>
+
+    <span>Software Platform</span>
+    <ul>
+        <li>OS Name: Microsoft Windows 11 Pro (SP0.0)</li>
+        <li>.NET Runtime 8.0.0</li>
+    </ul>
+
+    <br/>
+    <hr/>
+    <h3>Appendix 2: Resources</h3>
+    <h5>R Scripts</h5>
+    <ul>
+        <li><a href="generate-binary11-v401-v410-hist.R">R/ggplot script for generating histograms (Binary11 Multiplexer task; v4.0.1 vs v4.1.0)</a></li>
+        <li><a href="generate-sinewave-v401-v410-hist.R">R/ggplot script for generating histograms (Generative Sinewave task; v4.0.1 vs v4.1.0)</a></li>
+    
+    </ul>
+
+    <h5>Histogram CSV data</h5>
+    <ul>
+        <li><a href="binary11-samples-v4_0_1.csv">CSV data (Binary11 Multiplexer task; v4.0.1)</a></li>
+        <li><a href="binary11-samples-v4_1_0.csv">CSV data (Binary11 Multiplexer task; v4.1.0)</a></li>
+        
+        <li><a href="sinewave-samples-v4_0_1.csv">CSV data (Generative Sinewave task; v4.0.1)</a></li>
+        <li><a href="sinewave-samples-v4_1_0.csv">CSV data (Generative Sinewave task; v4.1.0)</a></li>
+    </ul>
+
+    <br/>
+    <p>
+        <i>
+            Colin,
+            <br />December 21st, 2023
+        </i>
+    </p>
+    <br/>
+    <hr/>
+    <div style="margin-left:10px;">
+        <img src="../../creativecommons88x31.png" border="0" align="left" hspace="10" vspace="0" /> Copyright 2023 Colin Green.
+        <br /> This article is licensed under a
+        <a href="http://creativecommons.org/licenses/by/3.0/" rel="nofollow">
+            Creative Commons Attribution 3.0 License
+        </a>
+        <br />
+        <br />
+    </div>
+</body>
+</html>
