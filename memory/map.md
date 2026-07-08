@@ -8,6 +8,10 @@ Read these files first:
 - `sources.md`: external and local sources used for project context.
 - `lessons.md`: reusable lessons from completed work.
 
+Focused topic notes:
+
+- `cart-pole-derivation-review.md`: current mathematical review findings for `public/research/cart-pole/cart-pole-equations.html`, including the equation (25) inertia issue and consequences for recommended equations.
+
 Working areas:
 
 - `plans/`: active plans, handovers, and task checklists worth preserving.
@@ -23,3 +27,4 @@ Top-level website navigation:
 - `public/research/`: research articles, supporting data, R scripts, and diagrams.
 - `archive/`: archived legacy pages.
 - `artwork/`: source logo and artwork files.
+
