@@ -14,3 +14,12 @@ Working areas:
 - `tmp/`: disposable session notes and drafts that are not durable project memory.
 
 Domain content remains in the existing repo structure unless there is a clear reason to add a focused memory file.
+
+Top-level website navigation:
+
+- `public/index.html`: main website entry point and link hub.
+- `public/sharpneat.css` and `public/sharpneat-print.css`: shared screen and print styles.
+- `public/releases/`: release note folders by SharpNEAT version.
+- `public/research/`: research articles, supporting data, R scripts, and diagrams.
+- `archive/`: archived legacy pages.
+- `artwork/`: source logo and artwork files.
