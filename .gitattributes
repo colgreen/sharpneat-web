@@ -1,0 +1,14 @@
+# This repository is normally edited from Windows, and Codex may run Git from WSL
+# against the same working tree. Keep text files CRLF in the working tree while
+# retaining Git's normalized LF storage in the index.
+* text=auto eol=crlf
+
+# Binary assets.
+*.bmp binary
+*.gif binary
+*.ico binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.webp binary
+*.db binary
