@@ -14,6 +14,7 @@ This repository maintains the static website for SharpNEAT, a C#/.NET implementa
 - Research content is under `public/research/`, with top-level research pages plus subfolders for activation function review, cart-pole, efficacy sampling, integer neural net, and PTSP material.
 - Generated or supporting research/release data includes CSV files and R scripts alongside the relevant HTML pages.
 - The completed cart-pole article revision and its maintenance guidance are summarized in `memory/cart-pole-equations.md`. The canonical article is `public/research/cart-pole/cart-pole-equations.html`; mathematical, notation, Appendix A-E, prose, Figure 1, C# alignment, and numerical-artifact passes are complete.
+- A possible follow-up pedagogical simplification is organized as independent review passes in `memory/plans/cart-pole-pedagogical-simplification.md`; work should proceed one pass at a time, beginning with visually unfinished algebra lines.
 
 ## How To Resume
 

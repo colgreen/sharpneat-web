@@ -519,22 +519,16 @@
     <br/>
 
     <p>
-        Equation (14) accounts for the rotational inertia associated with the centre of mass moving around pivot point P. If the pendulum
-        is an extended rigid body, then it also resists rotation about its own centre of mass. By "extended rigid body" we mean that the
-        pendulum or pole has mass distributed along its length, rather than all of its mass concentrated at a single mathematical point.
-    </p>
-    <p>
-        For a point-mass pendulum this additional body inertia is zero. For a rigid pole it is non-zero, and following Cannon [2] we write
-        the corresponding inertial moment as:
+        An extended rigid body also resists rotation about its own centre of mass because its mass is distributed through space rather than
+        concentrated at a single mathematical point. Following Cannon [2], we write this additional inertial moment as:
     </p>
     <br/>
     $$ M_i = J \ddot\theta \tag{16} $$
     <br/>
 
     <p>
-        Here $J$ is the pendulum or pole body's moment of inertia about its own centre of mass G. It is not the total moment of inertia
-        about pivot point P, because the $mr^2\ddot\theta$ contribution is already present in equation (14). Thus the total moment of
-        inertia about P is $mr^2 + J$.
+        Here $J$ is the body's moment of inertia about G. For a point mass $J=0$; for an extended pole it is non-zero. Together with the
+        $mr^2$ contribution identified after equation (14), this gives total moment of inertia $mr^2+J$ about P.
     </p>
     <p>
         The sign of $M_i$ follows the d'Alembert convention used above for inertial forces. A positive $\ddot\theta$ is a
@@ -569,9 +563,12 @@
         complete set of equations for the cart-pole model.
     </p>
     <p>
-        Firstly, it is useful to rearrange equations (12) and (18) to give the accelerations $\ddot x $ and $\ddot\theta$
-        for a given external force $f$.
+        There are two useful ways to solve these simultaneous equations. We derive both below. The recommended evaluation route is to
+        calculate $\ddot x$ with equation (24), then substitute that result into equation (23) to calculate $\ddot\theta$. The alternative
+        route calculates $\ddot\theta$ with equation (21), then substitutes that result into equation (19) to calculate $\ddot x$.
     </p>
+
+    <h4>Angular Acceleration First (Alternative Route)</h4>
     <p>
         Rearranging (12) to give $\ddot x$:
     </p>
@@ -584,14 +581,15 @@
 
         m_c \ddot x + m \ddot x &= f - mr \ddot\theta \cos\theta + mr \dot\theta^2 \sin\theta  \\[3ex]
 
-        (m_c  + m) \ddot x &= \\[3ex]
+        (m_c  + m) \ddot x &= f - mr \ddot\theta \cos\theta + mr \dot\theta^2 \sin\theta \\[3ex]
 
         \ddot x &= \frac{f - mr \ddot\theta \cos\theta + mr \dot\theta^2 \sin\theta}{m_c  + m} \tag{19} \\[3ex]
 
     \end{align}
     <br/>
     <p>
-            Rearranging (18) to give $\ddot x$:
+        For this derivation, rearrange (18) to give a second expression for $\ddot x$. Equation (20) is an intermediate algebraic
+        expression; because it divides by $\cos\theta$, it is not used as a general simulation equation.
     </p>
     \begin{align}
 
@@ -620,7 +618,7 @@
 
         m_t(mr^2 + J)\ddot\theta - (mr\cos\theta)^2 \ddot\theta &= m_t m g r\sin\theta - (mr\cos\theta)(f + mr\dot\theta^2\sin\theta) \\[3ex]
 
-        \left[m_t(mr^2 + J) -(mr\cos\theta)^2 \right] \ddot\theta &=  \\[3ex]
+        \left[m_t(mr^2 + J) -(mr\cos\theta)^2 \right] \ddot\theta &= m_t m g r\sin\theta - (mr\cos\theta)(f + mr\dot\theta^2\sin\theta) \\[3ex]
 
         \ddot\theta &= \frac{m_t m g r\sin\theta - (mr\cos\theta)(f + mr\dot\theta^2\sin\theta)}{m_t(mr^2 + J) -(mr\cos\theta)^2} \tag{21}
 
@@ -628,16 +626,18 @@
     <br/>
 
     <p>
-        Equation (21) can now be evaluated at each timestep to obtain $\ddot\theta$, and the result substituted into either (19) or (20) to obtain 
-        $\ddot x$; thus equations (19), (20) and (21) are sufficient for simulation of the cart-pole physical model, provided that 
-        a suitable definition for $J$ is substituted in.
+        This gives the alternative evaluation route: use equation (21) to obtain $\ddot\theta$, then substitute the result into equation
+        (19) to obtain $\ddot x$.
+    </p>
+
+    <h4>Cart Acceleration First (Recommended Route)</h4>
+    <p>
+        We now arrange (12) and (18) so that $\ddot x$ is evaluated first and its value is then substituted into an equation for
+        $\ddot\theta$.
     </p>
     <p>
-        We can also arrange (12) and (18) such that we evaluate $\ddot x$ first, and substitute its value into an equation for $\ddot\theta$, i.e.
-        a new set of equations that are alternatives to equations (19), (20) and (21):
-    </p>
-    <p>
-        Rearranging (12) to give $\ddot \theta$:
+        First, rearrange (12) to give an intermediate expression for $\ddot\theta$. Equation (22) divides by $\cos\theta$, so it is used
+        only in the derivation of equation (24), not as the final equation for calculating $\ddot\theta$:
     </p>
 
     \begin{align}
@@ -666,7 +666,7 @@
 
         mr^2\ddot\theta + J \ddot\theta &= mgr\sin\theta - mr \ddot x \cos\theta \\[3ex]
 
-        (mr^2 + J)\ddot\theta &= \\[3ex]
+        (mr^2 + J)\ddot\theta &= mr (g \sin\theta - \ddot x \cos\theta) \\[3ex]
 
         \ddot\theta &= \frac{mr (g \sin\theta - \ddot x \cos\theta)}{mr^2 + J} \tag{23}
 
@@ -695,36 +695,32 @@
     <br/>
     <blockquote style="background-color:eeeeee; padding: 14px">
         <p>
-            Note. Equations (20) and (22) have an undefined result when $\cos\theta$ is zero, therefore these equations should be avoided for 
-            obtaining $\ddot x$ and $\ddot\theta$. Equations (19) and (23) serve the same purpose and therefore these are preferred.
+            Equations (20) and (22) are undefined when $\cos\theta=0$, i.e. when the pole is horizontal. They are retained to show the
+            algebraic elimination steps, but should not be used to evaluate the accelerations. Equations (19) and (23) provide the
+            corresponding nonsingular expressions.
         </p>
     </blockquote>
     <p>
-        Equations (19), (21), (23), and (24) retain $J$ as the body moment of inertia about G. For an ideal point-mass pendulum $J=0$.
-        For an extended pole, $J$ is determined by its mass distribution; the uniform-pole case is developed in section 4.
+        Equations (19), (21), (23), and (24) leave $J$ unspecified so that different mass distributions can be modelled. Section 4
+        supplies the value for a uniform pole.
     </p>
 
     <blockquote style="background-color:eeeeee; padding: 14px">
         <p>
-            These equations present the following three options for finding values for $\ddot x$ and $\ddot\theta$.
+            The recommended evaluation procedure is:
         </p>
         <ol>
             <li>
-                Equation (21) can be evaluated to obtain a value for $\ddot\theta$, and the result substituted into equation (19) to obtain a
-                value for $\ddot x$.
+                Evaluate equation (24) to obtain $\ddot x$.
             </li>
             <br/>
             <li>
-                Equation (24) can be evaluated to obtain a value for $\ddot x$, and the result substituted into equation (23) to obtain a value
-                for $\ddot\theta$.
-            </li>
-            <br/>
-            <li>
-                Equations (21) and (24) can be evaluated to directly obtain $\ddot\theta$ and $\ddot x$, respectively.
+                Substitute that value into equation (23) to obtain $\ddot\theta$.
             </li>
         </ol>
         <p>
-            Options 1 and 2 are generally preferred as they avoid redundant recalculation of intermediate results.
+            Alternatively, equation (21) can be evaluated first and its result substituted into equation (19). Equations (21) and (24)
+            can also be evaluated independently, but doing so repeats some of the same intermediate calculations.
         </p>
     </blockquote>
     <br/>
@@ -1124,7 +1120,7 @@
 
         m_{\Sigma} \ddot x - \sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\cos^2\theta_i \right)\, \ddot x &= f - g\sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\sin\theta_i\cos\theta_i\right) + \sum_i\left(m_i r_i \dot\theta_i^2\sin\theta_i\right) \\[3ex]
 
-        \left[m_{\Sigma} - \sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\cos^2\theta_i \right)\right] \ddot x &= \\[3ex]
+        \left[m_{\Sigma} - \sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\cos^2\theta_i \right)\right] \ddot x &= f - g\sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\sin\theta_i\cos\theta_i\right) + \sum_i\left(m_i r_i \dot\theta_i^2\sin\theta_i\right) \\[3ex]
 
         \ddot x &= \frac{f - g\sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\sin\theta_i\cos\theta_i\right) + \sum_i\left(m_i r_i \dot\theta_i^2\sin\theta_i\right)}{m_{\Sigma} - \sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\cos^2\theta_i \right)} \tag{47} \\[3ex]
 
@@ -1156,10 +1152,8 @@
 
     <h2>4. Specializing the Equations for a Uniform Pole</h2>
     <p>
-        The equations in section 3 already cover both an ideal point-mass pendulum and an extended rigid pole. For translational motion,
-        the pole's mass can be represented by its centre of mass G; for rotational motion, an extended pole also has the body inertia term
-        $J$ about G. Thus no separate hybrid approximation is required here. We only need to substitute the geometry and inertia of a
-        uniform pole into the general equations.
+        The equations in section 3 leave the pole's centre-of-mass position and body inertia general. We now specialize them by substituting
+        the geometry and inertia of a uniform pole; no separate set of equations is required.
     </p>
     <p>
         The general equations use $r$ for the distance from the pivot to the pole's centre of mass, wherever that point lies. For a uniform

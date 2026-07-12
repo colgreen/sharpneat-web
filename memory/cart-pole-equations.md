@@ -10,6 +10,10 @@ Last updated: 2026-07-12
 - Supporting C# repository: `/mnt/d/home/projects/code/cartpole-physics/main`.
 - The corrected C# solution builds with zero warnings and errors, and its analysis results match the article.
 - The article now uses MathJax 4's TeX/CommonHTML component from jsDelivr; the migrated rendering has been visually verified.
+- A fresh independent step-by-step derivation review on 2026-07-12 found no substantive mathematical errors. The review started from the stated coordinate/sign conventions, reconstructed the mass-matrix equations, and symbolically verified the explicit single-pole, friction, uniform-pole, and multiple-pole forms. Equations (20) and (22) remain intentionally nonpreferred because their algebra divides by `cos(theta)`; the paper already states this limitation.
+- Pedagogical simplification pass 1 was completed on 2026-07-12: four displayed factoring steps with empty right-hand sides were completed so that no equality looks truncated. The equations and numbering are unchanged.
+- Pedagogical simplification pass 2 was completed on 2026-07-12: repeated inertia explanations in sections 3.5, 3.6, and the opening of section 4 were consolidated. The complete first explanation, indexed multiple-pole definition, uniform-pole calculation, conclusion, and source-specific appendix evidence were retained.
+- Pedagogical simplification pass 3 was completed on 2026-07-12: section 3.6 now identifies equations (24) then (23) as the recommended cart-acceleration-first route, retains equations (21) then (19) as an alternative, and clearly limits equations (20) and (22) to intermediate algebra because they divide by `cos(theta)`. No equations were moved or renumbered.
 
 ## Summary of the Revision
 

@@ -15,6 +15,7 @@ Focused topic notes:
 Working areas:
 
 - `plans/`: active plans, handovers, and task checklists worth preserving.
+- `plans/cart-pole-pedagogical-simplification.md`: ordered, one-pass-at-a-time plan for improving the derivation's pacing while preserving its basic-algebra audience.
 - `tmp/`: disposable session notes and drafts that are not durable project memory.
 
 Domain content remains in the existing repo structure unless there is a clear reason to add a focused memory file.
