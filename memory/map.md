@@ -10,8 +10,7 @@ Read these files first:
 
 Focused topic notes:
 
-- `cart-pole-derivation-review.md`: current mathematical review findings for `public/research/cart-pole/cart-pole-equations.html`, including the equation (25) inertia issue and consequences for recommended equations.
-- `cart-pole-equations-revision-draft.md`: fresh working draft for rebuilding the cart-pole derivation with the corrected interpretation of `J` as additional/body inertia rather than total pivot inertia.
+- `cart-pole-equations.md`: completed revision summary, mathematical and notation invariants, supporting C# reproduction details, and future editing guidance for `public/research/cart-pole/cart-pole-equations.html`.
 
 Working areas:
 
