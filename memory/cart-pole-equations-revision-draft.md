@@ -20,11 +20,13 @@ Current state:
 - Grammar/readability improvements are welcome, but broader restructuring should be avoided unless needed to fix an error or clarify a genuinely confusing passage.
 - Planned mathematical changes should be made as targeted edits to the original derivation flow, especially around the interpretation of `J` and the resulting `4/3` versus `7/3` factors.
 - Table 1 in the revision draft now defines `G` as the pendulum/pole centre of mass, `L` as full physical pole length, `r` as pivot-to-pole-centre-of-mass distance, and `J` as body inertia about the pole centre of mass. It no longer defines `l` or `\hat l` as main symbols.
-- The existing SVG diagram still labels the old ideal point mass as `Q`. Update the SVG later so the diagram labels the pole centre of mass as `G`, or otherwise clearly maps old `Q` to revised `G`.
+- Figure 1's SVG sources now label the pole centre of mass as `G` and the pivot-to-centre-of-mass distance as `r`.
 
 Next derivation step:
 
-Continue with publication-readiness checks for the numerical integration figures and final replacement workflow. The main derivation, friction extensions, multiple-pole equations, hybrid model, recommended equations, and appendices C-E have been revised to use `r`/`\alpha` and the corrected `4/3` inertia interpretation. Figure 1's SVG labels now use `G` and `r`.
+Continue with the remaining publication-readiness prose checks and final replacement workflow. The numerical integration CSVs, Figures 2-3,
+Table 5, and floating-point comparison have been regenerated from the corrected C# equations. The remaining focused checks are the introduction,
+conclusion, Appendix D's use of “discrepancies” plural, and the final decision to replace the published HTML with the staging draft.
 
 ## Source-First Notation Audit
 
@@ -35,7 +37,8 @@ Current source status:
 - Barto, Sutton, Anderson 1983: downloaded primary PDF to `memory/tmp/references/barto-sutton-anderson-83.pdf`. It is scanned; `pdftotext` produced no text. Rendered pages to `memory/tmp/references/barto_pages/`. Visual inspection of the appendix confirms their cart-pole model uses `l = 0.5 m, half-pole length`, `m_c = 1.0 kg`, `m = 0.1 kg`, `g = -9.8 m/s^2`, `\mu_c`, `\mu_p`, and equations with the familiar `4/3` denominator factor.
 - Cannon 1967: user supplied photo `/mnt/c/Users/colin/Downloads/PXL_20260708_230436018.jpg` of p.705, Sec. 22.4 "Unstable Mechanical System: Stick Balancer". This directly shows equations (22.50)-(22.56), including (22.53)-(22.55). It verifies that Cannon defines `J` as the moment of inertia of the stick about its mass center, with `J = ml^2/3` for a stick of length `2l`, and equation (22.55) uses `J\ddot\theta + ml(\ddot x\cos\theta + l\ddot\theta) - mgl\sin\theta = 0`. Therefore Cannon's `J` is additional/body inertia about the center of mass, not total pivot inertia.
 - Cannon sign-error claims should be treated as unverified until a dedicated sign-convention audit is completed. The public draft should not claim Cannon has sign errors merely from the old article's annotations.
-- Wieland 1991: Google Books metadata/preview downloaded to `memory/tmp/references/wieland-googlebooks.html`; direct search/page probe did not expose the relevant equations. Primary equations not yet independently verified.
+- Wieland 1991: the user supplied scans of pp.91-101 at `memory/tmp/references/wieland/`. Page 96 gives the single-pole linearized dynamics and explicitly defines signed `g=-9.8 m/s^2`; p.100 shows single-pole equations (9)-(10), multiple-pole equations (11)-(12), effective-force/effective-mass definitions, and Table 1; p.101 gives Table 2 and the numerical-integration methods. Appendix E has been revised to retain Wieland's literal single-pole notation before explicitly mapping `M`, `F`, `l`, and signed `g` into local notation. The integration quotation has also been verified and cleaned.
+- Bibliographic correction for Wieland: the primary source used by Appendix E is Alexis P. Wieland, “Evolving Controls for Unstable Systems,” in *Connectionist Models: Proceedings of the 1990 Summer School*, eds. David S. Touretzky, Jeffrey L. Elman, Terrence J. Sejnowski, and Geoffrey E. Hinton, Morgan Kaufmann, 1991, pp. 91-102, ISBN 1-55860-156-2. Reference [5] now identifies this proceedings chapter instead of the separate IEEE work.
 
 Notation implication from verified Barto source:
 
@@ -61,8 +64,17 @@ Notation implication from verified Barto source:
 | 2026-07-09 | Section 3.8 friction | Figure/data verification | Revisited the friction treatment. Clarified that `\mu_c` and `\mu_p` are model-dependent friction parameters: dimensionless only in translational Coulomb friction, but dimensional damping coefficients in the recommended velocity-proportional equations. Fixed rotational friction wording so `\mathbf{M}_f` is a moment, not a force, and corrected `\sgn` notation in equations (35), (39), and (41). |
 | 2026-07-09 | Appendix A | Figure/data verification | Rewrote the d'Alembert appendix to explain dynamic equilibrium as Newton's Second Law rearranged into `\sum \mathbf{F} + \mathbf{F}^i = 0`, using the same superscript `i` inertial-force notation as the main derivation. Added the corresponding moment form and a note reconciling `\mathbf{M}^i=-I\boldsymbol{\alpha}` with the article's clockwise-positive `\ddot\theta` scalar convention. |
 | 2026-07-09 | Appendix B | Figure/data verification | Rewrote the torque appendix to define torque as `\boldsymbol{\tau}=\mathbf{r}\times\mathbf{F}`, clarify that only the force component perpendicular to the pivot radius contributes, and align the sign explanation with the article's anticlockwise-positive moment convention versus clockwise-positive angular variables. Replaced the old derivative-based lever discussion with a shorter static torque-balance explanation. |
-| 2026-07-09 | Appendix C | Figure/data verification | Expanded the Cannon appendix to state Cannon's own nonlinear equations and small-angle equations using source-style tags `(Cannon 22.55)` and `(Cannon 22.56)`, then mapped them to the article's uniform-pole equations with local C-numbered derivations. The appendix now explicitly shows Cannon's pivot inertia as `J + ml^2 = 4/3 ml^2`. |
+| 2026-07-09 | Appendix C | Figure/data verification | Expanded the Cannon appendix to state Cannon's own nonlinear equations and small-angle equations using source-style tags `(Cannon 22.55)` and `(Cannon 22.56)`, then mapped them to the article's uniform-pole equations with local C-numbered derivations. The appendix now explicitly shows Cannon's pivot inertia as `J + ml^2 = 4/3 ml^2`, and derives equations (C3)-(C5) step by step from Cannon's nonlinear pair. |
 | 2026-07-10 | Figure 1 / Appendix C | Figure/data verification | Clarified that Figure 1 is a centre-of-mass schematic: for an ideal point-mass pendulum G is the bob at the end of a massless rod, while for a uniform pole G is halfway along the physical pole and the full pole length is twice PG. Added matching Appendix C wording to distinguish Cannon's uniform stick of length `2l` from an ideal point-mass pendulum. |
+| 2026-07-10 | Appendix D | Figure/data verification | Reviewed Appendix D against the scanned Barto source. Added explicit mappings from Barto's `l` and `F_t` to local `\hat l` and `f`; restored the full source parameter set; tightened the negative-`g` critique to the sign inconsistency demonstrated by the equation and angle convention; removed stale citation-count speculation; and identified `\mu_c` as a constant Coulomb friction force and `\mu_p` as a dimensional pivot damping coefficient. |
+| 2026-07-10 | Appendices C-E titles | Figure/data verification | Renamed the three source-comparison appendices to `Comparison with the Equations of ...`, reflecting that each appendix maps, rederives, and evaluates source equations rather than merely reproducing them. |
+| 2026-07-10 | Appendix E | Figure/data verification | Reviewed and revised Appendix E against user-supplied scans of Wieland pp.91-101. Restored consistent single-pole effective-force/effective-mass notation in (E1)-(E4); mapped source `M`, `F`, `l`, and signed `g` to local `m_c`, `f`, `\hat l`, and `g_W`; verified (E5)-(E6) against (28-F)/(27-F); restored Table 1 values; clarified dimensional friction parameters and the `4/3` pivot-inertia factor; verified and cleaned the integration quotation; and corrected reference [5] to the proceedings chapter “Evolving Controls for Unstable Systems.” |
+| 2026-07-11 | Appendices C-E notation | Figure/data verification | Adopted a consistent source-notation boundary across the comparison appendices. Source-labelled equations retain Cannon's, Barto's, or Wieland's literal symbols; explicit mappings then introduce the paper's notation for local rederivations and comparisons. Appendix C already retained Cannon's notation and now states the rule explicitly. Appendix D restored Barto's `l`, `F_t`, and time subscripts in (D1)-(D2). Appendix E restored Wieland's `M`, `F`, `l`, and signed `g` in (E1)-(E4), while retaining `g_W` only after the mapping boundary. |
+| 2026-07-11 | Equations (25)-(59), appendices C-E | Figure/data verification | Removed the model-specific `\alpha`/`\alpha_i` inertia parameters. General equations now retain the physically meaningful sums `mr^2+J` and `m_i r_i^2+J_i`; equation (25) states `J=0` for a point mass and `J=(1/3)mr^2` for a uniform pole. Recast (28), (28-F), and their uniform/recommended/multiple-pole descendants with positive denominators; the uniform-pole forms now expose the `3/4` coupling factors and match (C5) directly. |
+| 2026-07-11 | Section 3.6 onward | Coherence pass | Removed the redundant former section 3.7 and equations (25)-(28). Equation (24) now carries the positive-denominator cart-acceleration form directly. The model-choice note and evaluation guidance now close section 3.6 and refer to (19)/(21) or (24)/(23). Friction is now section 3.7, multiple poles section 3.8, and the friction extensions are labelled (19-F), (21-F), (23-F), and (24-F). Downstream and appendix references were updated without renumbering later equations. |
+| 2026-07-11 | Equations (24) and (24-F) | Coherence pass | Replaced compound fractions containing `(mr)^2/(mr^2+J)` with equivalent single-fraction forms. The revised equations retain the positive denominator and display the total pivot inertia `mr^2+J` directly; uniform-pole specialization still reduces to the simpler `3/4` form. |
+| 2026-07-11 | Sections 3.7, 5, 6 and appendices D-E | Coherence pass | Separated friction notation by physical model. Local `\mu_c`/`\mu_p` are now dimensionless Coulomb coefficients; `b_c`/`b_p` are linear damping coefficients; Coulomb pivot moments include effective radius `r_p`; and the wheel-bearing example uses rotational damping `b_w`. Recommended equations and numerical parameter labels use `b_c`/`b_p`. Barto and Wieland retain source-literal `\mu` symbols with explicit dimensional distinctions from local notation. |
+| 2026-07-11 | Equations (29)-(31) | Coherence pass | Redefined `N_c` as the conventional nonnegative upward normal reaction exerted by the track on the cart. Removed `|N_c|`, reversed equation (30) accordingly, and made the contact-domain condition explicit: if the calculated reaction reaches zero, the cart loses contact and the Coulomb-friction model ceases to apply. |
 
 ## Aim
 
@@ -237,25 +249,8 @@ r = l,\quad J = 0,\quad I_{pivot} = ml^2
 r = \hat l,\quad J = \frac{1}{3}m\hat l^2,\quad I_{pivot} = \frac{4}{3}m\hat l^2
 ```
 
-Avoid saying "substitute `k = 4/3` into `J = kml^2`", because that reintroduces the ambiguity. If a constant is useful, define it for the total pivot factor instead:
-
-```tex
-mr^2 + J = \alpha mr^2
-```
-
-Then:
-
-```tex
-\alpha = 1
-```
-
-for a point mass, and:
-
-```tex
-\alpha = \frac{4}{3}
-```
-
-for the uniform-pole hybrid model.
+Avoid saying "substitute `k = 4/3` into `J = kml^2`", because that reintroduces the ambiguity. Retain `mr^2+J` explicitly in the
+general equations. Substitute `J=0` for a point mass or `J=(1/3)mr^2` for a uniform pole only when specializing the equations.
 
 ### 7. Revisit appendices
 
@@ -268,8 +263,17 @@ Appendix statements about Barto et al. and Wieland inheriting a problematic iner
 - Should the rewrite preserve Cannon's sign conventions exactly, or recast the derivation in a cleaner modern convention and then map back to Cannon?
 - Should the revised article use `r` for center-of-mass distance throughout, reserving `l` for full pole length and `\hat l` for half length?
 - Should the article explicitly derive the rigid-body inertia of a uniform rod about its center of mass, or cite it and explain only how the parallel-axis split works?
-- Should the final recommended equations support both point-mass and hybrid models via a parameter `\alpha`, or present separate final equations for each?
-- The section 6 figures and table were not regenerated after changing the recommended equations from the old `7/3` factors to `4/3`. There are no local simulation scripts or data files next to the PNGs, so verify/regenerate those results before publication if exact numeric reproducibility matters.
+- The final recommended equations specialize to a uniform pole; the preceding general equations retain `J` and also support the point-mass case through `J=0`.
+- The source-notation treatment in appendices C-E is resolved: source equations use source symbols, followed by explicit mappings into article-local notation.
+- Resolved 2026-07-12: the section 6 CSVs, Figures 2-3, Table 5, and floating-point comparison were regenerated after correcting the recommended equations from the old `7/3` factors to `4/3`.
+- The supporting simulation source and ggplot scripts are in `/mnt/d/home/projects/code/cartpole-physics/main`. The legacy single-pole equation
+  class explicitly sets full pole length `l = 1` and derives `l_hat = l / 2`, confirming that Table 4's 1 m pole meant a full physical length
+  of 1 m and that equations (56)-(57) were evaluated with $\hat l=0.5$ m. The source equation classes now use the corrected `4/3` and `3/4`
+  factors and article-aligned `m_t`/`m_sigma` and `b_c`/`b_p` symbols. The artifact-generation path uses cart damping `b_c = 0.1`.
+- Resolved 2026-07-12: Table 4's former $b_c=0.01$ N s/m conflicted with every single- and double-precision C# default, all of which use
+  `0.1`; repository history found no earlier `0.01` source value or artifact-path override, and the website PNGs are byte-identical to those
+  in the supporting repository. The user chose the source-backed $b_c=0.1$ N s/m for the corrected regenerated experiment, and Table 4 now
+  states that value. This is an experiment parameter choice, not a physically mandated coefficient.
 
 ## Working Principle For The Revision
 
@@ -279,3 +283,68 @@ Every inertia term should answer one of two questions:
 2. Is this extra resistance from an extended body rotating about its own center of mass?
 
 If the answer is both, the derivation is probably double-counting.
+
+## Coherence Audit (2026-07-11)
+
+A fresh sequential reader's-pass found that the overall derivation story remains sound: physical model; centre-of-mass kinematics; inertial
+forces; horizontal and rotational balances; coupled acceleration equations; friction and multiple-pole extensions; uniform-pole
+specialization; recommended equations; numerical integration; source comparisons. The following narrative seams should be addressed in a
+focused prose pass:
+
+- Resolved 2026-07-11: removed the redundant former section 3.7 and equations (25)-(28); folded its useful model-choice and evaluation
+  guidance into the end of section 3.6, with the positive-denominator form now carried by equation (24).
+- Resolved 2026-07-11: section 3.7 now has a concise opening that introduces $F_f$/$\mathbf{M}_f$, identifies the two friction-model families,
+  defines the distinct `\mu`/`b` notation, scopes out static friction, and states the sign check. The detailed Coulomb and bearing-damping
+  explanations were moved into numbered cart-track and pivot subsections; the general microscopic-detail paragraph was removed.
+- Resolved 2026-07-12: section 3.8 now explicitly returns from friction to the frictionless balances before deriving the multiple-pole
+  equations. It identifies equation (10) as the inertial force at G, defines $\tilde F_i$ as each pole's inertial-force contribution after
+  internal pivot interactions cancel, and no longer calls equation (10) the physical force applied by a pole to the cart.
+- Resolved 2026-07-12: section 3.4 now describes equation (12) as the horizontal dynamic-equilibrium balance for the combined cart-pole
+  system. It explains that the unknown pivot interaction is internal and cancels, and that gravity is absent because the balance is horizontal.
+- Resolved 2026-07-12: section 4.1 retains only the short centre-of-mass and total-pivot inertia calculation needed to make the uniform-pole
+  substitution self-contained; no further reduction was judged helpful.
+- Resolved 2026-07-12: section 5 now introduces its uniform-pole inertia and linear-damping choices as explicit model assumptions used to
+  produce one complete simulation equation set, rather than as a "recommendation for each option".
+- Resolved 2026-07-12: section 6's corrected CSVs and Figures 2-3 were regenerated; Table 5 was recalculated against a converged RK4 reference;
+  and section 6.4 now reports defined, measured single-versus-double precision differences.
+- Resolved 2026-07-12: section 6.3 now defines an explicit Euler step using a saved start-of-timestep state. Both accelerations and all
+  next-state values are calculated from that saved state, then the position and velocity updates are applied simultaneously.
+- Resolved 2026-07-12: section 6's opening now describes the equations as state derivatives, numerical integration as a discrete
+  approximation to continuous state evolution, and the resulting discrepancy as numerical error. It no longer uses the nonstandard
+  "gradient projection error" terminology or treats numerical error as direct evidence about real-world fidelity.
+- Resolved 2026-07-12: section 6.1 now explains the global-error scaling of Euler and RK4 without claiming a universal $10^6$ accuracy
+  ratio. It notes the small-timestep qualification and dependence on the equations and method-specific error constants.
+- Resolved 2026-07-12: section 6.3 no longer describes Runge-Kutta integration as an unspecified iterative algorithm. It now explains
+  that these methods evaluate derivatives at intermediate trial states and combine those evaluations to obtain the next state.
+- Resolved 2026-07-12: Table 4 now identifies the experiment pole measurement as full physical length $L=1$ m and states explicitly
+  that the uniform-pole equations therefore use the centre-of-mass distance $r=\hat l=0.5$ m. This interpretation is confirmed by the
+  supporting C# source, which sets full length to 1 m and derives its half-length parameter.
+- Resolved 2026-07-12: section 6.2 now uses the physical term "damping" rather than "dampening" and describes the decreasing pole
+  amplitude as the combined effect of coupled cart motion and the specified cart-track and pivot damping.
+- Resolved 2026-07-12: section 6.2 now limits the three-timestep RK4 comparison to evidence of numerical convergence toward the
+  differential-equation solution, rather than evidence of real-world physical fidelity. It states explicitly that the nearly coincident
+  RK4 trajectories are omitted because a separate plot would add little value.
+- Resolved 2026-07-12: the Figure 3 discussion now uses the converged RK4 trajectory as a numerical reference rather than calling it the
+  "correct path". It acknowledges that RK4 remains approximate and limits the damping observation to the stated simulated system.
+- Resolved 2026-07-12: Table 5 now distinguishes its absolute-error timestep-selection criterion from the signed errors displayed in its
+  final column. The unexplained superscript `c` markers were removed; radians are identified conventionally as `rad` in the heading.
+- Resolved 2026-07-12: section 6.2 now treats Table 5's timestep limits as specific to the stated model, duration, error measure, and
+  tolerance. Its general recommendation is to prefer RK2/RK4 and establish a suitable timestep for other configurations through convergence
+  testing rather than copying the table values directly.
+- Resolved 2026-07-12: section 6.3 retains its general title but now distinguishes the timestep-based outer simulation loop shared by Euler,
+  RK2, and RK4 from the method-specific work inside each step. The saved-state numbered procedure appears under an explicit "Euler Update"
+  subheading, followed by a concise contrast with RK2/RK4 intermediate derivative evaluations.
+- Resolved 2026-07-12: section 6.4 now distinguishes floating-point round-off from integration-method/timestep discretization error and
+  reports the maximum absolute and signed final single-versus-double precision pole-angle differences for Euler, RK2, and RK4 at
+  $\tau=0.001$ seconds over 15 seconds.
+
+- Resolved 2026-07-12: the Figure 2 discussion now describes increasing swing amplitude as numerical energy introduced into the damped,
+  unforced model. It no longer says that a physical conservation law is being violated or that the simulation is "in no way representative"
+  of a real system, and the result is split into two shorter paragraphs.
+- Appendix D says the rederivation reveals "discrepancies" plural, although the main identified equation discrepancy is the signed gravity;
+  the inertia and friction subsections mostly explain consistency/model interpretation.
+- Resolved 2026-07-11: Appendix E now explains that the `3/4` factor in (E5) and `4/3` factor in (E6) are algebraically related forms of
+  the same uniform-pole inertia contribution.
+- The introduction's promise that appendices C-E "highlight errors" now overstates their role; they primarily compare notation, modeling
+  choices, and one apparent sign inconsistency. The conclusion should summarize the central `J`/total-pivot-inertia result rather than only
+  offering a generic closing statement.

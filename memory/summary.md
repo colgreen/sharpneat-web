@@ -14,7 +14,7 @@ This repository maintains the static website for SharpNEAT, a C#/.NET implementa
 - Research content is under `public/research/`, with top-level research pages plus subfolders for activation function review, cart-pole, efficacy sampling, integer neural net, and PTSP material.
 - Generated or supporting research/release data includes CSV files and R scripts alongside the relevant HTML pages.
 - Current cart-pole derivation review notes are in `memory/cart-pole-derivation-review.md`.
-- A fresh revision working draft is in `memory/cart-pole-equations-revision-draft.md`; as of 2026-07-09 the staging HTML has been revised through equation (59), appendices C-E, a section 6 light pass, Figure 1 SVG labels, and a deeper section 3.8 friction-parameter pass. Remaining work is numerical-integration figure/table verification and final publication-readiness checks.
+- A revision working draft is in `memory/cart-pole-equations-revision-draft.md`; as of 2026-07-12 the staging HTML has been revised through equation (59), focused reviews of appendices A-E, section 6, and Figure 1. General equations retain `mr^2+J` explicitly rather than introducing a separate inertia factor; uniform-pole equations use the corrected `4/3` and `3/4` factors. The section 6 CSVs and Figures 2-3 were regenerated from corrected C# equations, Table 5 was recalculated against a converged RK4 reference, and the floating-point comparison is now quantified. Remaining work is final publication-readiness prose review and the decision to replace the published HTML with the staging draft.
 
 ## How To Resume
 
