@@ -95,7 +95,7 @@
         cart and pole task, and accompanying discussions and analyses.
     </p>
     <p>
-        From Lunberg and Barton [3]:
+        From Lundberg and Barton [3]:
     </p>
     <blockquote>
         <i>The inverted-pendulum system is a favourite example system and lecture demonstration of students and educators in 
@@ -160,17 +160,17 @@
     </figure>
     <br/>
     <blockquote style="background-color:eeeeee; padding:20px">
-        <span><b>Table 1: Symbols used in figure 1 and throughout this paper</b></span>
+        <span><b>Table 1: Symbols and labels used in figure 1 and throughout this paper</b></span>
         <table class="notationTable">
-            <tr><td>$x, y, O$ &nbsp;</td><td>A Cartesian x, y coordinate frame is shown, with origin O.</td></tr>
+            <tr><td>$O$ &nbsp;</td><td>Origin of the fixed Cartesian $xy$ coordinate frame. The positive $x$ direction is to the right and the positive $y$ direction is upwards.</td></tr>
             <tr><td>$C$ &nbsp;</td><td>The cart's centre of mass.</td></tr>
             <tr><td>$P$ &nbsp;</td><td>Pivot point of the inverted pendulum.</td></tr>
             <tr><td>$G$ &nbsp;</td><td>The pendulum or pole's centre of mass, located at distance $r$ from point P.</td></tr>
-            <tr><td>$L$ &nbsp;</td><td>Full physical length of a pole with uniformly distributed mass.</td></tr>
+            <tr><td>$L$ &nbsp;</td><td>Full physical length of the pole.</td></tr>
             <tr><td>$r$ &nbsp;</td><td>Distance from pivot point P to the pendulum or pole's centre of mass. For a uniform pole $r=L/2$.</td></tr>
             <tr><td>$T,R$ &nbsp;</td><td>An alternative coordinate frame with the <i>R</i> axis parallel to the pendulum (vector PG). I.e. the <i>TR</i> coordinate frame
                 rotates and moves horizontally relative to the fixed (or 'world') Cartesian coordinate frame.</td></tr>
-            <tr><td>$x$ (lower) &nbsp;</td><td>Horizontal position of the cart on the track.</td></tr>
+            <tr><td>$x$ &nbsp;</td><td>Horizontal coordinate of the cart on the track.</td></tr>
             <tr><td>$\theta$ &nbsp; </td><td>Angle of the pendulum in radians, measured as a deviation from the vertical. The pendulum is at 0° when oriented vertically straight up,
                 +90° when horizontal and to the right of the pivot point, -90° when horizontal and to the left of the pivot point,
                  and +-180° when oriented vertically down.</td></tr>
@@ -184,7 +184,7 @@
         <span>Selected additional symbols used throughout this paper:</span>
         <table class="notationTable">
             <tr><td>$\dot x, \ddot x$ &nbsp;</td><td>The cart's x-axis velocity and acceleration, respectively.</td></tr>
-            <tr><td>$\dot x_g, \ddot x_g$ &nbsp;</td><td>Point G's x-axis velocity and acceleration, respectively.</td></tr>
+            <tr><td>$\dot x_G, \ddot x_G$ &nbsp;</td><td>Point G's x-axis velocity and acceleration, respectively.</td></tr>
             <tr><td>$m_c$ &nbsp;</td><td>Mass of the cart.</td></tr>
             <tr><td>$m_t$ &nbsp;</td><td>Combined mass of the cart and the pendulum, i.e. $m_c + m$</td></tr>
             <tr><td>$J$ &nbsp;</td><td>The pole body's moment of inertia about its own centre of mass. For an ideal point-mass pendulum, $J=0$.</td></tr>
@@ -219,8 +219,8 @@
     </p>
     <br/>
     \begin{align}
-        x_{g|p} &= r\sin\theta \tag{1} \\[3ex]
-        y_{g|p} &= r\cos\theta \tag{2}
+        x_{G|P} &= r\sin\theta \tag{1} \\[3ex]
+        y_{G|P} &= r\cos\theta \tag{2}
     \end{align}
     <br/>
 
@@ -231,13 +231,13 @@
     <p>Velocity (x-axis):</p>
     \begin{align}
 
-        \frac{d(x_{g|p})}{dt} &= \frac{d(r\sin\theta)}{dt} \\[3ex]
+        \frac{d(x_{G|P})}{dt} &= \frac{d(r\sin\theta)}{dt} \\[3ex]
 
                &= \frac{d(r\sin\theta)}{d\theta} \cdot \frac{d\theta}{dt} \tag*{Chain rule} \\[3ex]
 
-        \dot x_{g|p} &= r (\cos\theta) (\dot\theta) \tag*{Newton's notation} \\[3ex]
+        \dot x_{G|P} &= r (\cos\theta) (\dot\theta) \tag*{Newton's notation} \\[3ex]
 
-        \dot x_{g|p} &= r\dot\theta \cos\theta \tag{3}
+        \dot x_{G|P} &= r\dot\theta \cos\theta \tag{3}
 
     \end{align}
     <br/>
@@ -245,13 +245,13 @@
     <p>Velocity (y-axis):</p>
     \begin{align}
 
-        \frac{d(y_{g|p})}{dt} &= \frac{d(r\cos\theta)}{dt} \\[3ex]
+        \frac{d(y_{G|P})}{dt} &= \frac{d(r\cos\theta)}{dt} \\[3ex]
 
                &= \frac{d(r\cos\theta)}{d\theta} \cdot \frac{d\theta}{dt} \tag*{Chain rule} \\[3ex]
 
-        \dot y_{g|p} &= r (-\sin\theta) (\dot\theta) \tag*{Newton's notation} \\[3ex]
+        \dot y_{G|P} &= r (-\sin\theta) (\dot\theta) \tag*{Newton's notation} \\[3ex]
 
-        \dot y_{g|p} &= -r\dot\theta \sin\theta \tag{4}
+        \dot y_{G|P} &= -r\dot\theta \sin\theta \tag{4}
 
     \end{align}
     <br/>
@@ -264,7 +264,7 @@
 
     \begin{align}
 
-        \frac{d(\dot x_{g|p})}{dt} = \frac{d^2(x_{g|p})}{dt^2} &= \frac{d(r \dot\theta \cos\theta)}{dt} \\[3ex]
+        \frac{d(\dot x_{G|P})}{dt} = \frac{d^2(x_{G|P})}{dt^2} &= \frac{d(r \dot\theta \cos\theta)}{dt} \\[3ex]
 
             &= r \left[ \frac{d(\dot\theta \cos\theta)}{dt} \right] \\[3ex]
 
@@ -272,14 +272,14 @@
 
             &= r \left[ \frac{d\dot\theta}{dt} \cos\theta + \dot\theta \frac{d(\cos\theta)}{d\theta} \cdot \frac{d\theta}{dt} \right] \tag*{Chain rule} \\[3ex] 
 
-        \ddot x_{g|p} &= r \left[ \ddot\theta \cos\theta - \dot\theta^2 \sin\theta \right] \tag{5}
+        \ddot x_{G|P} &= r \left[ \ddot\theta \cos\theta - \dot\theta^2 \sin\theta \right] \tag{5}
 
     \end{align}
     <br/>
     <p>Acceleration (y-axis):</p>
     \begin{align}
 
-        \frac{d(\dot y_{g|p})}{dt} = \frac{d^2(y_{g|p})}{dt^2} &= \frac{d(-r \dot\theta \sin\theta)}{dt} \\[3ex]
+        \frac{d(\dot y_{G|P})}{dt} = \frac{d^2(y_{G|P})}{dt^2} &= \frac{d(-r \dot\theta \sin\theta)}{dt} \\[3ex]
 
             &= -r \left[ \frac{d(\dot\theta \sin\theta)}{dt} \right] \\[3ex]
 
@@ -287,7 +287,7 @@
 
             &= -r \left[ \frac{d\dot\theta}{dt} \sin\theta + \dot\theta \frac{d(\sin\theta)}{d\theta} \cdot \frac{d\theta}{dt} \right] \tag*{Chain rule} \\[3ex]
 
-        \ddot y_{g|p} &= -r \left[ \ddot\theta \sin\theta + \dot\theta^2 \cos\theta \right] \tag{6}
+        \ddot y_{G|P} &= -r \left[ \ddot\theta \sin\theta + \dot\theta^2 \cos\theta \right] \tag{6}
 
     \end{align}
     <br/>
@@ -334,15 +334,15 @@
     <p>
         Equations (5) and (6) describe the acceleration of point G relative to P. Therefore to obtain the absolute acceleration of G (i.e. acceleration
         relative to point O, or the 'world' XY frame) we add the x-axis acceleration of point P to equation (5). The cart does not move vertically, therefore
-        the absolute y-axis acceleration is given by $\ddot y_{g|p}$.
+        the absolute y-axis acceleration is given by $\ddot y_{G|P}$.
     </p>
 
     <p>Absolute acceleration (x-axis):</p>
     \begin{align}
 
-        \ddot x_g &= \ddot x_{g|p} + \ddot x \\[3ex]
+        \ddot x_G &= \ddot x_{G|P} + \ddot x \\[3ex]
 
-        \ddot x_g &= r \left( \ddot\theta \cos\theta - \dot\theta^2 \sin\theta \right) + \ddot x \tag{7}
+        \ddot x_G &= r \left( \ddot\theta \cos\theta - \dot\theta^2 \sin\theta \right) + \ddot x \tag{7}
 
     \end{align}
     <br/>
@@ -351,9 +351,9 @@
     
     \begin{align}
 
-        \ddot y_g &= \ddot y_{g|p} \\[3ex]
+        \ddot y_G &= \ddot y_{G|P} \\[3ex]
 
-        \ddot y_g &= -r \left( \ddot\theta \sin\theta + \dot\theta^2 \cos\theta \right) \tag{8}
+        \ddot y_G &= -r \left( \ddot\theta \sin\theta + \dot\theta^2 \cos\theta \right) \tag{8}
 
     \end{align}
     <br/>
@@ -388,9 +388,9 @@
 
     \begin{align}
 
-        (F^i_g)_x &= -m \ddot x_g \\[3ex]
+        (\mathbf{F}^i_G)_x &= -m \ddot x_G \\[3ex]
 
-        (F^i_g)_x &= -m \left[ r \ddot\theta \cos\theta - r \dot\theta^2 \sin\theta + \ddot x \right] \tag{10}
+        (\mathbf{F}^i_G)_x &= -m \left[ r \ddot\theta \cos\theta - r \dot\theta^2 \sin\theta + \ddot x \right] \tag{10}
 
     \end{align}
     <br/>
@@ -399,9 +399,9 @@
 
     \begin{align}
 
-        (F^i_g)_y &= -m \ddot y_g \\[3ex]
+        (\mathbf{F}^i_G)_y &= -m \ddot y_G \\[3ex]
 
-        (F^i_g)_y &= mr \left[ \ddot\theta \sin\theta + \dot\theta^2 \cos\theta \right] \tag{11}
+        (\mathbf{F}^i_G)_y &= mr \left[ \ddot\theta \sin\theta + \dot\theta^2 \cos\theta \right] \tag{11}
 
     \end{align}    
     <br/>
@@ -421,7 +421,7 @@
 
     \begin{align}
 
-        f -m_c \ddot x + (F^i_g)_x &= 0 \\[3ex]
+        f -m_c \ddot x + (\mathbf{F}^i_G)_x &= 0 \\[3ex]
 
         f -m_c \ddot x -m \left[ r \ddot\theta \cos\theta - r \dot\theta^2 \sin\theta + \ddot x \right] &= 0 \\[3ex]
 
@@ -460,9 +460,9 @@
         equilibrium as per d'Alembert's principle, giving an additional equation of motion for the cart and pole model.
     </p>
     <p>
-        The inertial force on G is given by $F^i_g$, as defined in equations (10) and (11). Taking the cross product of vectors $\mathbf{1}_R(r)$ 
-        (i.e. radial vector PG) and $F^i_g$ gives a vector that points along the axis of rotation, with the magnitude and sign of that result vector
-        giving the magnitude and sign of the torque at pivot point P resulting from force $F^i_g$ (see <a href="#appendixB">appendix B</a> for an 
+        The inertial force on G is given by $\mathbf{F}^i_G$, as defined in equations (10) and (11). Taking the cross product of vectors $\mathbf{1}_R(r)$
+        (i.e. radial vector PG) and $\mathbf{F}^i_G$ gives a vector that points along the axis of rotation, with the magnitude and sign of that result vector
+        giving the magnitude and sign of the torque at pivot point P resulting from force $\mathbf{F}^i_G$ (see <a href="#appendixB">appendix B</a> for an
         explanation and a brief introduction to torque). Given that we know that the axis of rotation is fixed and is parallel with the z-axis, 
         the result vector's magnitude and sign is given by its z-axis component alone, as follows:
     </p>
@@ -470,7 +470,7 @@
 
     \begin{align}
 
-        \mathbf{M}_G & = \left[ \mathbf{1}_R(r) \times F^i_g \right]_z \tag{13} \\[3ex]
+        M_G & = \left[ \mathbf{1}_R(r) \times \mathbf{F}^i_G \right]_z \tag{13} \\[3ex]
 
             &= \left[ (r\sin\theta) (mr [\ddot\theta \sin\theta + \dot\theta^2 \cos\theta]) - (r\cos\theta)(-m[r\ddot\theta \cos\theta - r\dot\theta^2 \sin\theta + \ddot x]) \right] \\[3ex]
 
@@ -480,14 +480,14 @@
 
             &= mr \left[ r\ddot\theta (\sin^2\theta + \cos^2\theta) + \ddot x \cos\theta \right] \\[3ex]
 
-        \mathbf{M}_G &= mr ( r\ddot\theta + \ddot x \cos\theta ) \tag{14}
+        M_G &= mr ( r\ddot\theta + \ddot x \cos\theta ) \tag{14}
 
     \end{align}
     <br/>
 
     <blockquote style="background-color:eeeeee; padding: 14px">
         <p>
-            $\mathbf{M}_G$ is the torque about P resulting from the inertial force at G. The first part of equation (14),
+            $M_G$ is the signed torque about P resulting from the inertial force at G. The first part of equation (14),
             $mr^2\ddot\theta$, is the rotational inertia contribution associated with the centre of mass moving around pivot
             point P. This term is already present before adding any separate body inertia term for an extended pole.
         </p>
@@ -504,7 +504,7 @@
             of rotation, then this is clockwise rotation, and in our model the result vector has a negative z-axis component (see Table 1 - Conventions).
         </p>
         <p>
-            Thus, if we imagine a positive force $F^i_g$ pushing an upright pendulum to the right then we would expect this to cause clockwise 
+            Thus, if we imagine a positive x-axis component of $\mathbf{F}^i_G$ pushing an upright pendulum to the right then we would expect this to cause clockwise
             rotation, and therefore negative torque (see Table 1 - Conventions).
         </p>
     </blockquote>
@@ -514,7 +514,7 @@
         The torque resulting from the downward pull of gravity on the pendulum or pole's mass at G is given by:
     </p>
     <br/>
-    $$ \mathbf{M}_g = -mgr \sin\theta \tag{15} $$
+    $$ M_g = -mgr \sin\theta \tag{15} $$
     <br/>
     <p>
         Noting that the torque resulting from gravity is zero when the pendulum is fully vertical, and negative when the pendulum is at +90°,
@@ -533,7 +533,7 @@
         the corresponding inertial moment as:
     </p>
     <br/>
-    $$ \mathbf{M}_i = J \ddot\theta \tag{16} $$
+    $$ M_i = J \ddot\theta \tag{16} $$
     <br/>
 
     <p>
@@ -542,9 +542,9 @@
         inertia about P is $mr^2 + J$.
     </p>
     <p>
-        The sign of $\mathbf{M}_i$ follows the d'Alembert convention used above for inertial forces. A positive $\ddot\theta$ is a
+        The sign of $M_i$ follows the d'Alembert convention used above for inertial forces. A positive $\ddot\theta$ is a
         clockwise angular acceleration in this paper's coordinate convention, and the corresponding inertial moment opposes that
-        acceleration. Thus $\mathbf{M}_i$ is positive, representing an anticlockwise moment, when $\ddot\theta$ is positive.
+        acceleration. Thus $M_i$ is positive, representing an anticlockwise moment, when $\ddot\theta$ is positive.
     </p>
     <p>
         Summing the three moments and equating to zero as per d'Alembert's principle, gives:
@@ -552,7 +552,7 @@
     <br/>
     \begin{align}
 
-        \mathbf{M}_G + \mathbf{M}_g + \mathbf{M}_i &= 0 \tag{17} \\[3ex] 
+        M_G + M_g + M_i &= 0 \tag{17} \\[3ex]
 
         mr ( r\ddot\theta + \ddot x \cos\theta ) -mgr\, \sin\theta + J \ddot\theta &= 0 \tag{18}
 
@@ -737,12 +737,12 @@
     <h3>3.7 Friction</h3>
     <p>
         The equations derived so far omit friction. We now introduce a horizontal friction force $F_f$ acting on the cart and a friction
-        moment $\mathbf{M}_f$ acting at the pole pivot. Air resistance is omitted.
+        moment $M_f$ acting at the pole pivot. Air resistance is omitted.
     </p>
     <p>
         Friction necessarily requires an approximate model. We consider both Coulomb friction, whose magnitude depends on contact normal
         force, and velocity-proportional damping, which provides a continuous and convenient model for numerical simulation. After examining
-        these alternatives, we extend the equations of motion to include $F_f$ and $\mathbf{M}_f$.
+        these alternatives, we extend the equations of motion to include $F_f$ and $M_f$.
     </p>
     <p>
         We use $\mu_c$ and $\mu_p$ for dimensionless Coulomb coefficients, $b_c$ and $b_p$ for linear cart and pivot damping coefficients,
@@ -810,7 +810,7 @@
 
     \begin{align}
 
-        N_c &= mg + m_c g - (F^i_g)_y \\[3ex]
+        N_c &= mg + m_c g - (\mathbf{F}^i_G)_y \\[3ex]
 
         N_c &= m_t g - mr \left[ \ddot\theta \sin\theta + \dot\theta^2 \cos\theta \right] \tag{30} \\[3ex]
 
@@ -894,41 +894,41 @@
         friction can also be modelled with Coulomb's Law.
     </p>
     <br/>
-    $$ \mathbf{M}_f = \mu_p r_p |N_p|\sgn(\dot\theta) \tag{35}$$
+    $$ M_f = \mu_p r_p |\mathbf{N}_P|\sgn(\dot\theta) \tag{35}$$
     <br/>
 
     <p>
-        Where $\mathbf{M}_f$ is the moment of friction, $\mu_p$ is the dimensionless Coulomb coefficient of friction at the pivot, $r_p$ is
-        an effective friction radius, and $N_p$ is the normal force
+        Where $M_f$ is the signed moment of friction, $\mu_p$ is the dimensionless Coulomb coefficient of friction at the pivot, $r_p$ is
+        an effective friction radius, and $\mathbf{N}_P$ is the normal-force vector at point P
         between the pole and the cart. Note that a positive (clockwise) angular velocity will result in a positive (anticlockwise) torque/moment
-        (see table 1 - Conventions), hence no minus sign is required. The product $\mu_p|N_p|$ is the tangential friction-force magnitude,
+        (see table 1 - Conventions), hence no minus sign is required. The product $\mu_p|\mathbf{N}_P|$ is the tangential friction-force magnitude,
         and multiplication by $r_p$ converts that force into a moment.
     </p>
     <p> 
         The normal force in this case is a force with varying direction, i.e. the internal surfaces within the joint that meet under force depend 
-        on the angle of the pole and the direction of the force being applied by the pole onto the cart. As such $N_p$ should be considered to be 
+        on the angle of the pole and the direction of the force being applied by the pole onto the cart. As such $\mathbf{N}_P$ should be considered to be
         a vector. Here we treat the x and y components of that vector separately:
     </p>
     <br/>
     \begin{align}
 
-        (N_p)_x &= (F^i_g)_x  \tag{36} \\[3ex]
+        (\mathbf{N}_P)_x &= (\mathbf{F}^i_G)_x  \tag{36} \\[3ex]
 
-        (N_p)_y &= (F^i_g)_y - mg \tag{37}
+        (\mathbf{N}_P)_y &= (\mathbf{F}^i_G)_y - mg \tag{37}
 
     \end{align}
     <br/>
 
     <p>
-        The magnitude of vector $N_p$ is given by Pythagoras' theorem:
+        The magnitude of vector $\mathbf{N}_P$ is given by Pythagoras' theorem:
     </p>
     <br/>
 
     \begin{align}
 
-        |N_p| &= \sqrt{[(N_p)_x]^2 + [(N_p)_y]^2} \\[3ex]
+        |\mathbf{N}_P| &= \sqrt{[(\mathbf{N}_P)_x]^2 + [(\mathbf{N}_P)_y]^2} \\[3ex]
 
-        |N_p| &= \left[\left(mr\dot\theta^2\sin\theta -mr\ddot\theta\cos\theta -m\ddot x \right)^2 + \left(mr \ddot\theta \sin\theta + mr \dot\theta^2 \cos\theta -mg \right)^2\right]^\frac{1}{2} \tag{38} \\[3ex]
+        |\mathbf{N}_P| &= \left[\left(mr\dot\theta^2\sin\theta -mr\ddot\theta\cos\theta -m\ddot x \right)^2 + \left(mr \ddot\theta \sin\theta + mr \dot\theta^2 \cos\theta -mg \right)^2\right]^\frac{1}{2} \tag{38} \\[3ex]
 
     \end{align}
     <br/>
@@ -939,7 +939,7 @@
         reasonable in all scenarios. In light of this a positive value somewhere in the interval $(0,mg]$ is the next best option, e.g.:
     </p>
     <br/>
-    $$ \mathbf{M}_f = \mu_p r_p \frac{mg}{2} \sgn(\dot\theta) \tag{39}$$
+    $$ M_f = \mu_p r_p \frac{mg}{2} \sgn(\dot\theta) \tag{39}$$
     <br/>
 
     <p>
@@ -947,7 +947,12 @@
         ([2] §2.2, figure 2.4e, pg 42). 
     </p>
     <br/>
-    $$ \mathbf{M}_f = b_p \dot\theta \tag{40} $$
+    $$ M_f = b_p \dot\theta \tag{40} $$
+    <br/>
+    <p>
+        For multiple poles, each pivot may have its own damping coefficient. We therefore use the indexed form
+        $M_{f,i}=b_{p,i}\dot\theta_i$. Identical pivots can be modelled by assigning the same numerical value to every $b_{p,i}$.
+    </p>
     <br/>
 
     <p>
@@ -962,7 +967,7 @@
         its behaviour. E.g. perhaps one reasonable choice is:
     </p>
     <br/>
-    $$ \mathbf{M}_f = b_p \dot\theta + \mu_p r_p |N_p| \sgn(\dot\theta) \tag{41} $$
+    $$ M_f = b_p \dot\theta + \mu_p r_p |\mathbf{N}_P| \sgn(\dot\theta) \tag{41} $$
     <br/>
     <p>
         This combines the velocity-proportional damping and Coulomb-friction models. Such independent linear terms may be appropriate for low
@@ -983,7 +988,7 @@
 
     <h4>3.7.3 Equations of Motion with Friction</h4>
     <p>
-        The force equilibrium equations (12) and (18) can be extended to include the friction force $F_f$ and friction moment $\mathbf{M}_f$, giving the  
+        The force equilibrium equations (12) and (18) can be extended to include the friction force $F_f$ and friction moment $M_f$, giving the
         following equations of motion. These are equations (19), (21), (23), and (24) extended to incorporate friction terms:
     </p>
     <br/>
@@ -995,17 +1000,17 @@
 
     <p>Equation (21) extended to include friction:</p>
 
-    $$ \ddot\theta = \frac{m_t m g r\sin\theta - mr\cos\theta (f + mr\dot\theta^2\sin\theta + F_f) - m_t\mathbf{M}_f}{(mr^2+J)m_t - (mr\cos\theta)^2} \tag{21-F} $$
+    $$ \ddot\theta = \frac{m_t m g r\sin\theta - mr\cos\theta (f + mr\dot\theta^2\sin\theta + F_f) - m_t M_f}{(mr^2+J)m_t - (mr\cos\theta)^2} \tag{21-F} $$
     <br/>
 
     <p>Equation (23) extended to include friction:</p>
 
-    $$ \ddot\theta = \frac{mr(g\sin\theta - \ddot x \cos\theta) - \mathbf{M}_f}{mr^2+J} \tag{23-F} $$
+    $$ \ddot\theta = \frac{mr(g\sin\theta - \ddot x \cos\theta) - M_f}{mr^2+J} \tag{23-F} $$
     <br/>
 
     <p>Equation (24) extended to include friction:</p>
 
-    $$ \ddot x = \frac{(mr^2+J)(f + mr\dot\theta^2 \sin\theta + F_f) - (mr)^2g\sin\theta\cos\theta + mr\mathbf{M}_f\cos\theta}{(mr^2+J)m_t - (mr\cos\theta)^2} \tag{24-F} $$
+    $$ \ddot x = \frac{(mr^2+J)(f + mr\dot\theta^2 \sin\theta + F_f) - (mr)^2g\sin\theta\cos\theta + mrM_f\cos\theta}{(mr^2+J)m_t - (mr\cos\theta)^2} \tag{24-F} $$
     <br/>
     <br/>
 
@@ -1146,9 +1151,9 @@
     </p>
 
     <br/>
-    $$ \ddot x = \frac{f - g\sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\sin\theta_i\cos\theta_i\right) + \sum_i\left(m_i r_i \dot\theta_i^2\sin\theta_i\right) + \sum_i \left( \cfrac{m_i r_i{\mathbf{M}_f}_i \cos\theta_i}{m_i r_i^2+J_i} \right) + F_f}{m_{\Sigma} - \sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\cos^2\theta_i \right)} \tag{48} $$
+    $$ \ddot x = \frac{f - g\sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\sin\theta_i\cos\theta_i\right) + \sum_i\left(m_i r_i \dot\theta_i^2\sin\theta_i\right) + \sum_i \left( \cfrac{m_i r_i M_{f,i} \cos\theta_i}{m_i r_i^2+J_i} \right) + F_f}{m_{\Sigma} - \sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\cos^2\theta_i \right)} \tag{48} $$
     <br/>
-    $$ \ddot\theta_i = \frac{m_i r_i(g\sin\theta_i - \ddot x\cos\theta_i) - {\mathbf{M}_f}_i}{m_i r_i^2+J_i} \tag{49} $$
+    $$ \ddot\theta_i = \frac{m_i r_i(g\sin\theta_i - \ddot x\cos\theta_i) - M_{f,i}}{m_i r_i^2+J_i} \tag{49} $$
     <br/>
     <br/>
     <br/>
@@ -1162,24 +1167,24 @@
         uniform pole into the general equations.
     </p>
     <p>
-        We represent the pole's half length with $\hat l$, and therefore set $r = \hat l$ for the centre-of-mass distance. This is in contrast
-        to much of the literature where $l$ is generally used to represent the half length; the $\hat l$ symbol acts as a reminder that this is
-        half of the pole's full physical length.
+        The general equations use $r$ for the distance from the pivot to the pole's centre of mass, wherever that point lies. For a uniform
+        pole the centre of mass lies halfway along the pole, and therefore $r=L/2$. For a pole with a non-uniform mass distribution, $r$ need
+        not equal half the full physical length.
     </p>
     <br/>
 
     <h3>4.1 Rotational Inertia</h3>
     <p>
         As discussed in section 3.5, the body moment of inertia for an extended pole is measured about its centre of mass. For a uniform
-        pole of full length $2\hat l$, this is:
+        pole of full length $L=2r$, this is:
     </p>
     <br/>
-    $$ J = \frac{1}{12}m(2\hat{l})^2 = \frac{1}{3}m\hat{l}^2 $$
+    $$ J = \frac{1}{12}mL^2 = \frac{1}{3}mr^2 $$
     <br/>
 
     <p>
-        The total moment of inertia about the pivot is therefore $m\hat l^2 + J = \frac{4}{3}m\hat l^2$. Thus the uniform-pole
-        specialization is obtained by substituting $r = \hat l$ and $J = \frac{1}{3}m\hat l^2$ into the general equations.
+        The total moment of inertia about the pivot is therefore $mr^2 + J = \frac{4}{3}mr^2$. Thus the uniform-pole
+        specialization is obtained by substituting $J = \frac{1}{3}mr^2$ into the general equations.
     </p>
     <br/>
 
@@ -1191,22 +1196,22 @@
     <br/>
     <p>Equation (19-F) specialized for a uniform pole:</p>
 
-    $$ \ddot x = \frac{f - m\hat{l} \ddot\theta \cos\theta + m\hat{l} \dot\theta^2 \sin\theta + F_f}{m_t} \tag{50} $$
+    $$ \ddot x = \frac{f - mr \ddot\theta \cos\theta + mr \dot\theta^2 \sin\theta + F_f}{m_t} \tag{50} $$
     <br/>
 
     <p>Equation (21-F) specialized for a uniform pole:</p>
 
-    $$ \ddot\theta = \frac{m_t g\sin\theta - \cos\theta (f + m\hat{l}\dot\theta^2\sin\theta + F_f) - \cfrac{m_t\mathbf{M}_f}{m\hat{l}}}{\frac{4}{3} m_t\hat{l} - m\hat{l}\cos^2\theta} \tag{51} $$
+    $$ \ddot\theta = \frac{m_t g\sin\theta - \cos\theta (f + mr\dot\theta^2\sin\theta + F_f) - \cfrac{m_tM_f}{mr}}{\frac{4}{3} m_t r - mr\cos^2\theta} \tag{51} $$
     <br/>
 
     <p>Equation (23-F) specialized for a uniform pole:</p>
 
-    $$ \ddot\theta = \frac{g\sin\theta - \ddot x \cos\theta - \cfrac{\mathbf{M}_f}{m\hat{l}}}{\frac{4}{3}\hat{l}} \tag{52} $$
+    $$ \ddot\theta = \frac{g\sin\theta - \ddot x \cos\theta - \cfrac{M_f}{mr}}{\frac{4}{3}r} \tag{52} $$
     <br/>
 
     <p>Equation (24-F) specialized for a uniform pole:</p>
 
-    $$ \ddot x = \frac{f + m\hat{l}\dot\theta^2 \sin\theta + F_f - \frac{3}{4}mg\sin\theta\cos\theta + \cfrac{3\mathbf{M}_f \cos\theta}{4\hat{l}}}{m_t - \frac{3}{4}m\cos^2\theta} \tag{53} $$
+    $$ \ddot x = \frac{f + mr\dot\theta^2 \sin\theta + F_f - \frac{3}{4}mg\sin\theta\cos\theta + \cfrac{3M_f \cos\theta}{4r}}{m_t - \frac{3}{4}m\cos^2\theta} \tag{53} $$
     <br/>
     <br/>
 
@@ -1217,12 +1222,12 @@
 
     <p>Equation (48) specialized for uniform poles:</p>
     <br/>
-    $$ \ddot x = \frac{f - \frac{3}{4} g \sum_i\left(m_i\sin\theta_i\cos\theta_i\right) + \sum_i\left(m_i \hat{l}_i \dot\theta_i^2\sin\theta_i\right) + \frac{3}{4} \sum_i \left( \cfrac{{\mathbf{M}_f}_i \cos\theta_i}{\hat{l}_i} \right) + F_f}{m_{\Sigma} - \frac{3}{4} \sum_i\left(m_i\cos^2\theta_i \right)} \tag{54} $$
+    $$ \ddot x = \frac{f - \frac{3}{4} g \sum_i\left(m_i\sin\theta_i\cos\theta_i\right) + \sum_i\left(m_i r_i \dot\theta_i^2\sin\theta_i\right) + \frac{3}{4} \sum_i \left( \cfrac{M_{f,i} \cos\theta_i}{r_i} \right) + F_f}{m_{\Sigma} - \frac{3}{4} \sum_i\left(m_i\cos^2\theta_i \right)} \tag{54} $$
     <br/>
 
     <p>Equation (49) specialized for uniform poles:</p>
     <br/>
-    $$ \ddot\theta_i = \frac{g\sin\theta_i - \ddot x\cos\theta_i - \cfrac{{\mathbf{M}_f}_i}{m_i \hat{l}_i}}{\frac{4}{3}\hat{l}_i} \tag{55} $$
+    $$ \ddot\theta_i = \frac{g\sin\theta_i - \ddot x\cos\theta_i - \cfrac{M_{f,i}}{m_i r_i}}{\frac{4}{3}r_i} \tag{55} $$
     <br/>
 
     <br/>
@@ -1263,7 +1268,7 @@
         For pivot friction we adopt the simplified linear damping model based on angular velocity from equation (40), repeated here:
     </p>
     <br/>
-    $$ \mathbf{M}_f = b_p \dot\theta \tag{40} $$
+    $$ M_f = b_p \dot\theta \tag{40} $$
     <br/>
 
     <h3>5.2 Single Pole Equations</h3>
@@ -1273,12 +1278,12 @@
     <p>Substituting (34) and (40) into (53):</p>
     <br/>
 
-    $$ \ddot x = \frac{f + m\hat{l}\dot\theta^2 \sin\theta -b_c \dot x - \frac{3}{4}mg\sin\theta\cos\theta + \cfrac{3b_p \dot\theta \cos\theta}{4\hat{l}}}{m_t - \frac{3}{4}m\cos^2\theta} \tag{56} $$
+    $$ \ddot x = \frac{f + mr\dot\theta^2 \sin\theta -b_c \dot x - \frac{3}{4}mg\sin\theta\cos\theta + \cfrac{3b_p \dot\theta \cos\theta}{4r}}{m_t - \frac{3}{4}m\cos^2\theta} \tag{56} $$
     <br/>
     
     <p>Substituting (40) into (52):</p>
     <br/>
-    $$ \ddot\theta = \frac{3}{4\hat{l}} \left(g\sin\theta - \ddot x \cos\theta - \cfrac{b_p \dot\theta}{m\hat{l}}\right) \tag{57} $$
+    $$ \ddot\theta = \frac{3}{4r} \left(g\sin\theta - \ddot x \cos\theta - \cfrac{b_p \dot\theta}{mr}\right) \tag{57} $$
     <br/>
 
     <blockquote style="background-color:eeeeee; padding:20px">
@@ -1296,7 +1301,7 @@
 
             <tr><td>$m_t$ &nbsp;</td><td>Combined mass of the cart and the pole, i.e. $m + m_c$.</td></tr>
 
-            <tr><td>$\hat{l}$&nbsp;</td><td>Half the length of the pole (in metres).</td></tr>
+            <tr><td>$r$&nbsp;</td><td>Distance from the pivot to the pole's centre of mass (in metres). For a uniform pole, $r=L/2$.</td></tr>
 
             <tr><td>$g$ &nbsp;</td><td>Gravitational acceleration (in m/s<sup>2</sup>). Here $g$ is taken to be the directionless magnitude of the acceleration caused 
                 by gravity (i.e. approximately 9.8 m/s<sup>2</sup> for gravity on Earth). The direction of gravitational acceleration is taken into account in the 
@@ -1327,15 +1332,15 @@
         The final recommended equations for multiple poles are:
     </p>
     <p>
-        Substituting (34) and (40) into (54) and rearranging:
+        Substituting (34) and $M_{f,i}=b_{p,i}\dot\theta_i$ into (54) and rearranging:
     </p>
     <br/>
-    $$ \ddot x = \frac{f - \frac{3}{4}g\sum_i\left(m_i\sin\theta_i\cos\theta_i\right) + \sum_i\left(m_i \hat{l}_i \dot\theta^2_i \sin\theta_i\right) - b_c \dot x + \frac{3}{4}\sum_i\left(\cfrac{b_p\dot\theta_i\cos\theta_i}{\hat{l}_i}\right)}{m_{\Sigma} - \frac{3}{4}\sum_i\left(m_i\cos^2\theta_i\right)} \tag{58} $$
+    $$ \ddot x = \frac{f - \frac{3}{4}g\sum_i\left(m_i\sin\theta_i\cos\theta_i\right) + \sum_i\left(m_i r_i \dot\theta^2_i \sin\theta_i\right) - b_c \dot x + \frac{3}{4}\sum_i\left(\cfrac{b_{p,i}\dot\theta_i\cos\theta_i}{r_i}\right)}{m_{\Sigma} - \frac{3}{4}\sum_i\left(m_i\cos^2\theta_i\right)} \tag{58} $$
     <br/>
 
-    <p>Substituting (40) into (55):</p>
+    <p>Substituting $M_{f,i}=b_{p,i}\dot\theta_i$ into (55):</p>
     <br/>
-    $$ \ddot\theta_i = \frac{3}{4\hat{l}_i} \left(g\sin\theta_i - \ddot x\cos\theta_i - \frac{b_p \dot\theta_i}{m_i \hat{l}_i} \right) \tag{59} $$
+    $$ \ddot\theta_i = \frac{3}{4r_i} \left(g\sin\theta_i - \ddot x\cos\theta_i - \frac{b_{p,i} \dot\theta_i}{m_i r_i} \right) \tag{59} $$
     <br/>
 
     <blockquote style="background-color:eeeeee; padding:20px">
@@ -1345,7 +1350,7 @@
 
             <tr><td>$m_i$&nbsp;</td><td>Mass of the i'th pole (in kilograms).</td></tr>
 
-            <tr><td>$\hat{l}_i$&nbsp;</td><td>Half the length of the i'th pole (in metres).</td></tr>
+            <tr><td>$r_i$&nbsp;</td><td>Distance from the pivot to the centre of mass of the i'th pole (in metres). For a uniform pole, $r_i=L_i/2$.</td></tr>
 
             <tr><td>$m_{\Sigma}$&nbsp;</td><td>Combined mass of the cart and all of the poles (in kilograms).</td></tr>
 
@@ -1357,7 +1362,7 @@
 
             <tr><td>$\ddot \theta_i$ &nbsp;</td><td>Angular acceleration of the i'th pole. A positive value represents clockwise acceleration.</td></tr>
 
-            <tr><td>$b_p$&nbsp;</td><td>Linear pivot damping coefficient used in equation (40), in N m s/rad (newton-metre-seconds per radian). We assume the same value for all of the poles.</td></tr>
+            <tr><td>$b_{p,i}$&nbsp;</td><td>Linear damping coefficient for the i'th pole's pivot, in N m s/rad (newton-metre-seconds per radian). Identical pivots may use the same value.</td></tr>
 
         </table>       
     </blockquote>
@@ -1415,7 +1420,7 @@
         <table class="notationTable">
             <tr><td>Cart mass ($m_c$)&nbsp;</td><td>1 kg</td></tr>
             <tr><td>Pole mass ($m$)&nbsp;</td><td>0.1 kg</td></tr>
-            <tr><td>Full physical pole length ($L$)&nbsp;</td><td>1 m; hence $r=\hat l=0.5$ m</td></tr>
+            <tr><td>Full physical pole length ($L$)&nbsp;</td><td>1 m; the pole is uniform, hence $r=L/2=0.5$ m</td></tr>
             <tr><td>Initial pole angle ($\theta$)&nbsp;</td><td>90° (i.e. pointing horizontally to the right)</td></tr>
             <tr><td>Cart-track damping coefficient ($b_c$)&nbsp;</td><td>0.1 N s/m (newton-seconds per metre)</td></tr>
             <tr><td>Cart-pole damping coefficient ($b_p$)&nbsp;</td><td>0.001 N m s/rad (newton-metre-seconds per radian)</td></tr>
@@ -1527,16 +1532,18 @@
 
     <h4>Euler Update</h4>
     <p>
-        For Euler's method with timestep $\tau$, all derivatives are evaluated from the same state at the start of the timestep:
+        Let $n$ denote the current timestep and $n+1$ the next timestep; for multiple poles, $i$ identifies a pole. For Euler's method
+        with timestep duration $\tau$, all quantities on the right-hand side of the update equations are evaluated from the same saved
+        state at timestep $n$:
     </p>
     <ol>
-        <li>Save the current state: $x$, $\dot x$, and each pole's $\theta$ and $\dot\theta$.</li><br/>
-        <li>Evaluate $\ddot x$ from that saved state.</li><br/>
-        <li>Evaluate each $\ddot\theta$, substituting the calculated value of $\ddot x$ and otherwise using the same saved state.</li><br/>
-        <li>Calculate the next cart state from the saved values: $x_{next}=x+\tau\dot x$ and $\dot x_{next}=\dot x+\tau\ddot x$.</li><br/>
-        <li>For each pole, calculate the next state from the saved values: $\theta_{next}=\theta+\tau\dot\theta$ and
-            $\dot\theta_{next}=\dot\theta+\tau\ddot\theta$.</li><br/>
-        <li>Replace the current state with all of the newly calculated values simultaneously, then begin the next timestep.</li><br/>
+        <li>Save the current state: $x_n$, $\dot x_n$, and each pole's $\theta_{i,n}$ and $\dot\theta_{i,n}$.</li><br/>
+        <li>Evaluate $\ddot x_n$ from that saved state.</li><br/>
+        <li>Evaluate each $\ddot\theta_{i,n}$, substituting the calculated value of $\ddot x_n$ and otherwise using the same saved state.</li><br/>
+        <li>Calculate the next cart state: $x_{n+1}=x_n+\tau\dot x_n$ and $\dot x_{n+1}=\dot x_n+\tau\ddot x_n$.</li><br/>
+        <li>For each pole, calculate the next state: $\theta_{i,n+1}=\theta_{i,n}+\tau\dot\theta_{i,n}$ and
+            $\dot\theta_{i,n+1}=\dot\theta_{i,n}+\tau\ddot\theta_{i,n}$.</li><br/>
+        <li>Replace the current state with all of the newly calculated timestep-$n+1$ values simultaneously, then begin the next timestep.</li><br/>
     </ol>
     <p>
         RK2 and RK4 use the same outer timestep loop, but evaluate the derivatives at intermediate trial states before calculating the next
@@ -1633,7 +1640,7 @@
 
     <p>
         In section 3.5 this rotational form appears in two parts. The inertial force at the pole's centre of mass G produces the moment
-        $\mathbf{M}_G$ about pivot P, and an extended pole also has the body inertial moment $\mathbf{M}_i = J\ddot\theta$ about its own
+        $M_G$ about pivot P, and an extended pole also has the body inertial moment $M_i = J\ddot\theta$ about its own
         centre of mass.
     </p>
     <p>
@@ -1727,7 +1734,7 @@
     <p>
         Cannon [2] (§22.4, p.705) derives equations for an unstable stick balancer using d'Alembert's principle. His length variable $l$
         is the distance from the pivot to the stick's mass centre, i.e. half the stick's full length. Thus Cannon's $l$ corresponds to
-        this paper's centre-of-mass distance $r$, or to $\hat l$ when we specialize to a uniform pole.
+        this paper's centre-of-mass distance $r$.
     </p>
     <p>
         Equations identified below by Cannon's own equation numbers retain his source notation. The mapping to this paper's notation is
@@ -1751,9 +1758,29 @@
 
     \end{align}
     <br/>
+    <blockquote style="background-color:eeeeee; padding:20px">
+        <span><b>Cannon-to-local notation mapping</b></span>
+        <table class="notationTable">
+            <tr><th>Cannon</th><th>This paper</th><th>Meaning</th></tr>
+            <tr><td>$l$</td><td>$r$</td><td>Distance from the pivot to the stick or pole's centre of mass.</td></tr>
+            <tr><td>$J$</td><td>$J$</td><td>Body moment of inertia about the centre of mass.</td></tr>
+            <tr><td>$m$</td><td>$m$</td><td>Stick or pole mass.</td></tr>
+            <tr><td>$m_c$</td><td>$m_c$</td><td>Cart mass.</td></tr>
+            <tr><td>$m_c+m$</td><td>$m_t$</td><td>Combined mass of the cart and stick or pole.</td></tr>
+            <tr><td>$f$</td><td>$f$</td><td>Applied horizontal force on the cart.</td></tr>
+            <tr><td>$g$</td><td>$g$</td><td>Positive magnitude of gravitational acceleration.</td></tr>
+            <tr><td>$J+ml^2$</td><td>$J+mr^2$</td><td>Total moment of inertia about the pivot.</td></tr>
+        </table>
+    </blockquote>
+    <br/>
     <p>
         These are equivalent to equations (12) and (18) in this paper, with Cannon's $l$ mapped to this paper's $r$ and with no friction
         terms included. Expanding the second equation shows the two separate inertia contributions:
+    </p>
+    <p>
+        Equations (C1)-(C5) below are algebraic steps performed in this appendix. To keep them directly comparable with Cannon's equations,
+        they continue to use his length symbol $l$. The local shorthand $m_t=m_c+m$ is introduced explicitly when first needed. The final
+        comparison then applies $l\mapsto r$ to recover this paper's notation.
     </p>
 
     $$ J\ddot\theta + ml\ddot x\cos\theta + ml^2\ddot\theta - mgl\sin\theta = 0 \tag{C1} $$
@@ -1796,8 +1823,8 @@
         Equation (Cannon 22.56) again makes clear that Cannon's pivot inertia is $J + ml^2$, not $J$ alone.
     </p>
     <p>
-        We now derive the same explicit acceleration equations as in section 3.6, starting from Cannon's nonlinear pair. First, rearrange
-        the first equation of (Cannon 22.55) to give $\ddot x$:
+        We now derive the same explicit acceleration equations as in section 3.6, starting from Cannon's nonlinear pair and retaining
+        Cannon's symbols as described above. First, rearrange the first equation of (Cannon 22.55) to give $\ddot x$:
     </p>
     <br/>
 
@@ -1889,21 +1916,21 @@
 
     <p>
         Equations (C3), (C4), and (C5) are the same as equations (21), (23), and (24) specialized for a uniform pole, with Cannon's $l$
-        corresponding to this paper's $\hat l$. For example, substituting $l = \hat l$ into (C3) gives:
+        corresponding to this paper's $r$. For example, substituting $l = r$ into (C3) gives:
     </p>
 
-    $$ \ddot\theta = \frac{m_t g\sin\theta - \cos\theta (f + m\hat{l}\dot\theta^2\sin\theta)}{\frac{4}{3}m_t\hat{l} - m\hat{l}\cos^2\theta} $$
+    $$ \ddot\theta = \frac{m_t g\sin\theta - \cos\theta (f + mr\dot\theta^2\sin\theta)}{\frac{4}{3}m_t r - mr\cos^2\theta} $$
     <br/>
 
     <p>
-        Substituting $l=\hat l$ into (C5) gives equation (24) directly in its uniform-pole form:
+        Substituting $l=r$ into (C5) gives equation (24) directly in its uniform-pole form:
     </p>
 
-    $$ \ddot x = \frac{f + m\hat{l}\dot\theta^2\sin\theta - \frac{3}{4}mg\sin\theta\cos\theta}{m_t - \frac{3}{4}m\cos^2\theta} $$
+    $$ \ddot x = \frac{f + mr\dot\theta^2\sin\theta - \frac{3}{4}mg\sin\theta\cos\theta}{m_t - \frac{3}{4}m\cos^2\theta} $$
     <br/>
 
     <p>
-        The $\hat{l}$ symbol acts as a reminder to use the pole's half length in these equations. With $J$ interpreted as body inertia about
+        For Cannon's uniform stick, the centre-of-mass distance $r$ is half the full pole length. With $J$ interpreted as body inertia about
         the centre of mass, the $\frac{4}{3}$ factor represents the total pivot inertia for a uniform pole, rather than an adjustment to a
         point-mass pendulum.
     </p>
@@ -1920,32 +1947,34 @@
     <br/>
     \begin{align}
 
-        \ddot\theta_t &= \frac{g\sin\theta_t + \cos\theta_t \left[ \cfrac{-F_t -ml\dot\theta_t^2\sin\theta_t + \mu_c\sgn(\dot x_t)}{m_c + m} \right] - \cfrac{\mu_p\dot\theta_t}{ml}}{l \left[ \cfrac{4}{3} - \cfrac{m\cos^2\theta_t}{m_c + m} \right]} \tag{D1} \\[6ex]
+        \ddot\theta_t &= \frac{g\sin\theta_t + \cos\theta_t \left[ \cfrac{-F_t -ml\dot\theta_t^2\sin\theta_t + \mu_c\sgn(\dot x_t)}{m_c + m} \right] - \cfrac{\mu_p\dot\theta_t}{ml}}{l \left[ \cfrac{4}{3} - \cfrac{m\cos^2\theta_t}{m_c + m} \right]} \tag{Barto pole} \\[6ex]
 
-        \ddot x_t & = \frac{F_t + ml \left[\dot\theta_t^2\sin\theta_t - \ddot\theta_t\cos\theta_t\right] - \mu_c\sgn(\dot x_t)}{m_c + m} \tag{D2} \\[6ex]
-
-        g &= -9.8 \,\mathrm{m/s^2} \tag{D3}
+        \ddot x_t & = \frac{F_t + ml \left[\dot\theta_t^2\sin\theta_t - \ddot\theta_t\cos\theta_t\right] - \mu_c\sgn(\dot x_t)}{m_c + m} \tag{Barto cart}
 
     \end{align}
     <br/>
     <blockquote style="background-color:eeeeee; padding:20px">
-        <span>Symbols</span>
+        <span><b>Barto source values and notation mapping</b></span>
         <table class="notationTable">
-            <tr><td>$g$ &nbsp;</td><td>Acceleration due to gravity. <b>-9.8 m/s<sup>2</sup></b></td></tr>
-            <tr><td>$m_c$ &nbsp;</td><td>Mass of the cart. <b>1.0 kg</b></td></tr>
-            <tr><td>$m$ &nbsp;</td><td>Mass of the pole. <b>0.1 kg</b></td></tr>
-            <tr><td>$l$ &nbsp;</td><td>Half length of the pole. <b>0.5 m</b></td></tr>
-            <tr><td>$\mu_c$ &nbsp;</td><td>Cart-track friction parameter. <b>0.0005 N</b></td></tr>
-            <tr><td>$\mu_p$ &nbsp;</td><td>Pivot damping parameter. <b>0.000002 N m s/rad</b></td></tr>
-            <tr><td>$F_t$ &nbsp;</td><td>Force applied to the cart at time $t$. <b>&plusmn;10.0 N</b></td></tr>
-        </table>       
+            <tr><th>Barto source symbol and value</th><th>This paper</th><th>Meaning or mapping</th></tr>
+            <tr><td>$l=0.5\,\mathrm{m}$</td><td>$r$</td><td>Distance from the pivot to the pole's centre of mass.</td></tr>
+            <tr><td>$F_t=\mathord{\pm}10.0\,\mathrm{N}$</td><td>$f$</td><td>Applied horizontal force at the instant being evaluated.</td></tr>
+            <tr><td>$x_t,\dot x_t,\ddot x_t$</td><td>$x,\dot x,\ddot x$</td><td>Cart state at that instant.</td></tr>
+            <tr><td>$\theta_t,\dot\theta_t,\ddot\theta_t$</td><td>$\theta,\dot\theta,\ddot\theta$</td><td>Pole state at that instant.</td></tr>
+            <tr><td>$m=0.1\,\mathrm{kg}$</td><td>$m$</td><td>Pole mass.</td></tr>
+            <tr><td>$m_c=1.0\,\mathrm{kg}$</td><td>$m_c$</td><td>Cart mass.</td></tr>
+            <tr><td>$m_c+m$</td><td>$m_t$</td><td>Combined mass of the cart and pole.</td></tr>
+            <tr><td>$-\mu_c\sgn(\dot x_t)$, $\mu_c=0.0005\,\mathrm{N}$</td><td>$F_f$</td><td>Signed cart-track friction force.</td></tr>
+            <tr><td>$\mu_p\dot\theta_t$, $\mu_p=0.000002\,\mathrm{N\,m\,s/rad}$</td><td>$M_f$</td><td>Signed pivot damping moment.</td></tr>
+            <tr><td>$g=-9.8\,\mathrm{m/s^2}$</td><td>$g&gt;0$</td><td>Barto assigns $g$ the value $-9.8\,\mathrm{m/s^2}$, whereas this paper defines $g$ as a positive magnitude. The comparison below uses this paper's convention.</td></tr>
+        </table>
     </blockquote>
     <br/>
     <p>
-        For the comparison below, Barto's $l$ and $F_t$ are mapped to this paper's $\hat l$ and $f$, respectively, and the time subscripts
-        on the state variables are omitted. Thus $l \mapsto \hat l$, $F_t \mapsto f$, $x_t \mapsto x$, and $\theta_t \mapsto \theta$.
-        Barto's $\mu_c$ and $\mu_p$ are retained as source symbols; their dimensions show that they are not the dimensionless Coulomb
-        coefficients denoted by $\mu_c$ and $\mu_p$ in this paper's local notation.
+        The displays tagged (Barto pole) and (Barto cart) are the unnumbered source equations and retain Barto's notation. Equations (D1)
+        and (D2) below are this appendix's rederivations in local notation. Time subscripts are omitted because each equation evaluates the
+        state at one instant, not because the state ceases to vary with time. Barto's $\mu_c$ and $\mu_p$ remain source symbols above; their
+        dimensions show that they are not the dimensionless Coulomb coefficients bearing the same glyphs in this paper.
     </p>
     <p>
         Cannon [2] is cited as the origin of these equations, however, the cart-pole equations provided by Cannon do not include
@@ -1953,31 +1982,32 @@
         it is likely that the cart-pole equations provided in [1] were extended using additional equations also from Cannon.
     </p>
     <p>
-        Equation (D1) can be rederived by rearranging equation (21-F) with $r = \hat{l}$ and
-        $J=\frac{1}{3}m\hat l^2$:
+        To compare the algebraic form of (Barto pole) with the local equations, rearrange equation (21-F) with
+        $J=\frac{1}{3}mr^2$. This comparison uses this paper's positive gravitational magnitude $g$; Barto's listed negative value is
+        considered separately below.
     </p>
     <br/>
 
     \begin{align}
 
-        \ddot\theta &= \frac{m_t g\sin\theta - \cos\theta (f + m\hat{l}\dot\theta^2\sin\theta + F_f) - \cfrac{m_t\mathbf{M}_f}{m\hat{l}}}{\frac{4}{3}m_t\hat{l} - m\hat{l}\cos^2\theta} \tag{21-F} \\[6ex]
+        \ddot\theta &= \frac{m_t g\sin\theta - \cos\theta (f + mr\dot\theta^2\sin\theta + F_f) - \cfrac{m_tM_f}{mr}}{\frac{4}{3}m_t r - mr\cos^2\theta} \tag{21-F} \\[6ex]
 
-        \ddot\theta &= \frac{g\sin\theta - \cos\theta \left[\cfrac{f + m\hat{l}\dot\theta^2\sin\theta + F_f}{m_t}\right] - \cfrac{\mathbf{M}_f}{m\hat{l}}}{ \hat{l} \left[\frac{4}{3} - \cfrac{m\cos^2\theta}{m_t} \right]} \\[6ex]
+        \ddot\theta &= \frac{g\sin\theta - \cos\theta \left[\cfrac{f + mr\dot\theta^2\sin\theta + F_f}{m_t}\right] - \cfrac{M_f}{mr}}{ r \left[\frac{4}{3} - \cfrac{m\cos^2\theta}{m_t} \right]} \\[6ex]
 
-        \ddot\theta &= \frac{g\sin\theta + \cos\theta \left[\cfrac{-f - m\hat{l}\dot\theta^2\sin\theta - F_f}{m_t}\right] - \cfrac{\mathbf{M}_f}{m\hat{l}}}{ \hat{l} \left[\frac{4}{3} - \cfrac{m\cos^2\theta}{m_t} \right]} \tag{D4} \\[6ex]
+        \ddot\theta &= \frac{g\sin\theta + \cos\theta \left[\cfrac{-f - mr\dot\theta^2\sin\theta - F_f}{m_t}\right] - \cfrac{M_f}{mr}}{ r \left[\frac{4}{3} - \cfrac{m\cos^2\theta}{m_t} \right]} \tag{D1} \\[6ex]
 
     \end{align}
     <br/>
     <br/>
     <p>
-        Equation (D2) is obtained with a minor rearrangement of (19-F) (again, with $r = \hat{l}$):
+        The local equivalent of (Barto cart) is obtained with a minor rearrangement of (19-F):
     </p>
     <br/>
     \begin{align}
 
-        \ddot x &= \frac{f - m\hat{l} \ddot\theta \cos\theta + m\hat{l} \dot\theta^2 \sin\theta + F_f}{m_t} \tag{19-F} \\[6ex]
+        \ddot x &= \frac{f - mr \ddot\theta \cos\theta + mr \dot\theta^2 \sin\theta + F_f}{m_t} \tag{19-F} \\[6ex]
 
-        \ddot x &= \frac{f + m\hat{l} \left[\dot\theta^2 \sin\theta - \ddot\theta \cos\theta\right] + F_f}{m_c  + m} \tag{D5}
+        \ddot x &= \frac{f + mr \left[\dot\theta^2 \sin\theta - \ddot\theta \cos\theta\right] + F_f}{m_c  + m} \tag{D2}
 
     \end{align}
     <br/>
@@ -1988,9 +2018,9 @@
     <br/>
     <b>Inverted Gravity</b>
     <p>
-        The negative value assigned to $g$ in [1] is inconsistent with equation (D1) and the stated angle convention. In figure 1 of [1],
+        The negative value assigned to $g$ in [1] is inconsistent with (Barto pole) and the stated angle convention. In figure 1 of [1],
         $\theta$ is measured clockwise from the upright vertical, as it is in this paper. For a small positive angle, gravity should therefore
-        make a positive contribution to $\ddot\theta$, causing the pole to fall farther from the upright position. Equation (D1) has a
+        make a positive contribution to $\ddot\theta$, causing the pole to fall farther from the upright position. The source pole equation has a
         $g\sin\theta$ term that produces this behaviour when $g$ is a positive gravitational-acceleration magnitude, not when
         $g=-9.8\,\mathrm{m/s^2}$ as listed in [1].
     </p>
@@ -2003,15 +2033,15 @@
 
     <b>Moment of Inertia</b>
     <p>
-        Note that the $\frac{4}{3}$ term in (D1) is consistent with the uniform-pole equations discussed in section 4 and Appendix C.
-        In this interpretation $\hat{l}$ is the pole's half length and centre-of-mass distance, and the $\frac{4}{3}$ factor represents
-        the total pivot inertia factor $m\hat{l}^2 + J = \frac{4}{3}m\hat{l}^2$.
+        Note that the $\frac{4}{3}$ term in (Barto pole) is consistent with the uniform-pole equations discussed in section 4 and Appendix C.
+        In this interpretation Barto's $l$ maps to the centre-of-mass distance $r$; because the source pole is uniform, this is also its half
+        length. The $\frac{4}{3}$ factor represents the total pivot inertia $mr^2 + J = \frac{4}{3}mr^2$.
     </p>
     <br/>
 
     <b>Cart-Track Friction</b>
     <p>
-        The cart-track friction term of $\mu_c\sgn(\dot x)$ in (D1) and (D2) is consistent with equations (32) and (33), i.e. alternative
+        The cart-track friction term of $\mu_c\sgn(\dot x_t)$ in (Barto pole) and (Barto cart) is consistent with equations (32) and (33), i.e. alternative
         simplified cart-track friction terms that do not take into account motion of the pole. In these equations $\mu_c$ is the constant
         magnitude of a Coulomb friction force, with units of newtons, despite being described in [1] as a coefficient of friction. The force acts
         in the direction opposite to the cart's motion. We prefer a cart-track friction term that is
@@ -2021,7 +2051,7 @@
 
     <b>Cart-Pole Friction</b>
     <p>
-        The cart-pole friction term in (D1) is proportional to the pendulum's angular velocity and represents a damping moment opposing its
+        The cart-pole friction term in (Barto pole) is proportional to the pendulum's angular velocity and represents a damping moment opposing its
         rotation, consistent with equation (40), where the corresponding local damping coefficient is $b_p$. Dimensional consistency requires
         Barto's $\mu_p$ to have units of moment per angular velocity (N m s/rad), despite its description in [1] as a coefficient of friction.
     </p>
@@ -2056,65 +2086,64 @@
     <br/>
     \begin{align}
 
-        \ddot x &= \frac{F - \mu_c\sgn(\dot x) + \tilde F}{M + \tilde m} \tag{E1} \\[3ex]
+        \ddot x &= \frac{F - \mu_c\sgn(\dot x) + \tilde F}{M + \tilde m} \tag{Wieland 9} \\[3ex]
 
-        \ddot\theta &= -\frac{3}{4l}\left(\ddot x\cos\theta + g\sin\theta + \frac{\mu_p\dot\theta}{ml}\right) \tag{E2} \\[3ex]
+        \ddot\theta &= -\frac{3}{4l}\left(\ddot x\cos\theta + g\sin\theta + \frac{\mu_p\dot\theta}{ml}\right) \tag{Wieland 10} \\[3ex]
 
-        \tilde F &= ml\dot\theta^2\sin\theta + \frac{3}{4}m\cos\theta \left(\frac{\mu_p\dot\theta}{ml} + g\sin\theta \right)  \tag{E3} \\[3ex]
+        \tilde F &= ml\dot\theta^2\sin\theta + \frac{3}{4}m\cos\theta \left(\frac{\mu_p\dot\theta}{ml} + g\sin\theta \right)  \tag{Wieland force} \\[3ex]
 
-        \tilde m &= m \left(1 - \cfrac{3}{4}\cos^2\theta \right) \tag{E4} \\[3ex]
+        \tilde m &= m \left(1 - \cfrac{3}{4}\cos^2\theta \right) \tag{Wieland mass} \\[3ex]
 
     \end{align}
     <br/>
 
     <blockquote style="background-color:eeeeee; padding:20px">
-        <span>Symbols</span>
+        <span><b>Wieland source values and notation mapping</b></span>
         <table class="notationTable">
-            <tr><td>$x$ &nbsp;</td><td>Position of the cart on the track. <b>[-2.4, 2.4] m</b></td></tr>
-            <tr><td>$\theta$ &nbsp;</td><td>Angle of the pole from vertical. <b>[-15, 15]°</b></td></tr>
-            <tr><td>$F$ &nbsp;</td><td>Force applied to the cart. <b>[-10, 10] N</b></td></tr>
-            <tr><td>$g$ &nbsp;</td><td>Signed gravitational acceleration. <b>-9.8 m/s<sup>2</sup></b></td></tr>
-            <tr><td>$l$ &nbsp;</td><td>Half length of the pole. <b>0.5 m</b></td></tr>
-            <tr><td>$M$ &nbsp;</td><td>Mass of the cart. <b>1.0 kg</b></td></tr>
-            <tr><td>$m$ &nbsp;</td><td>Mass of the pole. <b>0.1 kg</b></td></tr>
-            <tr><td>$\mu_c$ &nbsp;</td><td>Cart-track friction parameter. <b>0.0005 N</b></td></tr>
-            <tr><td>$\mu_p$ &nbsp;</td><td>Pivot damping parameter. <b>0.000002 N m s/rad</b></td></tr>
-            <tr><td>$\tilde F$ &nbsp;</td><td>Effective horizontal force of the pole on the cart.</td></tr>
-            <tr><td>$\tilde m$ &nbsp;</td><td>Effective mass of the pole.</td></tr>
+            <tr><th>Wieland source symbol and value</th><th>This paper</th><th>Meaning or mapping</th></tr>
+            <tr><td>$x\in[-2.4,2.4] \,\mathrm{m}$</td><td>$x$</td><td>Cart position.</td></tr>
+            <tr><td>$\theta\in[-15^\circ,15^\circ]$</td><td>$\theta$</td><td>Pole angle from vertical.</td></tr>
+            <tr><td>$F\in[-10,10] \,\mathrm{N}$</td><td>$f$</td><td>Applied horizontal force.</td></tr>
+            <tr><td>$l=0.5 \,\mathrm{m}$</td><td>$r$</td><td>Distance from the pivot to the pole's centre of mass.</td></tr>
+            <tr><td>$M=1.0 \,\mathrm{kg}$</td><td>$m_c$</td><td>Cart mass.</td></tr>
+            <tr><td>$m=0.1 \,\mathrm{kg}$</td><td>$m$</td><td>Pole mass.</td></tr>
+            <tr><td>$M+m$</td><td>$m_t$</td><td>Combined mass of the cart and pole.</td></tr>
+            <tr><td>$-\mu_c\sgn(\dot x)$, $\mu_c=0.0005 \,\mathrm{N}$</td><td>$F_f$</td><td>Signed cart-track friction force.</td></tr>
+            <tr><td>$\mu_p\dot\theta$, $\mu_p=0.000002 \,\mathrm{N\,m\,s/rad}$</td><td>$M_f$</td><td>Signed pivot damping moment.</td></tr>
+            <tr><td>$g=-9.8 \,\mathrm{m/s^2}$</td><td>$g_W=-g$</td><td>Wieland uses a signed gravitational acceleration; this paper uses the positive magnitude $g$.</td></tr>
+            <tr><td>$\tilde F,\tilde m$</td><td>&mdash;</td><td>Effective pole force and mass, eliminated by substitution into (Wieland 9).</td></tr>
         </table>       
     </blockquote>
     <br/>
     <p>
-        For the comparison below, Wieland's $M$, $F$, and $l$ are mapped to this paper's $m_c$, $f$, and $\hat l$, respectively. Wieland
-        uses $g=-9.8\,\mathrm{m/s^2}$ as a signed vertical acceleration; it is written below as $g_W$ to distinguish it from this paper's
-        positive gravitational-acceleration magnitude $g$. Thus $M \mapsto m_c$, $F \mapsto f$, $l \mapsto \hat l$, and
-        $g \mapsto g_W=-g$. Wieland's $\mu_c$ and $\mu_p$ are retained as source symbols; they denote a constant friction-force magnitude
-        and a rotational damping coefficient, respectively, rather than this paper's local dimensionless Coulomb coefficients.
+        The displays tagged (Wieland 9), (Wieland 10), (Wieland force), and (Wieland mass) retain the source notation. Equations (E1) and
+        (E2) below are this appendix's derivations in local notation. Wieland's $\mu_c$ and $\mu_p$ remain source symbols above; they denote
+        a constant friction-force magnitude and a rotational damping coefficient, respectively, rather than this paper's local dimensionless
+        Coulomb coefficients. Their physical terms are represented below by the local signed quantities $F_f$ and $M_f$.
     </p>
     <p>
-        Applying these mappings, substituting (E3) and (E4) into (E1), and rearranging, gives:
+        Applying the table mappings, substituting (Wieland force) and (Wieland mass) into (Wieland 9), and rearranging, gives:
     </p>
     <br/>
     \begin{align}
 
-        \ddot x &= \frac{f + m\hat{l}\dot\theta^2\sin\theta - \mu_c\sgn(\dot x) + \frac{3}{4}mg_W\sin\theta\cos\theta + \cfrac{3\mu_p\dot\theta\cos\theta}{4\hat{l}}}{m_t - \frac{3}{4}m\cos^2\theta} \tag{E5} \\[6ex]
+        \ddot x &= \frac{f + mr\dot\theta^2\sin\theta + F_f + \frac{3}{4}mg_W\sin\theta\cos\theta + \cfrac{3M_f\cos\theta}{4r}}{m_t - \frac{3}{4}m\cos^2\theta} \tag{E1} \\[6ex]
 
     \end{align}
     <br/>
     <p>
         Wieland uses $g_W=-9.8\,\mathrm{m/s^2}$ as a signed acceleration, whereas this paper uses $g=9.8\,\mathrm{m/s^2}$ as a positive
-        magnitude. Substituting $g_W=-g$ into (E5), together with $F_f=-\mu_c\sgn(\dot x)$ and
-        $\mathbf{M}_f=\mu_p\dot\theta$, gives equation (24-F) specialized to $r=\hat l$ and
-        $J=\frac{1}{3}m\hat l^2$.
+        magnitude. Substituting $g_W=-g$ into (E1) gives equation (24-F) specialized to a uniform pole with
+        $J=\frac{1}{3}mr^2$.
     </p>
     <p>
-        Applying the notation mappings and rearranging (E2) gives:
+        Applying the notation mappings and rearranging (Wieland 10) gives:
     </p>
-    $$ \ddot\theta = \frac{-g_W\sin\theta - \ddot x\cos\theta - \cfrac{\mu_p\dot\theta}{m\hat{l}}}{\cfrac{4}{3}\hat{l}}  \tag{E6} $$
+    $$ \ddot\theta = \frac{-g_W\sin\theta - \ddot x\cos\theta - \cfrac{M_f}{mr}}{\cfrac{4}{3}r}  \tag{E2} $$
     <br/>
 
     <p>
-        With the same substitutions $g_W=-g$ and $\mathbf{M}_f=\mu_p\dot\theta$, equation (E6) is equation (23-F) specialized to a
+        With the same substitution $g_W=-g$, equation (E2) is equation (23-F) specialized to a
         uniform pole.
     </p>
     <br/>
@@ -2122,24 +2151,24 @@
 
     <b>Moment of Inertia</b>
     <p>
-        The $\frac{3}{4}$ factor in equation (E5) and the $\frac{4}{3}$ factor in equation (E6) are two algebraically related forms of the
-        same uniform-pole inertia contribution, consistent with the equations discussed in section 4 and Appendix C. Here $\hat{l}$ is both
-        the pole's half length and its centre-of-mass distance, and the total moment of inertia about the pivot is
-        $m\hat l^2 + J = \frac{4}{3}m\hat l^2$.
+        The $\frac{3}{4}$ factor in equation (E1) and the $\frac{4}{3}$ factor in equation (E2) are two algebraically related forms of the
+        same uniform-pole inertia contribution, consistent with the equations discussed in section 4 and Appendix C. Wieland's source $l$
+        maps to the centre-of-mass distance $r$; for his uniform pole, this is also the half length. The total moment of inertia about the pivot is
+        $mr^2 + J = \frac{4}{3}mr^2$.
     </p>
 
     <br/>
     <b>Cart-Track Friction</b>
     <p>
-        Equation (E5) uses a constant Coulomb cart-track friction force, compatible with equations (32) and (33). Thus $\mu_c$ has units
-        of newtons in Wieland's equations, despite being described in [5] as a coefficient of friction.
+        Equation (E1) uses the local signed force $F_f$ for Wieland's constant Coulomb cart-track friction term. In Wieland's source equations,
+        $F_f=-\mu_c\sgn(\dot x)$ and $\mu_c$ therefore has units of newtons, despite being described in [5] as a coefficient of friction.
     </p>
     <br/>
     <b>Cart-Pole Friction</b>
     <p>
-        The pivot friction term in equations (E5) and (E6) is proportional to the pole's angular velocity and represents a damping moment
-        opposing its rotation, consistent with equation (40), where the local damping coefficient is $b_p$. Dimensional consistency requires
-        Wieland's $\mu_p$ to have units N m s/rad.
+        Equations (E1) and (E2) use the local signed moment $M_f$ for Wieland's velocity-proportional pivot friction term. In Wieland's source
+        equations, $M_f=\mu_p\dot\theta$; this represents a damping moment opposing the pole's rotation and is consistent with equation (40),
+        where the local damping coefficient is $b_p$. Dimensional consistency requires Wieland's $\mu_p$ to have units N m s/rad.
     </p>
     <br/>
     <b>Numerical Integration</b>
@@ -2166,37 +2195,35 @@
         <span>References</span>
         <table class="notationTable">
 
-            <tr><td>[1] Barto, Andrew G.; Sutton, Richard S. (1983) Neuronlike Adaptive Elements that can Solve Difficult Learning Problems.
+            <tr><td>[1] Barto, Andrew G.; Sutton, Richard S.; Anderson, Charles W. (1983) Neuronlike Adaptive Elements that can Solve Difficult Learning Control Problems.
                 IEEE Transactions on Systems, Man, and Cybernetics, Vol. SMC-13 No.5, (1983) pp. 834-846
                 <br/>&nbsp;&nbsp;&nbsp;
-                <a href="http://incompleteideas.net/papers/barto-sutton-anderson-83.pdf">[link1]</a>
+                <a href="https://doi.org/10.1109/TSMC.1983.6313077">[doi]</a>
+                <a href="http://incompleteideas.net/papers/barto-sutton-anderson-83.pdf">[pdf]</a>
             </td></tr>
 
-            <tr><td>[2] Cannon, Robert H. Dynamics of Physical Systems. New York: McGraw-Hill (1967)
+            <tr><td>[2] Cannon, Robert H. <i>Dynamics of Physical Systems</i>. New York: McGraw-Hill (1967). ISBN 0-07-009754-2.
                 <br/>&nbsp;&nbsp;&nbsp;
-                <a href="https://isbnsearch.org/isbn/0070097542">[link1]</a>
-                <a href="https://isbnsearch.org/isbn/9780486428659">[link2]</a>
-                <a href="https://www.amazon.co.uk/Dynamics-Physical-Systems-Mechanical-Engineering/dp/0486428656">[link3]</a>
-                <a href="https://books.google.co.uk/books?hl=en&lr=&id=u3VyPpz7SJcC">[link4]</a>
+                <a href="https://books.google.co.uk/books?hl=en&lr=&id=u3VyPpz7SJcC">[google books]</a>
             <br/>
 
-            <tr><td>[3] Lunberg, Kent H.; Barton, Taylor W. (2009) History of Inverted-Pendulum Systems.
+            <tr><td>[3] Lundberg, Kent H.; Barton, Taylor W. (2009) History of Inverted-Pendulum Systems.
                 IFAC Proceedings Volumes, Volume 42, Issue 24, 2010, pp. 131-135
                 <br/>&nbsp;&nbsp;&nbsp;
-                <a href="https://www.sciencedirect.com/science/article/pii/S1474667015316049">[link1]</a>
+                <a href="https://doi.org/10.3182/20091021-3-JP-2009.00025">[doi]</a>
             </td></tr>
 
             <tr><td>[4] Michie, D.; Chambers, R. A. (1968) BOXES: An Experiment in Adaptive Control.
                 <br/>&nbsp;&nbsp;&nbsp;
-                <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.474.2430">[link1]</a>
-                <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.474.2430&rep=rep1&type=pdf">[link2]</a>
+                <a href="https://web.archive.org/web/20220309154621/http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.474.2430&rep=rep1&type=pdf">[pdf]</a>
             </td></tr>
 
             <tr><td>[5] Wieland, Alexis P. (1991) Evolving Controls for Unstable Systems.
                 In <i>Connectionist Models: Proceedings of the 1990 Summer School</i>, edited by David S. Touretzky et al.,
                 Morgan Kaufmann, ISBN 1-55860-156-2, pp. 91-102
                 <br/>&nbsp;&nbsp;&nbsp;
-                <a href="https://books.google.co.uk/books?hl=en&lr=&id=_Z6jBQAAQBAJ&oi=fnd&pg=PA91">[link1]</a>
+                <a href="https://books.google.co.uk/books?hl=en&lr=&id=_Z6jBQAAQBAJ&oi=fnd&pg=PA91#v=onepage&q&f=false">[google books]</a>
+                <a href="https://ieeexplore.ieee.org/abstract/document/155416">[ieee]</a>
             </td></tr>
         </table>
         <br/>

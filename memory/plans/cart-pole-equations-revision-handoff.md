@@ -15,14 +15,16 @@ Create a conservative replacement draft for `public/research/cart-pole/cart-pole
 ## Current Progress
 
 - Reviewed and revised through equation (59), focused reviews of appendices A-E, a detailed section 6 prose pass, and Figure 1 SVG labels.
-- Most recent work: completed the section 6 numerical artifact regeneration. The corrected CSVs and Figures 2-3 were regenerated; the finished PNGs were copied into the website staging path. Table 5 was recalculated against a converged RK4 reference at `tau=0.000005` seconds, using exact-duration candidate timesteps `15/N`, strict acceptance `|e|<0.01` rad, and signed error `candidate-reference`. Section 6.4 now reports measured single-versus-double precision differences at `tau=0.001` instead of the provisional qualitative statement. The supporting console has a reproducible `--analyse` mode for these measurements.
+- Most recent work: completed a whole-paper symbol audit and explicit source-to-local notation transitions in Appendices C-E. Local derivations now use one consistent symbol set; literal source symbols are retained only in source-labelled displays and are followed by combined source-value/mapping tables. The earlier section 6 numerical artifact regeneration remains complete.
 - Table 1 now uses:
   - `G`: pole/pendulum centre of mass.
   - `r`: distance from pivot P to G.
   - `L`: full physical pole length.
   - `J`: pole body inertia about centre of mass G.
-- `l` and `\hat l` are no longer main symbols in Table 1.
-- Sections 3.1-3.5 have been moved from old `Q,l,F^i_q,M_q` notation to `G,r,F^i_g,M_G` notation.
+- Local `l`, `\hat l`, and their indexed variants have been removed throughout the paper. Source `l` remains only in source-faithful Appendix C-E material and maps explicitly to local `r`.
+- Sections 3.1-3.5 now use uppercase point subscripts consistently: `x_G`, `y_G`, `x_{G|P}`, `y_{G|P}`, `\mathbf{F}^i_G`, and `M_G`.
+- Table 1 defines point `O` as the origin of the fixed Cartesian `xy` frame, gives the positive axis directions, and defines cart coordinate `x` separately.
+- Bold typography is reserved for genuine vectors (`\mathbf{F}^i_G`, `\mathbf{N}_P`, and general vector expressions in appendices A-B). Signed planar moments and forces use scalar `M_G`, `M_g`, `M_i`, `M_f`, and `F_f`.
 - Notes after equations (6), (12), and (14) have been revised for clarity.
 - Equation (16) commentary now states `J` is the pendulum/pole body's moment of inertia about centre of mass G, not total pivot inertia.
 - Section 3.6 equations (19)-(24) now use `r` and `mr^2 + J`.
@@ -35,16 +37,17 @@ Create a conservative replacement draft for `public/research/cart-pole/cart-pole
 - Section 4.1's short uniform-pole inertia calculation was retained because it makes the specialization self-contained without excessive repetition.
 - Section 5 now presents the uniform-pole and linear-damping selections as explicit model assumptions used to obtain one complete simulation equation set.
 - Section 6.3 now saves the start-of-timestep state, evaluates all accelerations from that state, calculates all Euler updates from the saved values, and applies the updates simultaneously.
-- Table 4 now specifies full pole length $L=1$ m, hence $r=\hat l=0.5$ m, and cart damping $b_c=0.1$ N s/m. The latter corrects the paper's former `0.01` value to match the artifact-generating C# defaults and their repository history; use `0.1` when regenerating the corrected experiments.
+- Table 4 now specifies full pole length $L=1$ m and, because the experiment pole is uniform, $r=L/2=0.5$ m. Cart damping is $b_c=0.1$ N s/m, matching the artifact-generating C# defaults.
 - Equations (29)-(31) now define `N_c` conventionally as the nonnegative upward normal reaction exerted by the track on the cart. Absolute-value notation was removed. The text states that the contact model ceases to apply if the calculated reaction reaches zero, and explains clearly why the `\ddot\theta` term in (31) creates an additional simultaneous coupling.
 - Section 4 uniform-pole equations and section 5 recommended equations now use the corrected `4/3` and `3/4` factors instead of the old `7/3` and `3/7` factors.
 - Section 4 has been reframed from a "hybrid model" to a specialization of the general equations for a uniform pole. With `J` resolved as centre-of-mass body inertia, no separate hybrid approximation is required.
-- Equations (24), (24-F), (53), (56), (58), and (E5) use positive-denominator forms derived directly from (C5). For a uniform pole the coupling ratio `(mr)^2/(mr^2+J)` reduces to `3m/4`, making the `3/4` factors explicit.
-- Appendix C now treats Cannon's `J = ml^2/3` as body inertia about the mass centre, yielding total pivot inertia `4/3 ml^2`; the unsubstantiated Cannon sign-error claim was removed.
+- Equations (24), (24-F), (53), (56), (58), and (E1) use positive-denominator forms derived directly from (C5). For a uniform pole the coupling ratio `(mr)^2/(mr^2+J)` reduces to `3m/4`, making the `3/4` factors explicit.
+- Appendix C treats Cannon's `J = ml^2/3` as body inertia about the mass centre, yielding total pivot inertia `4/3 ml^2`; the unsubstantiated sign-error claim was removed. Cannon-numbered displays retain source notation, a mapping table makes the transition explicit, equations (C1)-(C5) are identified as local algebra retaining Cannon's symbols for direct comparison, and `m_t` is identified as local shorthand.
 - Appendices D and E now describe Barto/Wieland `4/3` factors as consistent with the corrected uniform-pole model, rather than as problematic inertia terms.
-- Appendix D has received a focused source comparison pass. It explicitly maps Barto's `l` and `F_t` to local `\hat l` and `f`, includes the source parameter values, limits the negative-`g` discussion to claims supported by the displayed equation and angle convention, and distinguishes Barto's constant cart friction force from its velocity-proportional pivot damping parameter.
-- Appendix E was verified and revised using user-supplied scans of Wieland pp.91-101. Equations (E1)-(E4) now consistently present Wieland's single-pole forms and literal source notation rather than mixing them with indexed multiple-pole or article-local notation; the following comparison introduces `g_W` to distinguish Wieland's signed `-9.8 m/s^2` from the paper's positive `g`. Source parameters, friction dimensions, inertia interpretation, and numerical-integration quotation were checked; and reference [5] now identifies the proceedings chapter “Evolving Controls for Unstable Systems” rather than the separate IEEE work.
-- Appendix E equations (E1)-(E4) now reproduce Wieland's original `M`, `F`, `l`, and signed `g` notation. The following prose maps them to local `m_c`, `f`, `\hat l`, and `g_W=-g`; equations (E5)-(E6) use those local mappings. Appendix D likewise restores Barto's `l`, `F_t`, and time subscripts in (D1)-(D2), while Appendix C retains Cannon's source notation.
+- Appendix D labels Barto's unnumbered source equations `(Barto pole)` and `(Barto cart)`, combines source values and local mappings in one table, and reserves (D1)-(D2) for local rederivations. The table maps `l -> r`, source friction terms to `F_f`/`M_f`, and explicitly distinguishes Barto's listed negative `g` from local positive-magnitude `g`.
+- Appendix E labels literal source displays `(Wieland 9)`, `(Wieland 10)`, `(Wieland force)`, and `(Wieland mass)`. A combined source-value/mapping table introduces `g_W=-g`, maps friction terms to `F_f`/`M_f`, and explains that effective force/mass are eliminated by substitution. Local derivations are numbered (E1)-(E2). Reference [5] identifies the proceedings chapter used as the primary source.
+- Section 5 multiple-pole equations use pole-specific pivot damping `b_{p,i}` and friction moments `M_{f,i}`; identical pivots may assign the same numerical value to every coefficient. Single-pole equations retain `b_p`.
+- Section 6.3 uses conventional timestep indices `n` and `n+1`, plus pole index `i`, and evaluates all right-hand-side quantities from the saved timestep-`n` state.
 - Section 6 has been scanned for stale inertia notation; only a spelling fix was needed (`Adams-Bashforth`).
 - Figure 1 SVG labels in `cart-pole-model.svg` and `cart-pole-model-master.svg` now use `G` for the centre of mass and `r` for the pivot-to-centre-of-mass distance.
 - A final stale-reference scan across the staging draft and both SVG files found no old `Q`, `ℓ`, `7/3`, `3/7`, `(1+k)`, or old `k` inertia language; the only remaining `Q` character is inside a Google Books URL query string.
@@ -63,7 +66,8 @@ Create a conservative replacement draft for `public/research/cart-pole/cart-pole
 - Console experiment runner: `src/CartPoleConsole/Program.cs`; single-pole data recorder: `src/CartPoleConsole/SinglePole/DoublePrecision/CartSinglePoleSimulator.cs`.
 - Existing CSVs, PNGs, and plotting scripts: `r-ggplot2/`.
 - On 2026-07-12, the four C# equation classes were updated from the superseded `7/3` and `3/7` inertia factors to the staging article's corrected `3/4` and `4/3` uniform-pole equations. `CartPolePhysics.sln` then built successfully with zero warnings and zero errors.
-- The source confirms that its length value `l = 1` is full physical pole length and calculates `l_hat = l / 2`; therefore use $L=1$ m and $r=\hat l=0.5$ m.
+- On 2026-07-12 the four C# equation classes were aligned with the paper by replacing full/half-length fields with direct centre-of-mass distances `r`/`r2`; defaults are 0.5/0.05 m. The solution build and `--analyse` results were unchanged.
+- The double-pole equation classes now use independent `b_p1` and `b_p2` coefficients, corresponding to paper notation `b_{p,i}`. Both defaults remain 0.001 N m s/rad, preserving the identical-pivot case. The solution builds with zero warnings and errors.
 - Use the source-backed cart damping $b_c=0.1$ N s/m. The paper formerly said `0.01`, but all single/double and single-/multiple-pole C# defaults use `0.1`, repository history shows no prior `0.01` implementation, the artifact path does not override the default, and the website PNGs are byte-identical to the source-repository PNGs.
 - Use pivot damping $b_p=0.001$ N m s/rad, cart mass $m_c=1$ kg, pole mass $m=0.1$ kg, initial angle $\theta=\pi/2$, zero initial cart position and cart/pole velocities, zero external force, and a 15-second duration.
 - Preserve source-repository notation only where helpful internally; its `mu_c`/`mu_p` fields represent dimensional linear damping coefficients and correspond to article-local $b_c$/$b_p$, not dimensionless Coulomb coefficients.
@@ -97,13 +101,12 @@ Create a conservative replacement draft for `public/research/cart-pole/cart-pole
 
 ## Next Steps
 
-1. Review the regenerated Figures 2-3, Table 5 methodology/results, and quantified section 6.4 prose for publication approval. The artifact regeneration itself is complete.
-2. Refresh the introduction and conclusion after the body is stable; the introduction overstates appendices C-E as highlighting errors, and the conclusion should summarize the `J`/total-pivot-inertia result.
-3. Review Appendix D's statement that the rederivation reveals "discrepancies" plural; the principal equation discrepancy identified is signed gravity, while the inertia and friction discussions mainly clarify interpretation.
-4. Consider whether Tables 2/3 should keep `\hat l` for the uniform-pole/recommended equations or map more explicitly to `r = \hat l`.
-5. Decide whether shared Figure 1 SVG changes should remain in-place before replacing the published paper; the current shared SVG is consistent with the staging draft but not with the old published HTML.
-6. Once the staging draft is stable, decide whether to replace `public/research/cart-pole/cart-pole-equations.html` with the revision draft.
+1. Perform the remaining publication-readiness prose pass, especially the introduction and conclusion. The introduction may still overstate Appendices C-E as highlighting errors; the conclusion should summarize the `J`/total-pivot-inertia result.
+2. Review Appendix D's statement that the rederivation reveals "discrepancies" plural; the principal equation discrepancy identified is signed gravity, while the inertia and friction discussions mainly clarify interpretation.
+3. Review the regenerated Figures 2-3, Table 5 methodology/results, and quantified section 6.4 prose for final publication approval. Artifact regeneration is complete.
+4. Decide whether shared Figure 1 SVG changes should remain in place before replacing the published paper; the current SVG is consistent with the staging draft but not with the old published HTML.
+5. Once the staging draft is stable, decide whether to replace `public/research/cart-pole/cart-pole-equations.html` with the revision draft.
 
 ## Resume Prompt
 
-Resume the cart-pole equations revision and section 6 artifact regeneration. First read `/mnt/d/home/websites/sharpneat-web/cart-pole-derivation-review/memory/plans/cart-pole-equations-revision-handoff.md`, especially `Section 6 Simulation Source`, and the staging equations (56)-(57) in `public/research/cart-pole/cart-pole-equations-revision.html`. Then work in `/mnt/d/home/projects/code/cartpole-physics/main`: update the C# from the superseded `7/3`/`3/7` equations to the corrected `3/4`/`4/3` uniform-pole model, verify the implementation, and regenerate the section 6 CSVs, figures 2-3, table 5 results, and precision comparison using the recorded experiment specification. Return the finished website assets and quantified prose results to the website revision worktree.
+Resume the cart-pole equations revision after the completed mathematical, notation, appendix-transition, and numerical-artifact passes. First read this handoff, `memory/cart-pole-equations-revision-draft.md`, and the staging article `public/research/cart-pole/cart-pole-equations-revision.html`. Continue with the publication-readiness prose items under Next Steps, preserve source notation only in source-labelled Appendix C-E displays, and do not reintroduce local `l`/`\hat l`, mixed vector/scalar typography, shared multiple-pole `b_p`, or old Appendix source tags.
