@@ -4,18 +4,18 @@ Last updated: 2026-07-12
 
 ## Goal
 
-Create a conservative replacement draft for `public/research/cart-pole/cart-pole-equations.html`, preserving the original article structure and wording where possible, while correcting the rotational inertia interpretation and associated equations.
+Maintain the completed conservative revision of `public/research/cart-pole/cart-pole-equations.html`, which preserves the original article structure while correcting the rotational inertia interpretation and associated equations.
 
-## Active Draft
+## Canonical Article
 
-- Draft HTML: `public/research/cart-pole/cart-pole-equations-revision.html`
+- Published-path HTML: `public/research/cart-pole/cart-pole-equations.html`
 - Working notes: `memory/cart-pole-equations-revision-draft.md`
-- Original article is still untouched.
+- The revision was promoted to the canonical filename and the redundant staging HTML was removed on 2026-07-12.
 
 ## Current Progress
 
 - Reviewed and revised through equation (59), focused reviews of appendices A-E, a detailed section 6 prose pass, and Figure 1 SVG labels.
-- Most recent work: completed a whole-paper symbol audit and explicit source-to-local notation transitions in Appendices C-E. Local derivations now use one consistent symbol set; literal source symbols are retained only in source-labelled displays and are followed by combined source-value/mapping tables. The earlier section 6 numerical artifact regeneration remains complete.
+- Most recent work: promoted the completed revision to the canonical article filename and removed the redundant staging HTML. The shared Figure 1 SVG was retained because it matches the revised article. Mathematical, notation, source-comparison, prose, and numerical-artifact work is complete.
 - Table 1 now uses:
   - `G`: pole/pendulum centre of mass.
   - `r`: distance from pivot P to G.
@@ -50,7 +50,7 @@ Create a conservative replacement draft for `public/research/cart-pole/cart-pole
 - Section 6.3 uses conventional timestep indices `n` and `n+1`, plus pole index `i`, and evaluates all right-hand-side quantities from the saved timestep-`n` state.
 - Section 6 has been scanned for stale inertia notation; only a spelling fix was needed (`Adams-Bashforth`).
 - Figure 1 SVG labels in `cart-pole-model.svg` and `cart-pole-model-master.svg` now use `G` for the centre of mass and `r` for the pivot-to-centre-of-mass distance.
-- A final stale-reference scan across the staging draft and both SVG files found no old `Q`, `ℓ`, `7/3`, `3/7`, `(1+k)`, or old `k` inertia language; the only remaining `Q` character is inside a Google Books URL query string.
+- A final stale-reference scan across the revised article and both SVG files found no old `Q`, `ℓ`, `7/3`, `3/7`, `(1+k)`, or old `k` inertia language; the only remaining `Q` character is inside a Google Books URL query string.
 - The section 6 numerical integration CSVs, PNGs, table, and precision comparison have been regenerated with the corrected `4/3` recommended equations.
 - The combined mass shorthand is now `m_t = m_c + m` for a single pole and `m_{\Sigma} = m_c + \sum_i m_i` for multiple poles. Do not reintroduce scalar `M`; reserve capital/bold `\mathbf{M}` for moments/torques.
 - In article-local notation, reserve `\mu_c`/`\mu_p` for dimensionless Coulomb coefficients and `b_c`/`b_p` for damping. Barto and Wieland retain source-literal `\mu` symbols whose dimensions differ; keep that distinction explicit.
@@ -65,7 +65,7 @@ Create a conservative replacement draft for `public/research/cart-pole/cart-pole
 - A parallel single-precision equation class and double-pole variants also exist; keep corresponding implementations mathematically consistent.
 - Console experiment runner: `src/CartPoleConsole/Program.cs`; single-pole data recorder: `src/CartPoleConsole/SinglePole/DoublePrecision/CartSinglePoleSimulator.cs`.
 - Existing CSVs, PNGs, and plotting scripts: `r-ggplot2/`.
-- On 2026-07-12, the four C# equation classes were updated from the superseded `7/3` and `3/7` inertia factors to the staging article's corrected `3/4` and `4/3` uniform-pole equations. `CartPolePhysics.sln` then built successfully with zero warnings and zero errors.
+- On 2026-07-12, the four C# equation classes were updated from the superseded `7/3` and `3/7` inertia factors to the canonical article's corrected `3/4` and `4/3` uniform-pole equations. `CartPolePhysics.sln` then built successfully with zero warnings and zero errors.
 - On 2026-07-12 the four C# equation classes were aligned with the paper by replacing full/half-length fields with direct centre-of-mass distances `r`/`r2`; defaults are 0.5/0.05 m. The solution build and `--analyse` results were unchanged.
 - The double-pole equation classes now use independent `b_p1` and `b_p2` coefficients, corresponding to paper notation `b_{p,i}`. Both defaults remain 0.001 N m s/rad, preserving the identical-pivot case. The solution builds with zero warnings and errors.
 - Use the source-backed cart damping $b_c=0.1$ N s/m. The paper formerly said `0.01`, but all single/double and single-/multiple-pole C# defaults use `0.1`, repository history shows no prior `0.01` implementation, the artifact path does not override the default, and the website PNGs are byte-identical to the source-repository PNGs.
@@ -101,12 +101,8 @@ Create a conservative replacement draft for `public/research/cart-pole/cart-pole
 
 ## Next Steps
 
-1. Perform the remaining publication-readiness prose pass, especially the introduction and conclusion. The introduction may still overstate Appendices C-E as highlighting errors; the conclusion should summarize the `J`/total-pivot-inertia result.
-2. Review Appendix D's statement that the rederivation reveals "discrepancies" plural; the principal equation discrepancy identified is signed gravity, while the inertia and friction discussions mainly clarify interpretation.
-3. Review the regenerated Figures 2-3, Table 5 methodology/results, and quantified section 6.4 prose for final publication approval. Artifact regeneration is complete.
-4. Decide whether shared Figure 1 SVG changes should remain in place before replacing the published paper; the current SVG is consistent with the staging draft but not with the old published HTML.
-5. Once the staging draft is stable, decide whether to replace `public/research/cart-pole/cart-pole-equations.html` with the revision draft.
+No revision tasks remain. Before merging or publishing the branch, inspect the final diff and perform any desired browser-level visual check of the canonical article.
 
 ## Resume Prompt
 
-Resume the cart-pole equations revision after the completed mathematical, notation, appendix-transition, and numerical-artifact passes. First read this handoff, `memory/cart-pole-equations-revision-draft.md`, and the staging article `public/research/cart-pole/cart-pole-equations-revision.html`. Continue with the publication-readiness prose items under Next Steps, preserve source notation only in source-labelled Appendix C-E displays, and do not reintroduce local `l`/`\hat l`, mixed vector/scalar typography, shared multiple-pole `b_p`, or old Appendix source tags.
+Review or maintain the completed cart-pole article. First read this handoff and `memory/cart-pole-equations-revision-draft.md`, then inspect `public/research/cart-pole/cart-pole-equations.html`. Preserve source notation only in source-labelled Appendix C-E displays, and do not reintroduce local `l`/`\hat l`, mixed vector/scalar typography, shared multiple-pole `b_p`, or old Appendix source tags.

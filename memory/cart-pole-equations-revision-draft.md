@@ -4,29 +4,24 @@ Date started: 2026-07-08
 
 Scope: Fresh working revision for `public/research/cart-pole/cart-pole-equations.html`.
 
-Status: Draft notes for a future rewrite. This file is intentionally separate from the published article.
+Status: Complete. The revised article was promoted to `public/research/cart-pole/cart-pole-equations.html` on 2026-07-12, the shared Figure 1 assets were retained, and the redundant staging HTML was removed.
 
 ## Draft HTML
 
-Created: `public/research/cart-pole/cart-pole-equations-revision.html`
+Canonical article: `public/research/cart-pole/cart-pole-equations.html`
 
-Intent: This is a staging draft for a replacement of `public/research/cart-pole/cart-pole-equations.html` at the current URL, not a separate article that critiques the old one.
+Outcome: the revision replaced the article at its existing URL; it was not published as a separate critique.
 
 Current state:
 
-- `cart-pole-equations-revision.html` is now a staging copy of the existing article, not a new outline.
-- Includes a temporary draft notice, but the article body should read as the future replacement article.
+- The completed revision is the canonical `cart-pole-equations.html`; no separate staging HTML remains.
 - The user prefers staying close to the original section headers, structure, and wording.
 - Grammar/readability improvements are welcome, but broader restructuring should be avoided unless needed to fix an error or clarify a genuinely confusing passage.
-- Planned mathematical changes should be made as targeted edits to the original derivation flow, especially around the interpretation of `J` and the resulting `4/3` versus `7/3` factors.
-- Table 1 in the revision draft now defines `G` as the pendulum/pole centre of mass, `L` as full physical pole length, `r` as pivot-to-pole-centre-of-mass distance, and `J` as body inertia about the pole centre of mass. It no longer defines `l` or `\hat l` as main symbols.
+- The corrected derivation defines `J` as body inertia about the centre of mass and uses the resulting uniform-pole `4/3` and `3/4` factors.
+- Table 1 defines `G` as the pendulum/pole centre of mass, `L` as full physical pole length, `r` as pivot-to-pole-centre-of-mass distance, and `J` as body inertia about the pole centre of mass. It does not define local `l` or `\hat l`.
 - Figure 1's SVG sources now label the pole centre of mass as `G` and the pivot-to-centre-of-mass distance as `r`.
 
-Next derivation step:
-
-Continue with the remaining publication-readiness prose checks and final replacement workflow. The numerical integration CSVs, Figures 2-3,
-Table 5, and floating-point comparison have been regenerated from the corrected C# equations. The remaining focused checks are the introduction,
-conclusion, Appendix D's use of “discrepancies” plural, and the final decision to replace the published HTML with the staging draft.
+No derivation or replacement steps remain. A browser-level visual check and final branch-diff review may still be performed before merge.
 
 ## Source-First Notation Audit
 
@@ -99,6 +94,8 @@ Notation implication from verified Barto source:
 | 2026-07-12 | Appendix C notation transition | Symbol coherence pass | Added a Cannon-to-local mapping table covering `l -> r`, unchanged shared symbols, the local mass shorthand `m_t=m_c+m`, and the pivot-inertia expressions. Clarified that Cannon-labelled displays reproduce source notation, while local derivations (C1)-(C5) temporarily retain Cannon's symbols for direct comparison; `m_t` is explicitly marked as this paper's shorthand before the final `l -> r` conversion. |
 | 2026-07-12 | Appendix D notation transition | Symbol coherence pass | Verified that Barto's appendix equations are unnumbered, then replaced local-looking source tags with descriptive `(Barto pole)` and `(Barto cart)` tags. Removed the listed gravity parameter from the equation block, combined the source parameter values and Barto-to-local mappings into one table, and renumbered the local rederivations as (D1)-(D2). The combined table flags the incompatible listed gravity sign; the prose states that the algebraic comparison uses local positive `g` and that time subscripts are omitted only because one instant is being evaluated. |
 | 2026-07-12 | Appendix E notation transition | Symbol coherence pass | Verified Wieland's source numbers (9)-(10) and retagged the literal displays as `(Wieland 9)`, `(Wieland 10)`, `(Wieland force)`, and `(Wieland mass)`. Combined source values and Wieland-to-local mappings into one table, including `g_W=-g`, friction-term mappings, and the elimination of effective force/mass by substitution. Renumbered the local derivations from (E5)-(E6) to (E1)-(E2) and updated all references. |
+| 2026-07-12 | Introduction and conclusion | Publication-readiness prose pass | Replaced the introduction's broad claim that Appendices C-E highlight errors with a precise description of source-faithful comparisons, notation mappings, formulation differences, and evidence-supported discrepancies. Expanded the conclusion to summarize `r`, `J`, total pivot inertia `mr^2+J`, the uniform-pole `4/3` result, damping assumptions, numerical-integration sensitivity, and the Appendix C-E findings. |
+| 2026-07-12 | Appendix D framing | Publication-readiness prose pass | Replaced the legacy multiple-discrepancy framing with a neutral structural comparison: after mapping notation and friction, Barto's equations agree with the uniform-pole equations apart from the listed gravity sign. Recast inertia as explicit agreement and friction sections as parameter/model interpretation. Retained the plausible Cannon-friction connection but marked it as an inference not explicitly documented by Barto et al. |
 
 ## Aim
 
@@ -181,7 +178,7 @@ m\hat l^2 + \frac{1}{3}m\hat l^2 = \frac{4}{3}m\hat l^2
 
 Therefore the hybrid equations should use the standard `4/3` factor, not `7/3`.
 
-The revision draft now carries this correction through the main body and appendices C-E, but the original published article remains unchanged.
+The canonical article now carries this correction through the main body and appendices C-E.
 
 ## Proposed Rewrite Strategy
 
