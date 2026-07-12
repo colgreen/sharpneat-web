@@ -6,12 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.75" />
     <link rel="stylesheet" href="../../sharpneat.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="../../sharpneat-print.css" type="text/css" media="print"/>
-    <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({ 
-            tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}, 
-            TeX: {Macros:{sgn:"\\operatorname{sgn}"}}});
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: {'[+]': [['$', '$']]},
+                macros: {
+                    sgn: '\\operatorname{sgn}'
+                }
+            }
+        };
     </script>
-    <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_HTMLorMML-full'></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
    <style>
     table.notationTable {
         border-spacing:1em;
@@ -1967,7 +1972,8 @@
             <tr><td>$m_c=1.0\,\mathrm{kg}$</td><td>$m_c$</td><td>Cart mass.</td></tr>
             <tr><td>$m_c+m$</td><td>$m_t$</td><td>Combined mass of the cart and pole.</td></tr>
             <tr><td>$-\mu_c\sgn(\dot x_t)$, $\mu_c=0.0005\,\mathrm{N}$</td><td>$F_f$</td><td>Signed cart-track friction force.</td></tr>
-            <tr><td>$\mu_p\dot\theta_t$, $\mu_p=0.000002\,\mathrm{N\,m\,s/rad}$</td><td>$M_f$</td><td>Signed pivot damping moment.</td></tr>
+            <tr><td>$\mu_p=0.000002\,\mathrm{N\,m\,s/rad}$</td><td>$b_p$</td><td>Linear pivot damping coefficient.</td></tr>
+            <tr><td>$\mu_p\dot\theta_t$</td><td>$M_f=b_p\dot\theta$</td><td>Pivot damping moment.</td></tr>
             <tr><td>$g=-9.8\,\mathrm{m/s^2}$</td><td>$g&gt;0$</td><td>Barto assigns $g$ the value $-9.8\,\mathrm{m/s^2}$, whereas this paper defines $g$ as a positive magnitude. The comparison below uses this paper's convention.</td></tr>
         </table>
     </blockquote>

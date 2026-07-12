@@ -9,6 +9,7 @@ Last updated: 2026-07-12
 - Mathematical, notation, source-comparison, prose, Figure 1, and numerical-artifact reviews are complete.
 - Supporting C# repository: `/mnt/d/home/projects/code/cartpole-physics/main`.
 - The corrected C# solution builds with zero warnings and errors, and its analysis results match the article.
+- The article now uses MathJax 4's TeX/CommonHTML component from jsDelivr; the migrated rendering has been visually verified.
 
 ## Summary of the Revision
 
