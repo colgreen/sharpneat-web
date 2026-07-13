@@ -113,7 +113,7 @@ Outcome:
 
 ### 4. Tighten repeated explanatory prose around kinematics and moments
 
-Status: Pending
+Status: Completed 2026-07-12
 
 Review sections 3.1-3.5 for nearby paragraphs that repeat an explanation already made by the equations or by an immediately preceding paragraph.
 
@@ -129,9 +129,17 @@ Success criteria:
 - No prerequisite mathematical step becomes implicit.
 - Physical sign and limiting-case checks remain prominent.
 
+Outcome:
+
+- Combined the adjacent introduction to the centre-of-mass coordinates and the adjacent interpretation of equations (5)-(6).
+- Tightened the centripetal-component check without removing the vertical and horizontal limiting cases.
+- Combined the moment/torque introduction and shortened the cross-product explanation while preserving operand order, the right-hand rule, and the upright-pole sign check.
+- Rephrased the gravity sign check as one direct physical test.
+- Retained every explicit differentiation step, the centripetal/tangential distinction, and all substantive physical checks.
+
 ### 5. Separate the adopted friction model from optional alternatives
 
-Status: Pending
+Status: Completed 2026-07-12
 
 Review section 3.7's treatment of full Coulomb friction, constant-normal approximations, wheel-bearing damping, pivot Coulomb friction, viscous damping, and combined models.
 
@@ -148,9 +156,18 @@ Success criteria:
 - A reader can readily distinguish the recommended simulation model from alternatives.
 - Useful modelling context is reorganized rather than indiscriminately removed.
 
+Outcome:
+
+- Added a route map identifying equations (34) and (40) as the adopted models before the detailed friction survey begins.
+- Organized both cart-track and pivot friction into labelled Coulomb, optional approximation, adopted linear damping, and optional combined-model passages.
+- Moved the wheel-bearing equation and explanation beside the adopted cart linear-damping discussion so that it no longer interrupts the Coulomb derivation.
+- Relabelled the moved wheel-bearing equation from (29-R) to (34-R), reflecting that it is a rotational interpretation of linear damping rather than a variant of Coulomb equation (29); the old label had no references.
+- Clarified that the generic friction-extended equations accept any stated model, while section 5 substitutes the adopted linear models.
+- Preserved every friction equation, sign, unit, normal-force dependency, and modelling caveat.
+
 ### 6. Compress routine algebra in the multiple-pole extension
 
-Status: Pending
+Status: Completed 2026-07-12
 
 Review the substitution and collection of terms leading from equations (45) and (46) to equation (47).
 
@@ -166,9 +183,16 @@ Success criteria:
 - The summation notation and indexed quantities remain clearly introduced.
 - Equations (47)-(49) remain algebraically equivalent to the individual pole balances.
 
+Outcome:
+
+- Retained the direct substitution of equation (46), the expanded sums, the definition of `m_{tot}`, and the factored equation immediately before (47).
+- Removed the very long intermediate line that displayed the `x`-acceleration summation moved to the left but not yet factored.
+- Replaced that repeated algebraic state with a plain-language instruction to move the term, factor out `x` acceleration, and divide by its coefficient.
+- Preserved equations (42)-(49), their numbering, and the complete conceptual extension from one pole to `N` poles.
+
 ### 7. Clarify the optional status and purpose of the appendices
 
-Status: Pending
+Status: Completed 2026-07-12
 
 Review the transition from the completed main derivation to Appendices A-E.
 
@@ -184,9 +208,16 @@ Success criteria:
 - Readers interested in verification and historical comparison can still find the full evidence.
 - No source equation, quotation, mapping, or comparison is altered merely for brevity.
 
+Outcome:
+
+- Marked the conclusion as the end of the main derivation and simulation guidance.
+- Identified Appendices A-B as optional introductory background on d'Alembert's principle and torque.
+- Identified Appendices C-E as optional historical verification that is not required to implement the recommended equations.
+- Preserved every appendix equation, quotation, notation mapping, and comparison unchanged.
+
 ### 8. Final whole-paper pacing and accessibility review
 
-Status: Pending
+Status: Completed 2026-07-12
 
 Perform only after passes 1-7 have been individually considered and either completed or deliberately declined.
 
@@ -206,6 +237,16 @@ Success criteria:
 - Optional depth is clearly signposted.
 - All mathematical forms remain equivalent to the independently reviewed equations.
 
+Outcome:
+
+- Confirmed that the main derivation path, adopted friction models, optional alternatives, multiple-pole extension, and appendix boundary are clearly signposted.
+- Standardized beginner-facing prose where compressed wording such as `w.r.t.`, `I.e. e.g.`, inconsistent pole ordinals, and `+-180°` impaired readability.
+- Added descriptive alternative text to every content image and licence image.
+- Corrected an unmatched paragraph in Appendix A and an unclosed table cell and row in reference [2]; paired structural tag counts now agree.
+- Confirmed that every numeric equation reference resolves to a displayed equation tag, all five images have alternative text, and no obsolete `m_t` or `m_{Sigma}` shorthand remains in the paper.
+- Re-ran symbolic checks of the single-pole balances, positive-denominator identity, and uniform-pole specialization; all passed.
+- Retained the intentionally detailed differentiation, force, moment, friction, and source-comparison derivations.
+
 ## Verification for Every Pass
 
 For each implemented pass:
@@ -217,6 +258,6 @@ For each implemented pass:
 5. Update this plan's status and record any deliberate decision to retain existing detail.
 6. Update `../cart-pole-equations.md` if the completed pass establishes durable editing guidance.
 
-## Recommended Starting Point
+## Status
 
-Begin with pass 1. It is narrowly scoped, removes a concrete source of novice confusion, and does not require deciding the paper's broader narrative structure.
+All eight passes are complete. The next useful checkpoint is a Git review and commit of passes 4-8 and the unified `m_{\mathrm{tot}}` notation change.
