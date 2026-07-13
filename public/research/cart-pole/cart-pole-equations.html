@@ -106,7 +106,7 @@
         methods in the simulation of the cart and pole task.
     </p>
     <p>
-        Appendices A and B provide brief introductions to d'Alembert's principle and to torque and moment sign conventions, respectively,
+        Appendices A and B provide brief introductions to d'Alembert's principle and to moment (torque) sign conventions, respectively,
         in support of the derivations in section 3.
     </p>
     <p>
@@ -193,8 +193,9 @@
             <tr><td>A positive vertical force represents a push upwards.</td></tr>
             <tr><td>A positive angular velocity represents clockwise rotation.</td></tr>
             <tr><td>A positive angular acceleration represents clockwise acceleration.</td></tr>
-            <tr><td>A positive moment (also known as torque or a rotational force) is a rotational force in the
-                <b>anticlockwise</b> direction (see appendix B for an explanation). Thus a positive torque results in negative angular acceleration.</td></tr>
+            <tr><td>A moment is the turning effect of a force about a point or axis; it is also called torque.</td></tr>
+            <tr><td>The rotational sign conventions deliberately use opposite positive directions: moments follow the right-hand rule and are
+                positive <b>anticlockwise</b>, whereas $	heta$, $\dot\theta$, and $\ddot\theta$ are positive clockwise. See appendix B for a fuller explanation.</td></tr>
         </table>
     </blockquote>
 
@@ -311,8 +312,8 @@
             acceleration. If $\dot\theta$ is changing then G also has tangential acceleration.
         </p>
         <p>
-            These angular acceleration components are essentially describing the relationship between rotational force on the pendulum,
-            i.e. <a href="https://en.wikipedia.org/wiki/Torque">torque</a>, and the resulting tangential acceleration of point G.
+            These angular acceleration components describe the relationship between a moment (or
+            <a href="https://en.wikipedia.org/wiki/Torque">torque</a>) acting on the pendulum and the resulting tangential acceleration of point G.
         </p>
     </blockquote>
 
@@ -435,20 +436,46 @@
     </blockquote>
     <br/>
 
-    <h3>3.5 Rotational Forces on the Pendulum</h3>
+    <h3>3.5 Moments About Pivot P</h3>
     <p>
-        We now consider the rotational forces acting on the pendulum. A rotational force is called a
-        <a href="https://en.wikipedia.org/wiki/Moment_(physics)">moment of force</a>, or
-        <a href="https://en.wikipedia.org/wiki/Torque">torque</a>. Three effects contribute: (i) gravity acting on the pendulum or pole's
-        centre of mass at G; (ii) the inertial force resulting from the inertial resistance of the mass at G, i.e.
-        as the cart moves left or right beneath the pendulum; and (iii) any additional body rotational inertia, i.e. the pole's
-        <a href="https://en.wikipedia.org/wiki/Moment_of_inertia">moment of inertia</a> about its own centre of mass. The three resulting torques must be in
-        equilibrium as per d'Alembert's principle, giving an additional equation of motion for the cart and pole model.
+        We now consider moments about pivot P. The <a href="https://en.wikipedia.org/wiki/Moment_(physics)">moment of a force</a> about a
+        point or axis&mdash;also called <a href="https://en.wikipedia.org/wiki/Torque">torque</a>&mdash;measures the force's tendency to turn
+        an object about that point or axis. A familiar example is a door: the same push produces more turning effect at the handle than near
+        the hinge because the handle is farther from the axis of rotation.
     </p>
     <p>
-        The inertial force on G is $\mathbf{F}^i_G$, defined by equations (10) and (11). Taking the cross product of the radial vector
-        $\mathbf{1}_R(r)$ (vector PG) with $\mathbf{F}^i_G$ gives the torque about P (see <a href="#appendixB">appendix B</a>). The rotation
-        axis is parallel to the z-axis, so its signed z component gives the signed torque used here:
+        For a force applied at distance $r$ from a pivot, only the component $F_\perp$ perpendicular to the line from the pivot contributes
+        to the moment. Its magnitude is therefore $rF_\perp$. A force directed through the pivot has $F_\perp=0$ and produces no moment about
+        that pivot. A moment has units of newton-metres (N m), whereas force has units of newtons (N); a moment is therefore not itself a force.
+        Appendix B gives a fuller explanation of moment magnitude, direction, and sign.
+    </p>
+    <p>
+        Three moment terms contribute to the pendulum's balance about P: (i) the moment of gravity acting at the centre of mass G;
+        (ii) the moment of the inertial force at G as the cart moves beneath the pendulum; and (iii) the additional body inertial moment
+        associated with the pole's <a href="https://en.wikipedia.org/wiki/Moment_of_inertia">moment of inertia</a> about its own centre of mass.
+        The three terms must be in equilibrium as per d'Alembert's principle, giving an additional equation of motion for the cart-pole model.
+    </p>
+    <p>
+        The cart also exerts a reaction force on the pole at pivot P. That force is not included in this moment balance because it is applied
+        at P itself: its distance from P is zero, so it produces zero moment about P. Section 3.7.2 later adds a separate friction moment for
+        a non-ideal pivot.
+    </p>
+    <p>
+        To calculate the remaining moments, consider a planar position vector $\mathbf{r}=(r_x,r_y)$ from the pivot to the point where a
+        force $\mathbf{F}=(F_x,F_y)$ is applied. The signed z component of their cross product is:
+    </p>
+    <br/>
+    $$ [\mathbf{r}\times\mathbf{F}]_z = r_xF_y-r_yF_x $$
+    <br/>
+    <p>
+        The first product is the moment contribution from the vertical force at horizontal distance $r_x$; the second is the contribution
+        from the horizontal force at vertical distance $r_y$. Their relative minus sign follows from the right-hand rule explained in
+        appendix B.
+    </p>
+    <p>
+        The inertial force on G is $\mathbf{F}^i_G$, whose x and y components are given by equations (10) and (11). Equations (1) and (2)
+        give the components of the radial vector $\mathbf{1}_R(r)$ (vector PG) as $r\sin\theta$ and $r\cos\theta$. Substituting these four
+        components into the rule above gives the signed moment about P:
     </p>
     <br/>
 
@@ -456,7 +483,10 @@
 
         M_G & = \left[ \mathbf{1}_R(r) \times \mathbf{F}^i_G \right]_z \tag{13} \\[3ex]
 
-            &= \left[ (r\sin\theta) (mr [\ddot\theta \sin\theta + \dot\theta^2 \cos\theta]) - (r\cos\theta)(-m[r\ddot\theta \cos\theta - r\dot\theta^2 \sin\theta + \ddot x]) \right] \\[3ex]
+            &= (r\sin\theta)(\mathbf{F}^i_G)_y-(r\cos\theta)(\mathbf{F}^i_G)_x \\[3ex]
+
+            &= (r\sin\theta)\left(mr [\ddot\theta \sin\theta + \dot\theta^2 \cos\theta]\right) \\
+            &\quad -(r\cos\theta)\left(-m[r\ddot\theta \cos\theta - r\dot\theta^2 \sin\theta + \ddot x]\right) \\[3ex]
 
             &= mr \left[ (\sin\theta) (r [\ddot\theta \sin\theta + \dot\theta^2 \cos\theta]) + (\cos\theta)(r\ddot\theta \cos\theta - r\dot\theta^2 \sin\theta + \ddot x) \right] \\[3ex]
 
@@ -471,7 +501,7 @@
 
     <blockquote style="background-color:eeeeee; padding: 14px">
         <p>
-            $M_G$ is the signed torque about P resulting from the inertial force at G. The first part of equation (14),
+            $M_G$ is the signed moment about P resulting from the inertial force at G. The first part of equation (14),
             $mr^2\ddot\theta$, is the rotational inertia contribution associated with the centre of mass moving around pivot
             point P. This term is already present before adding any separate body inertia term for an extended pole.
         </p>
@@ -484,19 +514,25 @@
             The cross product is not <a href="https://en.wikipedia.org/wiki/Commutative_property">commutative</a>, so the operand order in
             equation (13) matters. By the right-hand rule, a result directed into the page represents clockwise rotation and has a negative
             z component under the conventions in table 1. As a check, a positive x component of $\mathbf{F}^i_G$ pushing an upright
-            pendulum to the right produces clockwise rotation and therefore negative torque.
+            pendulum to the right produces clockwise rotation and therefore a negative moment.
         </p>
     </blockquote>
     <br/>
 
     <p>
-        The torque resulting from the downward pull of gravity on the pendulum or pole's mass at G is given by:
+        Gravity acts at G with horizontal component zero and vertical component $-mg$. Applying the same component rule gives:
     </p>
     <br/>
-    $$ M_g = -mgr \sin\theta \tag{15} $$
+    \begin{align}
+
+        M_g &= (r\sin\theta)(-mg)-(r\cos\theta)(0) \\[3ex]
+
+        M_g &= -mgr \sin\theta \tag{15}
+
+    \end{align}
     <br/>
     <p>
-        As a sign check, gravity produces zero torque when the pendulum is vertical. At +90°, G is directly to the right of P and gravity
+        As a sign check, gravity produces zero moment when the pendulum is vertical. At +90°, G is directly to the right of P and gravity
         pulls it downward, producing clockwise rotation. Equation (15) is correspondingly negative at that angle.
     </p> 
     <br/>
@@ -539,10 +575,10 @@
     </blockquote>
     <br/>
 
-    <h3>3.6 Combining Horizontal and Rotational Force Equations</h3>
+    <h3>3.6 Combining the Horizontal-Force and Moment Equations</h3>
     <p>
-        Equation (12) describes the horizontal forces acting on the cart in equilibrium; and equation (18) describes the moments
-        (rotational forces) acting on the pole in equilibrium. These two equations can be combined and rearranged to arrive at a
+        Equation (12) gives the horizontal-force balance for the cart, while equation (18) gives the moment balance for the pole.
+        These two equations can be combined and rearranged to arrive at a
         complete set of equations for the cart-pole model.
     </p>
     <p>
@@ -799,7 +835,7 @@
     <h4>3.7.2 Pivot Friction</h4>
     <h5>Coulomb Model</h5>
     <p>
-        The joint that connects the pole to the cart will also exhibit friction, resulting in an additional moment (rotational force)
+        The joint that connects the pole to the cart will also exhibit friction, resulting in an additional friction moment
         that retards rotation of the pole. This friction is the result of surface contact within the joint, and as such this rotational 
         friction can also be modelled with Coulomb's Law.
     </p>
@@ -810,7 +846,7 @@
     <p>
         Here $M_f$ is the signed moment of friction, $\mu_p$ is the dimensionless Coulomb coefficient of friction at the pivot, $r_p$ is
         an effective friction radius, and $\mathbf{N}_P$ is the normal-force vector at point P
-        between the pole and the cart. Note that a positive (clockwise) angular velocity will result in a positive (anticlockwise) torque/moment
+        between the pole and the cart. Note that a positive (clockwise) angular velocity will result in a positive (anticlockwise) friction moment
         (see the conventions in table 1), hence no minus sign is required. The product $\mu_p|\mathbf{N}_P|$ is the tangential friction-force magnitude,
         and multiplication by $r_p$ converts that force into a moment.
     </p>
@@ -901,7 +937,7 @@
 
     <h4>3.7.3 Equations of Motion with Friction</h4>
     <p>
-        The force equilibrium equations (12) and (18) can be extended to include the friction force $F_f$ and friction moment $M_f$, giving the
+        The horizontal-force balance (12) and moment balance (18) can be extended to include the friction force $F_f$ and friction moment $M_f$, giving the
         following equations of motion. At this stage $F_f$ and $M_f$ may be supplied by any of the models above. Section 5 substitutes the
         adopted linear damping models from equations (26) and (32). With friction included, the two balances used in section 3.6 become:
     </p>
@@ -1538,7 +1574,7 @@
     </p>
     <p>
         The main derivation and simulation guidance end here. Appendices A and B provide optional introductory background on d'Alembert's
-        principle and torque. Appendices C-E provide optional historical verification against Cannon, Barto et al., and Wieland; they are not
+        principle and moment (torque) sign conventions. Appendices C-E provide optional historical verification against Cannon, Barto et al., and Wieland; they are not
         required to implement the recommended equations.
     </p>
     <p>
@@ -1590,28 +1626,38 @@
         are considered separately.
     </p>
     <p>
-        The same approach is adopted for rotational motion. If the sum of moments about a chosen axis is $\sum \mathbf{M}$, the relevant moment
-        of inertia is $I$, and the angular acceleration about that axis is $\boldsymbol{\alpha}$, then:
+        The same approach is adopted for rotational motion. For the planar rotation considered here, the compact rotational equation is
+        simplest when moments are taken about the rigid body's centre of mass G. If the ordinary external moments about G sum to
+        $\sum \mathbf{M}^{\mathrm{ext}}_G$, the body moment of inertia about G is $J$, and the angular acceleration vector is
+        $\boldsymbol{\alpha}$, then:
     </p>
 
-    $$ \sum \mathbf{M} = I\boldsymbol{\alpha} $$
+    $$ \sum \mathbf{M}^{\mathrm{ext}}_G = J\boldsymbol{\alpha} $$
 
     <p>
-        Rearranging gives an inertial moment:
+        Rearranging introduces the body inertial moment:
     </p>
 
-    $$ \mathbf{M}^i = -I\boldsymbol{\alpha} $$
+    $$ \mathbf{M}^i = -J\boldsymbol{\alpha} $$
 
     <p>
         And therefore:
     </p>
 
-    $$ \sum \mathbf{M} + \mathbf{M}^i = 0 \tag{A2} $$
+    $$ \sum \mathbf{M}^{\mathrm{ext}}_G + \mathbf{M}^i = 0 \tag{A2} $$
 
     <p>
-        In section 3.5 this rotational form appears in two parts. The inertial force at the pole's centre of mass G produces the moment
-        $M_G$ about pivot P, and an extended pole also has the body inertial moment $M_i = J\ddot\theta$ about its own
-        centre of mass.
+        Equation (A2) must not be transferred unchanged to an arbitrary accelerating point. In particular, pivot P accelerates horizontally
+        with the cart. When moments are taken about P, the d'Alembert balance must also include the moment about P of the inertial force
+        $\mathbf{F}^i_G=-m\mathbf{a}_G$ applied at the centre of mass G. This moment accounts for translation of the centre of mass around P.
+    </p>
+
+    $$ \sum \mathbf{M}^{\mathrm{ext}}_P + \mathbf{r}_{PG}\times\mathbf{F}^i_G + \mathbf{M}^i = 0 $$
+
+    <p>
+        Section 3.5 therefore uses both inertial contributions: $M_G$ is the moment about P of the inertial force at G, while
+        $M_i=J\ddot\theta$ is the scalar form of the body inertial moment about G. The ordinary pivot reaction force contributes no moment
+        about P because it is applied at P itself.
     </p>
     <p>
         Note that this last expression uses this paper's scalar sign convention, where positive $\ddot\theta$ is clockwise but a positive
@@ -1622,9 +1668,12 @@
     <br/>
 
     <hr/>
-    <h2 id="appendixB">Appendix B: Torque and Moment Sign Conventions</h2>
+    <h2 id="appendixB">Appendix B: Moment and Torque Sign Conventions</h2>
     <p>
-        Torque, also called the moment of force, measures the tendency of a force to cause rotation about a chosen point or axis.
+        The moment of a force about a chosen point or axis, also called torque, measures the force's tendency to cause rotation about that
+        point or axis.
+        Its SI unit is the newton-metre (N m). Although a moment is calculated from a force and a distance, it is distinct from force,
+        whose SI unit is the newton (N).
     </p>
     <p>
         If a force $\mathbf{F}$ is applied to the pendulum in figure 1, only the component of that force that is perpendicular to the line
@@ -1654,6 +1703,17 @@
         point in the opposite direction.
     </p>
     <p>
+        For a planar position vector $\mathbf{r}=(r_x,r_y)$ and force $\mathbf{F}=(F_x,F_y)$, the cross product points along the z-axis.
+        Its signed z component can be calculated directly from the x and y components:
+    </p>
+
+    $$ \tau_z = [\mathbf{r}\times\mathbf{F}]_z = r_xF_y-r_yF_x $$
+
+    <p>
+        This is the component rule used in section 3.5 for the inertial-force moment in equations (13)-(14) and the gravity moment in
+        equation (15).
+    </p>
+    <p>
         The result of the cross product is a vector parallel to the axis of rotation. Its magnitude gives the torque magnitude, and its direction
         gives the sign of the torque. By the <a href="https://en.wikipedia.org/wiki/Right-hand_rule#Cross_products">right-hand rule</a>, a torque
         vector pointing out of the page corresponds to anticlockwise rotation in the page, and a torque vector pointing into the page corresponds
@@ -1662,8 +1722,8 @@
     <p>
         In this paper the z-axis points out of the page. Therefore a positive torque, i.e. a positive z-axis moment, is anticlockwise.
         This is the convention used for the moment terms in table 1 and section 3.5. However, the pole angle $\theta$, angular velocity
-        $\dot\theta$, and angular acceleration $\ddot\theta$ are defined as positive in the clockwise direction. This mismatch is why the
-        signs of the torque terms require care.
+        $\dot\theta$, and angular acceleration $\ddot\theta$ are defined as positive in the clockwise direction. This deliberate difference
+        in positive directions is why the signs of the moment terms require care.
     </p>
     <br/>
 

@@ -3,7 +3,7 @@
 - Reviewed: 2026-07-13
 - Reviewed page: `public/research/cart-pole/cart-pole-equations.html`
 - Reviewed revision: `d07bb73` (`Refine cart-pole derivation and figure`)
-- Status: In progress; F1, F3, F5, and F14 resolved on 2026-07-13
+- Status: In progress; F1, F2, F3, F5, F11, and F14 resolved on 2026-07-13
 
 ## Review Goal
 
@@ -52,7 +52,7 @@ The primary-source transcriptions and quotations in Appendices C-E were not inde
 | ID | Priority | Finding | Status |
 | --- | --- | --- | --- |
 | F1 | P1 | Section 3.6 proves the final formulas through expressions that exclude `cos(theta)=0` | [x] Resolved 2026-07-13 |
-| F2 | P1 | The moment derivation omits the component cross-product rule and gravity-moment steps | [ ] Open |
+| F2 | P1 | The moment derivation omits the component cross-product rule and gravity-moment steps | [x] Resolved 2026-07-13 |
 | F3 | P1 | The friction-extended single-pole equations are stated rather than derived | [x] Resolved 2026-07-13 |
 | F4 | P1 | Later specialization and multiple-pole friction steps are substantially compressed | [ ] Open |
 | F5 | P1 | The alternative solution route appears before the recommended route | [x] Resolved 2026-07-13 |
@@ -61,12 +61,13 @@ The primary-source transcriptions and quotations in Appendices C-E were not inde
 | F8 | P2 | The pivot-to-cart kinematic assumption is used without being written as an equation | [ ] Open |
 | F9 | P2 | The recommended equations need a self-contained evaluation recipe and denominator check | [~] Partly resolved 2026-07-13 |
 | F10 | P2 | The numerical “trajectory” discussion is broader than the endpoint-only error measure | [ ] Open |
-| F11 | P2 | Calling torque a “rotational force” blurs two quantities with different units | [ ] Open |
+| F11 | P2 | Calling torque a “rotational force” blurs two quantities with different units | [x] Resolved 2026-07-13 |
 | F12 | P2 | Historical/source asides interrupt the main instructional path | [ ] Open |
 | F13 | P3 | Equation (9)'s vector notation is nonstandard and its frame name changes from TR to RT | [ ] Open |
 | F14 | P3 | Equation numbering jumps from (24) to (29), which looks like missing content | [x] Resolved 2026-07-13 |
 | F15 | P3 | Several local prose, notation, accessibility, and dating issues remain | [ ] Open |
 | F16 | P3 | Optional friction discussion sometimes overstates or weakly motivates approximations | [ ] Open |
+| F17 | P2 | Angular variables are clockwise-positive while right-hand-rule moments are anticlockwise-positive | [ ] Deferred for a dedicated sign-convention pass |
 
 Priority meanings:
 
@@ -109,7 +110,7 @@ Equation (23-F) follows from the second balance by dividing by `K`, which is pos
 
 ### F2 — Supply the missing moment mechanics
 
-**Location:** Section 3.5, equations (13)-(16), and Appendix B.
+**Location:** Section 3.5, equations (13)-(16), and Appendices A-B.
 
 The jump from the vector cross product in (13) to the long component expression assumes the two-dimensional rule
 
@@ -131,6 +132,8 @@ That is a useful short derivation because it reinforces both the component rule 
 Appendix A's statement `sum M = I alpha` “about a chosen axis” is too broad. That compact form applies about the centre of mass or a suitable fixed inertial axis; moments about an accelerating pivot require care. The main derivation is correct because it includes the centre-of-mass inertial force moment and the separate body inertial moment. Appendix A should say that explicitly rather than presenting the compact relation as universal for any chosen axis.
 
 **Recommended change:** Add the 2D component identity, show the substitutions into (13), derive (15) in two lines, explain why the pivot reaction contributes no moment, and qualify the generic rotational statement in Appendix A.
+
+**Outcome (2026-07-13):** Resolved. Section 3.5 now states $[\mathbf r\times\mathbf F]_z=r_xF_y-r_yF_x$, explains the physical meaning of its two products, identifies the radial-vector and inertial-force components before substitution, and includes the intermediate component line in (13)-(14). The gravity force is written as horizontal component zero and vertical component $-mg$, then substituted through the same rule to derive (15). The ideal pivot reaction is explicitly omitted because it is applied at P and therefore has zero moment about P; the later friction moment is distinguished from that reaction force. Appendix B repeats the planar component identity as part of its fuller cross-product explanation. Appendix A now limits the compact $\sum\mathbf M=J\boldsymbol\alpha$ form to planar moments about the centre of mass and explicitly includes both the centre-of-mass inertial-force moment and body inertial moment when balancing about accelerating pivot P. Symbolic residual checks for (14) and (15) reduced to zero, and the expanded derivation and appendices were rendered without overflow.
 
 ### F3 — Derive the friction-extended balances before listing four results
 
@@ -284,6 +287,8 @@ A moment or torque is produced by a force and has units of N m; it is not itself
 
 **Recommended change:** Use “moment (or torque)” consistently. If “rotational force” is retained as an informal analogy, state once that it is not a force in the dimensional sense.
 
+**Outcome (2026-07-13):** Resolved. The main paper now uses “moment” as its primary term and introduces “torque” as the equivalent term. Every use of “rotational force” was removed. The first occurrence in table 1 defines a moment as the turning effect of a force about a point or axis. Section 3.5 then explains the concept with a door-hinge analogy, the magnitude $rF_\perp$, the zero-moment case for a force directed through the pivot, and the distinction between moment units (N m) and force units (N). Section 3.6 and the pivot-friction discussion use the same terminology. Appendix B retains the fuller conventional torque-vector treatment while connecting it to the paper's scalar moment convention.
+
 ### F12 — Move or label source-history detours in the main derivation
 
 **Location:** The Cannon vector-notation block after (8), and the Cannon sign-convention block after (12).
@@ -344,19 +349,47 @@ Several optional passages are more speculative than the core derivation:
 
 **Recommended change:** Retain the model alternatives, but label empirical constants as calibration choices, remove claims of general superiority, and keep the adopted linear-damping rationale tied to the intended simulation method.
 
+### F17 — Reconsider the angular sign convention
+
+**Location:** Figure 1 and table 1; the kinematic and dynamic derivations in sections 3.1-5.3; the source comparisons in Appendices C-E; and the supporting C# implementation and numerical artefacts.
+
+The paper currently uses two different positive rotational directions:
+
+- moment vectors follow the conventional right-hand rule, so a positive z-axis moment is anticlockwise; but
+- $\theta$, $\dot\theta$, and $\ddot\theta$ are defined as positive clockwise.
+
+This is mathematically consistent, and the right-hand-rule convention for moments is standard. The cognitive mismatch comes from the clockwise-positive angular coordinate: a physical anticlockwise angular acceleration has a positive z component but a negative scalar value of $\ddot\theta$ in the paper. Table 1 and Appendix B now make that deliberate difference explicit, but aligning the signs may ultimately be clearer for the intended reader.
+
+The clockwise convention may have been inherited from Cannon, but that provenance has not yet been verified from the source record and should not be asserted publicly without checking it. Source compatibility is relevant, but source notation can instead be mapped explicitly in Appendix C if the main paper adopts a different convention.
+
+**Provisional preferred direction:** Retain the standard right-hand rule for moment vectors and consider redefining $\theta$, $\dot\theta$, and $\ddot\theta$ as positive anticlockwise, so all rotational quantities share the same positive direction.
+
+This is not a local wording change. It requires a dedicated rederivation and verification pass covering the geometry, rotating-frame directions, all differentiated kinematics, gravity and friction signs, single- and multiple-pole equations, source mappings, Figure 1, supporting code, initial conditions, plots, and numerical results. The transformed variables provide a useful equivalence check:
+
+```text
+theta_new            = -theta_old
+theta-dot_new        = -theta-dot_old
+theta-double-dot_new = -theta-double-dot_old.
+```
+
+Under this transformation, sine terms change sign while cosine terms do not. Every revised equation should reproduce the same physical motion after transforming the angular state, rather than being accepted from sign inspection alone.
+
+**Recommended change:** Defer this choice until it can be handled as one coordinated sign-convention pass. At that point, verify the Cannon provenance, decide the main-paper convention explicitly, rederive rather than mechanically relabel the equations, regenerate affected numerical artefacts, and record the complete equivalence checks here.
+
 ## Suggested Work Order
 
 Work in small passes so that mathematical and editorial changes remain reviewable:
 
-1. **Mechanics foundations:** F2, F7, and F8.
+1. **Mechanics foundations:** F7 and F8.
 2. **Specialization and multiple poles:** F4 and F6.
 3. **Implementation and numerical claims:** the remainder of F9 and F10.
-4. **Terminology and optional depth:** F11, F12, F13, and F16.
+4. **Optional depth and notation:** F12, F13, and F16.
 5. **Editorial integrity:** F15.
+6. **Dedicated coordinate-convention decision:** F17, when a full rederivation and artefact-regeneration pass is desired.
 
 For each pass:
 
-- preserve the stated coordinate and sign conventions;
+- preserve the stated coordinate and sign conventions unless undertaking the dedicated F17 pass, in which case transform them systematically;
 - check each changed equality symbolically or by substitution;
 - test upright, horizontal, and downward pole configurations;
 - check dimensions of every added force and moment term;
