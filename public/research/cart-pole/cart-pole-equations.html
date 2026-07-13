@@ -1142,11 +1142,101 @@
     <br/>
 
     <p>
-        If we include friction terms in the equilibrium equations (37) and (38), and repeat the same derivation steps, we obtain:
+        We now add the signed cart-track friction force $F_f$ and the signed pivot friction moment $M_{f,i}$. The cart friction force
+        appears on the applied-force side of the horizontal balance, while the pivot friction moment appears in the moment balance for
+        pole $i$:
     </p>
-
     <br/>
-    $$ \ddot x = \frac{f - g\sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\sin\theta_i\cos\theta_i\right) + \sum_i\left(m_i r_i \dot\theta_i^2\sin\theta_i\right) + \sum_i \left( \cfrac{m_i r_i M_{f,i} \cos\theta_i}{m_i r_i^2+J_i} \right) + F_f}{m_{\mathrm{tot}} - \sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\cos^2\theta_i \right)} \tag{42} $$
+    \begin{align}
+
+        m_c\ddot x-\sum_i\tilde F_i &= f+F_f \\[3ex]
+
+        (m_i r_i^2+J_i)\ddot\theta_i+m_i r_i\ddot x\cos\theta_i
+        &=m_i g r_i\sin\theta_i-M_{f,i}
+
+    \end{align}
+    <br/>
+    <p>
+        Rearranging the pole balance gives the angular-acceleration expression that will be used in the cart balance:
+    </p>
+    <br/>
+    \begin{align}
+
+        (m_i r_i^2+J_i)\ddot\theta_i
+        &=m_i r_i(g\sin\theta_i-\ddot x\cos\theta_i)-M_{f,i} \\[3ex]
+
+        \ddot\theta_i
+        &=\frac{m_i r_i(g\sin\theta_i-\ddot x\cos\theta_i)-M_{f,i}}
+        {m_i r_i^2+J_i}
+
+    \end{align}
+    <br/>
+    <p>
+        Expanding the horizontal balance as in equations (37)-(39), but retaining $F_f$, gives:
+    </p>
+    <br/>
+    \begin{align}
+
+        m_{\mathrm{tot}}\ddot x
+        &=f+F_f-\sum_i\left[m_i r_i
+        (\ddot\theta_i\cos\theta_i-\dot\theta_i^2\sin\theta_i)\right]
+
+    \end{align}
+    <br/>
+    <p>
+        Substitute the angular-acceleration expression above. Expanding the outer minus sign shows explicitly why the $M_{f,i}$ term
+        enters the cart equation with a plus sign:
+    </p>
+    <br/>
+    \begin{align}
+
+        m_{\mathrm{tot}}\ddot x
+        &=f+F_f-\sum_i\Biggl[m_i r_i\Biggl(
+        \left[\frac{m_i r_i(g\sin\theta_i-\ddot x\cos\theta_i)-M_{f,i}}
+        {m_i r_i^2+J_i}\right]\cos\theta_i
+        -\dot\theta_i^2\sin\theta_i\Biggr)\Biggr] \\[3ex]
+
+        &=f+F_f
+        -g\sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\sin\theta_i\cos\theta_i\right)
+        +\ddot x\sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\cos^2\theta_i\right) \\
+        &\quad+\sum_i(m_i r_i\dot\theta_i^2\sin\theta_i)
+        +\sum_i\left(\frac{m_i r_iM_{f,i}\cos\theta_i}{m_i r_i^2+J_i}\right)
+
+    \end{align}
+    <br/>
+    <p>
+        Move the term containing $\ddot x$ to the left, factor out $\ddot x$, and divide by its coefficient:
+    </p>
+    <br/>
+    \begin{align}
+
+        \left[m_{\mathrm{tot}}-\sum_i\left(
+        \frac{(m_i r_i)^2}{m_i r_i^2+J_i}\cos^2\theta_i\right)\right]\ddot x
+        &=f+F_f
+        -g\sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\sin\theta_i\cos\theta_i\right) \\
+        &\quad+\sum_i(m_i r_i\dot\theta_i^2\sin\theta_i)
+        +\sum_i\left(\frac{m_i r_iM_{f,i}\cos\theta_i}{m_i r_i^2+J_i}\right)
+
+    \end{align}
+    <br/>
+    $$
+        \ddot x=
+        \frac{
+            \begin{aligned}
+                &f+F_f
+                -g\sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\sin\theta_i\cos\theta_i\right) \\
+                &\quad+\sum_i(m_i r_i\dot\theta_i^2\sin\theta_i)
+                +\sum_i\left(\frac{m_i r_iM_{f,i}\cos\theta_i}{m_i r_i^2+J_i}\right)
+            \end{aligned}
+        }{
+            m_{\mathrm{tot}}-\sum_i\left(
+            \frac{(m_i r_i)^2}{m_i r_i^2+J_i}\cos^2\theta_i\right)
+        } \tag{42}
+    $$
+    <br/>
+    <p>
+        The angular-acceleration expression used in that substitution is the second equation in the evaluation sequence:
+    </p>
     <br/>
     $$ \ddot\theta_i = \frac{m_i r_i(g\sin\theta_i - \ddot x\cos\theta_i) - M_{f,i}}{m_i r_i^2+J_i} \tag{43} $$
     <br/>
@@ -1172,12 +1262,26 @@
         pole of full length $L=2r$, this is:
     </p>
     <br/>
-    $$ J = \frac{1}{12}mL^2 = \frac{1}{3}mr^2 $$
+    $$ J = \frac{1}{12}mL^2 = \frac{1}{12}m(2r)^2 = \frac{4}{12}mr^2 = \frac{1}{3}mr^2 $$
     <br/>
 
     <p>
-        The total moment of inertia about the pivot is therefore $mr^2 + J = \frac{4}{3}mr^2$. Thus the uniform-pole
-        specialization is obtained by substituting $J = \frac{1}{3}mr^2$ into the general equations.
+        The $mr^2$ term in the general equations accounts for the offset between the pivot and the centre of mass. Adding the body moment
+        of inertia gives the total moment of inertia about the pivot:
+    </p>
+    <br/>
+    \begin{align}
+
+        mr^2+J &= mr^2+\frac{1}{3}mr^2 \\[3ex]
+
+               &= \frac{4}{3}mr^2
+
+    \end{align}
+    <br/>
+    <p>
+        Thus the uniform-pole specialization is obtained by substituting $J=\frac{1}{3}mr^2$, and hence
+        $mr^2+J=\frac{4}{3}mr^2$, into the general equations. For pole $i$ the same identities are
+        $J_i=\frac{1}{3}m_i r_i^2$ and $m_i r_i^2+J_i=\frac{4}{3}m_i r_i^2$.
     </p>
     <br/>
 
@@ -1187,30 +1291,130 @@
         cart-acceleration-first equations for a single uniform pole:
     </p>
     <br/>
-    <p>The angular-acceleration equation specialized for a uniform pole:</p>
+    <p>
+        Begin with the angular-acceleration equation (34), substitute $mr^2+J=\frac{4}{3}mr^2$, then factor $mr$ from the
+        numerator. A physical pole has $m>0$ and $r>0$, so this common factor is non-zero and can be cancelled from the numerator and
+        denominator:
+    </p>
+    <br/>
+    \begin{align}
 
-    $$ \ddot\theta = \frac{g\sin\theta - \ddot x \cos\theta - \cfrac{M_f}{mr}}{\frac{4}{3}r} \tag{44} $$
+        \ddot\theta
+        &= \frac{mr(g\sin\theta-\ddot x\cos\theta)-M_f}{mr^2+J} \\[3ex]
+
+        &= \frac{mr(g\sin\theta-\ddot x\cos\theta)-M_f}{\frac{4}{3}mr^2} \\[3ex]
+
+        &= \frac{mr\left(g\sin\theta-\ddot x\cos\theta-\cfrac{M_f}{mr}\right)}
+        {mr\left(\frac{4}{3}r\right)} \\[3ex]
+
+        &= \frac{g\sin\theta-\ddot x\cos\theta-\cfrac{M_f}{mr}}{\frac{4}{3}r} \tag{44}
+
+    \end{align}
     <br/>
 
-    <p>The cart-acceleration equation specialized for a uniform pole:</p>
+    <p>
+        For the cart-acceleration equation, let $N$ and $D$ denote the numerator and denominator of equation (35). Substituting
+        $mr^2+J=\frac{4}{3}mr^2$ into $N$ gives:
+    </p>
+    <br/>
+    \begin{align}
 
-    $$ \ddot x = \frac{f + mr\dot\theta^2 \sin\theta + F_f - \frac{3}{4}mg\sin\theta\cos\theta + \cfrac{3M_f \cos\theta}{4r}}{m_{\mathrm{tot}} - \frac{3}{4}m\cos^2\theta} \tag{45} $$
+        N
+        &= \frac{4}{3}mr^2(f+mr\dot\theta^2\sin\theta+F_f)
+        -(mr)^2g\sin\theta\cos\theta+mrM_f\cos\theta \\[3ex]
+
+        &= \frac{4}{3}mr^2\left(
+        f+mr\dot\theta^2\sin\theta+F_f
+        -\frac{3}{4}mg\sin\theta\cos\theta
+        +\frac{3M_f\cos\theta}{4r}\right)
+
+    \end{align}
+    <br/>
+    <p>
+        The last two terms have been placed inside the parentheses by dividing each one by the outside factor
+        $\frac{4}{3}mr^2$. Applying the same substitution and factorization to $D$ gives:
+    </p>
+    <br/>
+    \begin{align}
+
+        D
+        &= \frac{4}{3}mr^2m_{\mathrm{tot}}-(mr\cos\theta)^2 \\[3ex]
+
+        &= \frac{4}{3}mr^2\left(
+        m_{\mathrm{tot}}-\frac{3}{4}m\cos^2\theta\right)
+
+    \end{align}
+    <br/>
+    <p>
+        Substituting these forms of $N$ and $D$ into $\ddot x=N/D$ reveals the same factor $\frac{4}{3}mr^2$ in the numerator and
+        denominator. It is non-zero because $m>0$ and $r>0$, so cancelling it produces the uniform-pole cart equation:
+    </p>
+    <br/>
+    \begin{align}
+
+        \ddot x
+        &= \frac{
+            \frac{4}{3}mr^2\left(
+            f+mr\dot\theta^2\sin\theta+F_f
+            -\frac{3}{4}mg\sin\theta\cos\theta
+            +\cfrac{3M_f\cos\theta}{4r}\right)
+        }{
+            \frac{4}{3}mr^2\left(
+            m_{\mathrm{tot}}-\frac{3}{4}m\cos^2\theta\right)
+        } \\[6ex]
+
+        &= \frac{f+mr\dot\theta^2\sin\theta+F_f-\frac{3}{4}mg\sin\theta\cos\theta
+        +\cfrac{3M_f\cos\theta}{4r}}
+        {m_{\mathrm{tot}}-\frac{3}{4}m\cos^2\theta} \tag{45}
+
+    \end{align}
     <br/>
     <br/>
 
     <h3>4.3 Multiple Pole Equations for Uniform Poles</h3>
     <p>
-        We now apply the above substitutions to equations (42) and (43), to give the equations for multiple uniform poles (including friction terms).
+        For multiple uniform poles, apply the indexed inertia identity from section 4.1 to every pole. The three fractional occurrences in
+        equation (42) reduce to two distinct simplifications (with $m_i>0$ and $r_i>0$):
     </p>
+    <br/>
+    \begin{align}
 
-    <p>Equation (42) specialized for uniform poles:</p>
+        \frac{(m_i r_i)^2}{m_i r_i^2+J_i}
+        &= \frac{m_i^2r_i^2}{\frac{4}{3}m_i r_i^2}
+         = \frac{3}{4}m_i \\[3ex]
+
+        \frac{m_i r_iM_{f,i}}{m_i r_i^2+J_i}
+        &= \frac{m_i r_iM_{f,i}}{\frac{4}{3}m_i r_i^2}
+         = \frac{3M_{f,i}}{4r_i}
+
+    \end{align}
+    <br/>
+    <p>
+        The first simplified fraction occurs in both the gravity term and the denominator of (42); the second occurs in its pivot-friction
+        term. Substituting both results into (42) gives:
+    </p>
     <br/>
     $$ \ddot x = \frac{f - \frac{3}{4} g \sum_i\left(m_i\sin\theta_i\cos\theta_i\right) + \sum_i\left(m_i r_i \dot\theta_i^2\sin\theta_i\right) + \frac{3}{4} \sum_i \left( \cfrac{M_{f,i} \cos\theta_i}{r_i} \right) + F_f}{m_{\mathrm{tot}} - \frac{3}{4} \sum_i\left(m_i\cos^2\theta_i \right)} \tag{46} $$
     <br/>
 
-    <p>Equation (43) specialized for uniform poles:</p>
+    <p>
+        Finally, substitute the indexed inertia identity into (43), factor $m_i r_i$ from its numerator, and cancel the common factor:
+    </p>
     <br/>
-    $$ \ddot\theta_i = \frac{g\sin\theta_i - \ddot x\cos\theta_i - \cfrac{M_{f,i}}{m_i r_i}}{\frac{4}{3}r_i} \tag{47} $$
+    \begin{align}
+
+        \ddot\theta_i
+        &= \frac{m_i r_i(g\sin\theta_i-\ddot x\cos\theta_i)-M_{f,i}}
+        {\frac{4}{3}m_i r_i^2} \\[3ex]
+
+        &= \frac{m_i r_i\left(g\sin\theta_i-\ddot x\cos\theta_i
+        -\cfrac{M_{f,i}}{m_i r_i}\right)}
+        {m_i r_i\left(\frac{4}{3}r_i\right)} \\[3ex]
+
+        &= \frac{g\sin\theta_i-\ddot x\cos\theta_i-\cfrac{M_{f,i}}{m_i r_i}}
+        {\frac{4}{3}r_i} \tag{47}
+
+    \end{align}
     <br/>
 
     <br/>
@@ -2130,12 +2334,56 @@
         Coulomb coefficients. Their physical terms are represented below by the local signed quantities $F_f$ and $M_f$.
     </p>
     <p>
-        Applying the table mappings, substituting (Wieland force) and (Wieland mass) into (Wieland 9), and rearranging, gives:
+        Apply the table mappings first to Wieland's effective pole force. In particular, $l\mapsto r$,
+        $\mu_p\dot\theta\mapsto M_f$, and the signed source value $g\mapsto g_W$:
     </p>
     <br/>
     \begin{align}
 
-        \ddot x &= \frac{f + mr\dot\theta^2\sin\theta + F_f + \frac{3}{4}mg_W\sin\theta\cos\theta + \cfrac{3M_f\cos\theta}{4r}}{m_{\mathrm{tot}} - \frac{3}{4}m\cos^2\theta} \tag{E1} \\[6ex]
+        \tilde F
+        &= mr\dot\theta^2\sin\theta
+        +\frac{3}{4}m\cos\theta\left(\frac{M_f}{mr}+g_W\sin\theta\right) \\[3ex]
+
+        &= mr\dot\theta^2\sin\theta
+        +\frac{3M_f\cos\theta}{4r}
+        +\frac{3}{4}mg_W\sin\theta\cos\theta
+
+    \end{align}
+    <br/>
+    <p>
+        The effective pole mass uses only symbols that retain the same meaning under the mapping. Expanding it gives:
+    </p>
+    <br/>
+    \begin{align}
+
+        \tilde m
+        &=m\left(1-\frac{3}{4}\cos^2\theta\right) \\[3ex]
+
+        &=m-\frac{3}{4}m\cos^2\theta
+
+    \end{align}
+    <br/>
+    <p>
+        Now substitute both expanded expressions into (Wieland 9), together with $F\mapsto f$,
+        $-\mu_c\sgn(\dot x)\mapsto F_f$, and $M\mapsto m_c$. Combining $m_c+m$ as
+        $m_{\mathrm{tot}}$ then gives the local cart-acceleration equation:
+    </p>
+    <br/>
+    \begin{align}
+
+        \ddot x
+        &= \frac{
+            f+F_f+mr\dot\theta^2\sin\theta
+            +\cfrac{3M_f\cos\theta}{4r}
+            +\frac{3}{4}mg_W\sin\theta\cos\theta
+        }{
+            m_c+m-\frac{3}{4}m\cos^2\theta
+        } \\[6ex]
+
+        &= \frac{f+mr\dot\theta^2\sin\theta+F_f
+        +\frac{3}{4}mg_W\sin\theta\cos\theta
+        +\cfrac{3M_f\cos\theta}{4r}}
+        {m_{\mathrm{tot}}-\frac{3}{4}m\cos^2\theta} \tag{E1}
 
     \end{align}
     <br/>

@@ -3,7 +3,7 @@
 - Reviewed: 2026-07-13
 - Reviewed page: `public/research/cart-pole/cart-pole-equations.html`
 - Reviewed revision: `d07bb73` (`Refine cart-pole derivation and figure`)
-- Status: In progress; F1, F2, F3, F5, F11, and F14 resolved on 2026-07-13
+- Status: In progress; F1-F5, F11, and F14 resolved on 2026-07-13
 
 ## Review Goal
 
@@ -26,7 +26,7 @@ The broad structure is also sound:
 7. collect recommended simulation equations; and
 8. discuss numerical integration.
 
-The main remaining weakness is not the correctness of the final formulas, but the gap between the paper's intended audience and the mechanics knowledge or intermediate work it sometimes assumes. The early kinematic derivation is unusually explicit, but later sections frequently replace derivations with phrases such as “repeat the same derivation steps”, “apply the above substitutions”, or “rearranging”. The result is uneven: a reader is guided line by line through differentiation, then expected to supply several mechanics identities and substantial algebra later.
+The main remaining weakness is not the correctness of the final formulas, but the gap between the paper's intended audience and the mechanics knowledge it sometimes assumes. The initial review also found uneven algebraic detail: a reader was guided line by line through differentiation, then expected to supply substantial later substitutions. The F3 and F4 revisions have now expanded the friction, multiple-pole, uniform-pole, and Wieland transitions; the remaining findings concern physical assumptions, topology, implementation guidance, and smaller narrative or editorial issues.
 
 The initial review also found one formal derivation issue in section 3.6: the final acceleration equations were valid when the pole was horizontal, but both written elimination routes passed through intermediate equations that divided by `cos(theta)`. This was resolved on 2026-07-13 by retaining only the nonsingular cart-acceleration-first route in the main paper. The opposite elimination order is now derived once, in Appendix D, because Barto et al.'s source equation requires that form for direct comparison.
 
@@ -54,7 +54,7 @@ The primary-source transcriptions and quotations in Appendices C-E were not inde
 | F1 | P1 | Section 3.6 proves the final formulas through expressions that exclude `cos(theta)=0` | [x] Resolved 2026-07-13 |
 | F2 | P1 | The moment derivation omits the component cross-product rule and gravity-moment steps | [x] Resolved 2026-07-13 |
 | F3 | P1 | The friction-extended single-pole equations are stated rather than derived | [x] Resolved 2026-07-13 |
-| F4 | P1 | Later specialization and multiple-pole friction steps are substantially compressed | [ ] Open |
+| F4 | P1 | Later specialization and multiple-pole friction steps are substantially compressed | [x] Resolved 2026-07-13 |
 | F5 | P1 | The alternative solution route appears before the recommended route | [x] Resolved 2026-07-13 |
 | F6 | P1 | The multiple-pole topology, summation notation, and identical-length claim need clarification | [ ] Open |
 | F7 | P2 | The track and pivot reaction-force balances need explicit direction definitions | [ ] Open |
@@ -176,6 +176,8 @@ These are reasonable compressions in a conventional technical paper, but conflic
 4. expand Wieland's `F-tilde` and `m-tilde` once before collecting the E1 numerator and denominator.
 
 Equation (44) follows by substituting the uniform-pole inertia into the general relation; make the cancellation explicit rather than leaving it to “apply the above substitutions”.
+
+**Outcome (2026-07-13):** Resolved. Section 3.8 now inserts $F_f$ and $M_{f,i}$ into the governing balances, derives the indexed angular-acceleration relation, substitutes it into the cart balance, expands the outer minus sign, and collects the terms through (42)-(43). Section 4.1 expands $L=2r$ through $J=\frac{1}{3}mr^2$ and then derives the total pivot inertia. Section 4.2 works the numerator and denominator factorizations and common-factor cancellation through (44)-(45); section 4.3 displays the indexed fraction cancellations through (46)-(47). Appendix E expands Wieland's effective force and mass in mapped notation before substituting them into (Wieland 9) to obtain (E1). Symbolic equivalence checks passed, and a rendered-page review found no clipping or MathJax layout failures.
 
 ### F5 — Put the recommended route before the alternative route
 
@@ -381,7 +383,7 @@ Under this transformation, sine terms change sign while cosine terms do not. Eve
 Work in small passes so that mathematical and editorial changes remain reviewable:
 
 1. **Mechanics foundations:** F7 and F8.
-2. **Specialization and multiple poles:** F4 and F6.
+2. **Multiple-pole model description:** F6.
 3. **Implementation and numerical claims:** the remainder of F9 and F10.
 4. **Optional depth and notation:** F12, F13, and F16.
 5. **Editorial integrity:** F15.
