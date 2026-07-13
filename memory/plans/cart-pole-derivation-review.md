@@ -3,7 +3,7 @@
 - Reviewed: 2026-07-13
 - Reviewed page: `public/research/cart-pole/cart-pole-equations.html`
 - Reviewed revision: `d07bb73` (`Refine cart-pole derivation and figure`)
-- Status: In progress; F1-F5, F11, and F14 resolved on 2026-07-13
+- Status: In progress; F1-F6, F11, and F14 resolved on 2026-07-13
 
 ## Review Goal
 
@@ -41,6 +41,8 @@ The following checks passed:
 - Adding signed `F_f` and `M_f` to the balances reproduces the friction pair (34)-(35).
 - Substituting `J = (1/3)mr^2` reproduces the uniform-pole equations (44)-(47).
 - Substituting each pole equation into the combined cart balance reproduces (41)-(43); a two-pole symbolic residual check reduced exactly to zero.
+- Linearizing (47) for two dynamically identical equal-length poles and subtracting the two equations gives
+  `delta-double-dot = (3g/4r) delta`; the cart acceleration cancels, confirming the unstable uncontrollable difference mode and its synchronized zero-difference exception.
 - Substituting the adopted damping models reproduces the recommended equations (48)-(51).
 - The algebra in Appendices C-E is consistent with the source equations as transcribed and with the paper's stated notation mappings.
 - The explicit Euler update in section 6.3 uses one saved state and applies the new values simultaneously, as required.
@@ -56,7 +58,7 @@ The primary-source transcriptions and quotations in Appendices C-E were not inde
 | F3 | P1 | The friction-extended single-pole equations are stated rather than derived | [x] Resolved 2026-07-13 |
 | F4 | P1 | Later specialization and multiple-pole friction steps are substantially compressed | [x] Resolved 2026-07-13 |
 | F5 | P1 | The alternative solution route appears before the recommended route | [x] Resolved 2026-07-13 |
-| F6 | P1 | The multiple-pole topology, summation notation, and identical-length claim need clarification | [ ] Open |
+| F6 | P1 | The multiple-pole topology, index scope, and identical-length claim need clarification | [x] Resolved 2026-07-13 |
 | F7 | P2 | The track and pivot reaction-force balances need explicit direction definitions | [ ] Open |
 | F8 | P2 | The pivot-to-cart kinematic assumption is used without being written as an equation | [ ] Open |
 | F9 | P2 | The recommended equations need a self-contained evaluation recipe and denominator check | [~] Partly resolved 2026-07-13 |
@@ -191,24 +193,25 @@ This change would also let section 3.6 introduce the nonsingular moment-relation
 
 **Outcome (2026-07-13):** Resolved. Section 3.6 now contains only the recommended cart-acceleration-first route. The prose mentions that the simultaneous equations can be eliminated in the opposite order but sends the reader to Appendix D, where that form is required for the Barto comparison.
 
-### F6 — Define the multiple-pole model and teach the summation notation
+### F6 — Define the multiple-pole model and qualify the identical-length claim
 
 **Location:** Section 3.8.
 
 The equations assume `N` independent poles, each attached by its own pivot to the same cart. They are not the equations for a serial double pendulum or for poles connected to one another. The prose says only that another pendulum is “attached to the cart”, leaving the topology implicit.
 
-The section also introduces `sum_i`, pole indices, and a tilded force without explaining:
+The section also introduces pole indices without stating:
 
 - that `i` runs from 1 through `N`;
-- that a summation means add one copy of the enclosed term for each pole;
-- what the expression looks like for two poles; and
 - why all poles share the same cart acceleration but have separate angles and pivot moments.
 
-For the intended audience, a two-term expansion such as `sum_i m_i = m_1 + m_2` is essential.
+The intended reader can be assumed to understand the summation operator. A summation primer or a two-term expansion such as
+`sum_i m_i = m_1 + m_2` is therefore unnecessary; the paper only needs to define the index range used by its shorthand notation.
 
 The claim that the two-pole task becomes “impossible” when the poles have identical lengths is also too absolute. With identical pole dynamics, the difference mode is uncontrollable and unstable, so arbitrary independent deviations cannot be stabilized by the one cart input. However, perfectly identical initial states remain on a symmetric trajectory and do not establish impossibility in every state. The intended controllability claim should be stated with that qualification, or omitted if it is not needed for the derivation.
 
-**Recommended change:** Add a short physical description or sketch, a summation primer with a two-pole example, explicit index bounds, and a qualified controllability statement.
+**Recommended change:** Add a short physical description of the unjointed topology, state the index bounds, explain the shared cart coordinate and separate pole states, and qualify the controllability statement. Do not add a summation primer or two-pole expansion.
+
+**Outcome (2026-07-13; figure added 2026-07-14):** Resolved. Section 3.8 now defines $N$ separate, unjointed poles attached directly to the same cart rather than to one another. It explains that each pivot coordinate is $x$ plus a fixed offset, so every pivot has acceleration $\ddot x$, while each pole has its own indexed state and parameters. Figure 2 shows the two-pole topology without repeating Figure 1's forces and coordinate frames. The section defines $i=1,\ldots,N$ with $\sum_i$ as shorthand for $\sum_{i=1}^{N}$; no summation tutorial or expanded two-pole example was added. The opening states the actual controllability limitation: dynamically identical equal-length poles have an uncontrollable near-upright difference mode, but identical angular states form a symmetric exception. This agrees with Wieland's qualified equal-length result on p.98 rather than claiming that every equal-length trajectory is impossible. Symbolic subtraction of the two linearized pole equations confirmed that $\ddot x$ cancels from the difference equation. The new SVG and its placement rendered without layout problems; the former numerical Figures 2 and 3 were renumbered Figures 3 and 4.
 
 ### F7 — Define reaction-force directions before using them
 
@@ -383,11 +386,10 @@ Under this transformation, sine terms change sign while cosine terms do not. Eve
 Work in small passes so that mathematical and editorial changes remain reviewable:
 
 1. **Mechanics foundations:** F7 and F8.
-2. **Multiple-pole model description:** F6.
-3. **Implementation and numerical claims:** the remainder of F9 and F10.
-4. **Optional depth and notation:** F12, F13, and F16.
-5. **Editorial integrity:** F15.
-6. **Dedicated coordinate-convention decision:** F17, when a full rederivation and artefact-regeneration pass is desired.
+2. **Implementation and numerical claims:** the remainder of F9 and F10.
+3. **Optional depth and notation:** F12, F13, and F16.
+4. **Editorial integrity:** F15.
+5. **Dedicated coordinate-convention decision:** F17, when a full rederivation and artefact-regeneration pass is desired.
 
 For each pass:
 

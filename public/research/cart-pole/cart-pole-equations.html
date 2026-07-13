@@ -1005,10 +1005,31 @@
 
     <h3>3.8 Multiple Poles</h3>
     <p>
-        The task of balancing the inverted pendulum can be made more difficult by attaching a second pendulum to the cart. This new two-pole
-        task becomes increasingly difficult as the two pole lengths approach the same length, becoming impossible when they have identical 
-        lengths. Extending the task to three or more poles provides a further option for increasing task difficulty in a different way. Here 
-        we derive the equations of motion for $N$ poles.
+        The task of balancing an inverted pole can be made more difficult by attaching additional poles to the cart. Here the multiple-pole
+        model consists of $N$ separate, unjointed poles. Each pole is attached directly to the same cart by its own pivot; the poles are not
+        connected to one another as they would be in a serial double pendulum. Each pivot's horizontal coordinate is the cart coordinate $x$
+        plus a fixed offset, so all pivots have the cart acceleration $\ddot x$. Pole $i$ has its own angle, angular motion, mass,
+        centre-of-mass distance, body inertia, and pivot friction moment. Figure 2 shows the two-pole instance of this topology.
+    </p>
+
+    <figure>
+        <br/>
+        <img src="cart-multiple-pole-model.svg" alt="Topology schematic of two separate poles attached directly to the same cart by pivots P1 and P2. The poles have separate angles theta1 and theta2 and centres of mass G1 and G2, and are not joined to each other." />
+        <br/>
+        <figcaption><b>Figure 2.</b><br/>Two-pole instance of the general $N$-pole model. Both pivots move with the same cart, but the poles are not joined to one another. Each line $P_iG_i$ locates a pole's centre of mass and need not show its full physical length.</figcaption>
+    </figure>
+    <br/>
+
+    <p>
+        The two-pole task generally becomes more difficult as the pole lengths approach one another, because the poles respond on increasingly
+        similar timescales. For two dynamically identical equal-length poles, the near-upright difference between their angular states cannot
+        be controlled through the cart motion [5]. There is a symmetric exception: if both poles have the same angle and angular velocity,
+        they remain synchronized, so the cart only has to control their shared motion. Thus the equal-length system cannot in general be
+        stabilized from arbitrary independent pole states; it is not impossible for every initial state. Three or more poles provide
+        further ways to increase the task's difficulty. Here we derive the equations of motion for the general $N$-pole model.
+    </p>
+    <p>
+        Throughout this section, $i=1,\ldots,N$ identifies a pole, and $\sum_i$ is shorthand for $\sum_{i=1}^{N}$.
     </p>
     <p>
         We first return to the frictionless balances used in sections 3.4-3.6; friction terms are added again after the frictionless
@@ -1634,12 +1655,12 @@
         <br/>
         <img src="eulers-method.png" alt="Plot comparing cart and pole trajectories produced by Euler integration at several timestep sizes over 15 seconds."/>
         <br/>
-        <figcaption><b>Figure 2.</b><br/>Cart-pole Simulations in which Euler's method is applied with three different timestep durations.</figcaption>
+        <figcaption><b>Figure 3.</b><br/>Cart-pole Simulations in which Euler's method is applied with three different timestep durations.</figcaption>
     </figure>
     <br/>
 
     <p>
-        Figure 2 shows the pole-angle trajectories produced by Euler's method at timestep sizes of 0.001, 0.005, and 0.01 seconds. The
+        Figure 3 shows the pole-angle trajectories produced by Euler's method at timestep sizes of 0.001, 0.005, and 0.01 seconds. The
         trajectories diverge substantially within the 15-second simulation. For the two larger timesteps, the maximum pole angle increases
         on successive swings, indicating that the numerical method is adding energy to the simulated system.
     </p>
@@ -1659,18 +1680,18 @@
         relative to the chosen comparison tolerance. This test assesses numerical convergence; it does not by itself establish how faithfully
         the equations represent a physical cart-pole system.
     </p>
-    <p>Figure 3 compares Euler's method and RK4 for the 1/1000th of a second timestep size:</p>
+    <p>Figure 4 compares Euler's method and RK4 for the 1/1000th of a second timestep size:</p>
     <br/>
     <figure>
         <br/>
         <img src="euler-vs-RK4.png" alt="Plot comparing pole-angle trajectories produced by Euler and fourth-order Runge-Kutta integration at several timestep sizes over 15 seconds."/>
         <br/>
-        <figcaption><b>Figure 3.</b><br/>Euler's method vs. fourth-order Runge-Kutta (RK4); timestep size 0.001 seconds.</figcaption>
+        <figcaption><b>Figure 4.</b><br/>Euler's method vs. fourth-order Runge-Kutta (RK4); timestep size 0.001 seconds.</figcaption>
     </figure>
     <br/>    
 
     <p>
-        Figure 3 shows that the Euler trajectory deviates by a modest but visible amount from the RK4 trajectory, even though both use a
+        Figure 4 shows that the Euler trajectory deviates by a modest but visible amount from the RK4 trajectory, even though both use a
         timestep of 0.001 seconds. Because the RK4 trajectories at timestep sizes 0.001, 0.005, and 0.01 seconds agree closely, we use the
         RK4 trajectory as a numerically converged reference for this comparison. It is not assumed to be an exact solution, but its remaining
         numerical error is small relative to the difference shown here. In both trajectories, the maximum pole angle decreases on each
