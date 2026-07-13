@@ -14,7 +14,8 @@ This repository maintains the static website for SharpNEAT, a C#/.NET implementa
 - Research content is under `public/research/`, with top-level research pages plus subfolders for activation function review, cart-pole, efficacy sampling, integer neural net, and PTSP material.
 - Generated or supporting research/release data includes CSV files and R scripts alongside the relevant HTML pages.
 - The completed cart-pole article revision and its maintenance guidance are summarized in `memory/cart-pole-equations.md`. The canonical article is `public/research/cart-pole/cart-pole-equations.html`; mathematical, notation, Appendix A-E, prose, Figure 1, C# alignment, and numerical-artifact passes are complete.
-- The eight-pass pedagogical simplification in `memory/plans/cart-pole-pedagogical-simplification.md` is complete. It improved hierarchy and pacing while retaining the basic-algebra audience and detailed derivations; the remaining checkpoint is to review and commit passes 4-8 and the unified `m_{\mathrm{tot}}` notation change.
+- The eight-pass pedagogical simplification in `memory/plans/cart-pole-pedagogical-simplification.md` is complete. It improved hierarchy and pacing while retaining the basic-algebra audience and detailed derivations; that plan is retained as the historical record of the completed passes.
+- A fresh review at revision `d07bb73` is recorded in `memory/plans/cart-pole-derivation-review.md`. It found no incorrect final equation and opened prioritized pedagogical work. On 2026-07-13, F1, F3, F5, and F14 were resolved: the main paper now has one nonsingular cart-acceleration-first route, the friction form is derived in full, Appendix C follows the main route, the alternative elimination is derived only in Appendix D for the Barto comparison, and main equations are numbered continuously (1)-(51). F9 is partly resolved; missing moment-mechanics steps, specialization/multiple-pole exposition, and smaller narrative/editorial findings remain open. The intended reader may be assumed to understand basic calculus and trigonometry.
 
 ## How To Resume
 
@@ -23,5 +24,6 @@ This repository maintains the static website for SharpNEAT, a C#/.NET implementa
 3. Check `git status --short` before editing. In this shell, many tracked website files may appear modified because their index line endings are LF while the working tree uses CRLF; confirm with `git diff --ignore-space-at-eol` before treating them as content changes.
 4. Read only the website files relevant to the task.
 5. For cart-pole work, read `memory/cart-pole-equations.md`, relevant decisions/sources, and then the canonical article.
-6. Update memory when reusable context, decisions, constraints, or source evidence are discovered.
+6. For the next cart-pole revision passes, read `memory/plans/cart-pole-derivation-review.md` and work through its findings in the suggested order.
+7. Update memory when reusable context, decisions, constraints, or source evidence are discovered.
 

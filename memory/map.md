@@ -15,6 +15,7 @@ Focused topic notes:
 Working areas:
 
 - `plans/`: active plans, handovers, and task checklists worth preserving.
+- `plans/cart-pole-derivation-review.md`: prioritized correctness, structure, flow, and basic-algebra accessibility findings for the canonical cart-pole paper; use this as the active checklist for the next revision passes.
 - `plans/cart-pole-pedagogical-simplification.md`: ordered, one-pass-at-a-time plan for improving the derivation's pacing while preserving its basic-algebra audience.
 - `tmp/`: disposable session notes and drafts that are not durable project memory.
 

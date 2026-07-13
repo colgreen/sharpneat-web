@@ -1,19 +1,21 @@
 # Cart-Pole Equations Article
 
-Last updated: 2026-07-12
+Last updated: 2026-07-13
 
 ## Current Status
 
 - Canonical article: `public/research/cart-pole/cart-pole-equations.html`.
 - The completed revision was promoted to the canonical filename on 2026-07-12; no separate staging HTML remains.
-- Mathematical, notation, source-comparison, prose, Figure 1, and numerical-artifact reviews are complete.
+- The mathematical, notation, source-comparison, prose, Figure 1, and numerical-artifact review passes recorded below were completed on 2026-07-12.
+- A derivation and pedagogy review at revision `d07bb73` is recorded in `plans/cart-pole-derivation-review.md`. It found no incorrect final equation and opened prioritized work required to fully meet the intended audience goal. The reader may be assumed to understand basic calculus and trigonometry. Findings F1, F3, F5, and F14 were resolved on 2026-07-13; F9 is partly resolved and the remaining findings stay open.
+- Section 3.6 now uses one cart-acceleration-first route: derive (19), substitute it directly into the horizontal balance, and derive (20), without dividing by `cos(theta)`. Section 3.7.3 repeats that nonsingular pattern step by step for friction in (34)-(35). The unused alternative main-paper formulas were removed, all main equation tags were renumbered continuously from (1) through (51), and the recommended evaluation order is stated after both final equation pairs.
 - Supporting C# repository: `/mnt/d/home/projects/code/cartpole-physics/main`.
 - The corrected C# solution builds with zero warnings and errors, and its analysis results match the article.
 - The article now uses MathJax 4's TeX/CommonHTML component from jsDelivr; the migrated rendering has been visually verified.
-- A fresh independent step-by-step derivation review on 2026-07-12 found no substantive mathematical errors. The review started from the stated coordinate/sign conventions, reconstructed the mass-matrix equations, and symbolically verified the explicit single-pole, friction, uniform-pole, and multiple-pole forms. Equations (20) and (22) remain intentionally nonpreferred because their algebra divides by `cos(theta)`; the paper already states this limitation.
+- A fresh independent step-by-step derivation review on 2026-07-12 found no substantive mathematical errors. The review started from the stated coordinate/sign conventions, reconstructed the mass-matrix equations, and symbolically verified the explicit single-pole, friction, uniform-pole, and multiple-pole forms. Its proof-domain concern about the former `cos(theta)` divisions was subsequently resolved by the 2026-07-13 rewrite.
 - Pedagogical simplification pass 1 was completed on 2026-07-12: four displayed factoring steps with empty right-hand sides were completed so that no equality looks truncated. The equations and numbering are unchanged.
 - Pedagogical simplification pass 2 was completed on 2026-07-12: repeated inertia explanations in sections 3.5, 3.6, and the opening of section 4 were consolidated. The complete first explanation, indexed multiple-pole definition, uniform-pole calculation, conclusion, and source-specific appendix evidence were retained.
-- Pedagogical simplification pass 3 was completed on 2026-07-12: section 3.6 now identifies equations (24) then (23) as the recommended cart-acceleration-first route, retains equations (21) then (19) as an alternative, and clearly limits equations (20) and (22) to intermediate algebra because they divide by `cos(theta)`. No equations were moved or renumbered.
+- Pedagogical simplification pass 3 was completed on 2026-07-12 by distinguishing the recommended and alternative routes. That presentation was superseded on 2026-07-13: the main paper now retains only the nonsingular cart-acceleration-first route.
 - Pedagogical simplification pass 4 was completed on 2026-07-12: adjacent explanatory prose in sections 3.1 and 3.5 was consolidated while retaining every differentiation step, the centripetal/tangential explanation, cross-product order and right-hand-rule guidance, and the physical limiting-case and sign checks.
 - Pedagogical simplification pass 5 was completed on 2026-07-12: section 3.7 now separates detailed Coulomb models, optional simplifications, adopted linear damping, and optional combined models. The wheel-bearing interpretation was moved alongside cart linear damping and relabelled from (29-R) to (34-R); the generic friction equations now point explicitly to the adopted substitutions in section 5. All friction equations and physical definitions were retained.
 - Pedagogical simplification pass 6 was completed on 2026-07-12: the derivation of the multiple-pole equation (47) retains substitution, expansion, combined-mass definition, factoring, and division, but replaces one very long unfactored intermediate equality with a direct plain-language instruction. Equations (42)-(49) and their numbering are unchanged.
@@ -76,9 +78,9 @@ Last updated: 2026-07-12
 ### Appendices and Prose
 
 - Rewrote Appendix A's d'Alembert explanation and Appendix B's torque/sign-convention explanation to match the main derivation.
-- Appendix C now retains Cannon-labelled source notation, maps it explicitly to local notation, and confirms Cannon's `J=ml^2/3` is centre-of-mass body inertia.
-- Appendix D labels Barto's unnumbered equations `(Barto pole)` and `(Barto cart)`, combines source values with mappings, and reserves (D1)-(D2) for local derivations. It now presents broad structural agreement, isolates the listed gravity sign as the apparent discrepancy, and treats inertia/friction primarily as interpretation.
-- Appendix E labels source displays `(Wieland 9)`, `(Wieland 10)`, `(Wieland force)`, and `(Wieland mass)`, combines values with mappings, and reserves (E1)-(E2) for local derivations.
+- Appendix C now retains Cannon-labelled source notation, maps it explicitly to local notation, confirms Cannon's `J=ml^2/3` is centre-of-mass body inertia, and follows the same cart-acceleration-first route as the main paper in (C3)-(C4).
+- Appendix D labels Barto's unnumbered equations `(Barto pole)` and `(Barto cart)`, combines source values with mappings, and reserves (D1)-(D2) for local derivations. It is the one appendix that derives the opposite, angular-acceleration-first elimination because that form is required to compare directly with Barto's source pole equation. It presents broad structural agreement, isolates the listed gravity sign as the apparent discrepancy, and treats inertia/friction primarily as interpretation.
+- Appendix E labels source displays `(Wieland 9)`, `(Wieland 10)`, `(Wieland force)`, and `(Wieland mass)`, combines values with mappings, and reserves (E1)-(E2) for local derivations. Its local comparison remains aligned with the cart-first form.
 - Source `mu_c` and `mu_p` are retained only in source contexts; mapped equations use local signed `F_f` and `M_f`.
 - Reframed the introduction and conclusion around the corrected derivation and evidence-supported source comparison rather than presumed source errors.
 - Corrected and strengthened the Barto, Cannon, Lundberg/Barton, Michie/Chambers, and Wieland references.
@@ -93,6 +95,7 @@ Last updated: 2026-07-12
 - Keep `r` general; `r=L/2` applies only to a uniform pole.
 - Keep vector/scalar typography and uppercase point subscripts consistent.
 - Keep multiple-pole pivot damping indexed as `b_{p,i}`.
+- Keep the nonsingular cart-acceleration-first route as the main instructional path. Derive the opposite elimination only where a source comparison requires it, currently Appendix D.
 
 ## Numerical Reproduction
 

@@ -546,99 +546,14 @@
         complete set of equations for the cart-pole model.
     </p>
     <p>
-        There are two useful ways to solve these simultaneous equations. We derive both below. The recommended evaluation route is to
-        calculate $\ddot x$ with equation (24), then substitute that result into equation (23) to calculate $\ddot\theta$. The alternative
-        route calculates $\ddot\theta$ with equation (21), then substitutes that result into equation (19) to calculate $\ddot x$.
+        We will arrange the equations so that $\ddot x$ is evaluated first and its value is then substituted into an equation for
+        $\ddot\theta$. This order is used throughout the remainder of the paper and extends naturally to a cart with multiple poles,
+        because every pole shares the same cart acceleration.
     </p>
 
-    <h4>Angular Acceleration First (Alternative Route)</h4>
+    <h4>Cart Acceleration First</h4>
     <p>
-        Rearranging (12) to give $\ddot x$:
-    </p>
-
-    \begin{align}
-
-        m_c \ddot x +m \left[ r \ddot\theta \cos\theta - r \dot\theta^2 \sin\theta + \ddot x \right] &= f \\[3ex]
-
-        m_c \ddot x + mr \ddot\theta \cos\theta - mr \dot\theta^2 \sin\theta + m \ddot x &= f \\[3ex]
-
-        m_c \ddot x + m \ddot x &= f - mr \ddot\theta \cos\theta + mr \dot\theta^2 \sin\theta  \\[3ex]
-
-        (m_c  + m) \ddot x &= f - mr \ddot\theta \cos\theta + mr \dot\theta^2 \sin\theta \\[3ex]
-
-        \ddot x &= \frac{f - mr \ddot\theta \cos\theta + mr \dot\theta^2 \sin\theta}{m_c  + m} \tag{19} \\[3ex]
-
-    \end{align}
-    <br/>
-    <p>
-        For this derivation, rearrange (18) to give a second expression for $\ddot x$. Equation (20) is an intermediate algebraic
-        expression; because it divides by $\cos\theta$, it is not used as a general simulation equation.
-    </p>
-    \begin{align}
-
-        mr ( r\ddot\theta + \ddot x \cos\theta ) -mgr\, \sin\theta + J \ddot\theta &= 0 \\[3ex]
-
-        mr^2\ddot\theta + mr \ddot x \cos\theta -mgr\, \sin\theta + J \ddot\theta &= 0 \\[3ex]
-
-        mr \ddot x \cos\theta &= mgr\, \sin\theta - mr^2\ddot\theta - J \ddot\theta \\[3ex]
-
-        \ddot x &= \frac{mgr\sin\theta - (mr^2 + J)\ddot\theta}{mr\cos\theta} \tag{20}
-
-    \end{align}
-    <br/>
-    <br/>
-    <p>
-        Equating the right hand sides of (19) and (20), and rearranging to give $\ddot\theta$:
-    </p>
-    <br/>
-    \begin{align}
-
-        \frac{f - mr \ddot\theta \cos\theta + mr \dot\theta^2 \sin\theta}{m_c  + m} &= \frac{mgr\sin\theta - (mr^2 + J)\ddot\theta}{mr\cos\theta} \\[3ex]
-
-        m_{\mathrm{tot}} &= m_c + m \\[3ex]
-
-        (mr\cos\theta)(f + mr\dot\theta^2\sin\theta) - (mr\cos\theta)^2 \ddot\theta &= m_{\mathrm{tot}} m g r\sin\theta - m_{\mathrm{tot}}(mr^2 + J)\ddot\theta \\[3ex]
-
-        m_{\mathrm{tot}}(mr^2 + J)\ddot\theta - (mr\cos\theta)^2 \ddot\theta &= m_{\mathrm{tot}} m g r\sin\theta - (mr\cos\theta)(f + mr\dot\theta^2\sin\theta) \\[3ex]
-
-        \left[m_{\mathrm{tot}}(mr^2 + J) -(mr\cos\theta)^2 \right] \ddot\theta &= m_{\mathrm{tot}} m g r\sin\theta - (mr\cos\theta)(f + mr\dot\theta^2\sin\theta) \\[3ex]
-
-        \ddot\theta &= \frac{m_{\mathrm{tot}} m g r\sin\theta - (mr\cos\theta)(f + mr\dot\theta^2\sin\theta)}{m_{\mathrm{tot}}(mr^2 + J) -(mr\cos\theta)^2} \tag{21}
-
-    \end{align}        
-    <br/>
-
-    <p>
-        This gives the alternative evaluation route: use equation (21) to obtain $\ddot\theta$, then substitute the result into equation
-        (19) to obtain $\ddot x$.
-    </p>
-
-    <h4>Cart Acceleration First (Recommended Route)</h4>
-    <p>
-        We now arrange (12) and (18) so that $\ddot x$ is evaluated first and its value is then substituted into an equation for
-        $\ddot\theta$.
-    </p>
-    <p>
-        First, rearrange (12) to give an intermediate expression for $\ddot\theta$. Equation (22) divides by $\cos\theta$, so it is used
-        only in the derivation of equation (24), not as the final equation for calculating $\ddot\theta$:
-    </p>
-
-    \begin{align}
-
-        m_c \ddot x +m \left[ r \ddot\theta \cos\theta - r \dot\theta^2 \sin\theta + \ddot x \right] &= f \\[3ex]
-
-        m_c \ddot x + mr \ddot\theta \cos\theta - mr \dot\theta^2 \sin\theta + m \ddot x &= f \\[3ex]
-
-        mr \ddot\theta \cos\theta &= f + mr \dot\theta^2 \sin\theta - m \ddot x - m_c \ddot x \\[3ex]
-
-        \ddot\theta &= \frac{f + mr \dot\theta^2 \sin\theta - m \ddot x - m_c \ddot x}{mr\cos\theta} \\[3ex]
-
-        \ddot\theta &= \frac{f + mr \dot\theta^2 \sin\theta - m_{\mathrm{tot}} \ddot x}{mr\cos\theta} \tag{22}
-
-    \end{align}
-    <br/>
-    <p>
-        Rearranging (18) to give $\ddot \theta$:
+        First, rearrange the moment balance (18) to give $\ddot\theta$ in terms of $\ddot x$:
     </p>
 
     \begin{align}
@@ -651,41 +566,60 @@
 
         (mr^2 + J)\ddot\theta &= mr (g \sin\theta - \ddot x \cos\theta) \\[3ex]
 
-        \ddot\theta &= \frac{mr (g \sin\theta - \ddot x \cos\theta)}{mr^2 + J} \tag{23}
+        \ddot\theta &= \frac{mr (g \sin\theta - \ddot x \cos\theta)}{mr^2 + J} \tag{19}
 
     \end{align}
     <br/>
 
     <p>
-        Equating the right hand sides of (22) and (23), and rearranging to give $\ddot x$:
+        We now substitute (19) directly into the horizontal balance (12). This avoids dividing by $\cos\theta$, so the derivation remains
+        valid when the pole is horizontal. First expand (12), collect the two cart-mass terms using
+        $m_{\mathrm{tot}}=m_c+m$, and move the angular-velocity term to the right:
     </p>
     <br/>
     \begin{align}
 
-        \frac{f + mr \dot\theta^2 \sin\theta - m_{\mathrm{tot}} \ddot x}{mr\cos\theta} &= \frac{mr (g \sin\theta - \ddot x \cos\theta)}{mr^2 + J} \\[3ex]
+        m_c \ddot x +m \left[ r \ddot\theta \cos\theta - r \dot\theta^2 \sin\theta + \ddot x \right] &= f \\[3ex]
 
-        (mr^2 + J)(f + mr \dot\theta^2 \sin\theta - m_{\mathrm{tot}} \ddot x) &= (mr\cos\theta)(mgr\sin\theta - mr \ddot x \cos\theta) \\[3ex]
+        m_c\ddot x + m\ddot x + mr\ddot\theta\cos\theta - mr\dot\theta^2\sin\theta &= f \\[3ex]
 
-        (mr^2 + J)(f + mr \dot\theta^2 \sin\theta) - (mr^2 + J) m_{\mathrm{tot}} \ddot x &= (mr)^2 g \sin\theta \cos\theta - (mr\cos\theta)^2 \ddot x \\[3ex]
+        m_{\mathrm{tot}}\ddot x + mr\ddot\theta\cos\theta &= f + mr\dot\theta^2\sin\theta
+
+    \end{align}
+    <br/>
+    <p>
+        Substitute the right-hand side of (19) for $\ddot\theta$, multiply both sides by $mr^2+J$, and collect the terms containing
+        $\ddot x$:
+    </p>
+    <br/>
+    \begin{align}
+
+        m_{\mathrm{tot}}\ddot x + mr\cos\theta
+        \left[\frac{mr(g\sin\theta-\ddot x\cos\theta)}{mr^2+J}\right]
+        &= f + mr\dot\theta^2\sin\theta \\[3ex]
+
+        (mr^2+J)m_{\mathrm{tot}}\ddot x
+        +(mr)^2\cos\theta(g\sin\theta-\ddot x\cos\theta)
+        &= (mr^2+J)(f+mr\dot\theta^2\sin\theta) \\[3ex]
+
+        (mr^2+J)m_{\mathrm{tot}}\ddot x
+        +(mr)^2g\sin\theta\cos\theta
+        -(mr\cos\theta)^2\ddot x
+        &= (mr^2+J)(f+mr\dot\theta^2\sin\theta) \\[3ex]
 
         (mr^2 + J)m_{\mathrm{tot}}\ddot x - (mr\cos\theta)^2 \ddot x &= (mr^2 + J)(f + mr\dot\theta^2\sin\theta) - (mr)^2 g \sin\theta\cos\theta \\[3ex]
 
         \left[(mr^2 + J)m_{\mathrm{tot}} - (mr\cos\theta)^2\right] \ddot x &= (mr^2 + J)(f + mr\dot\theta^2\sin\theta) - (mr)^2 g \sin\theta\cos\theta \\[3ex]
 
-        \ddot x &= \frac{(mr^2+J)(f + mr\dot\theta^2\sin\theta) - (mr)^2g\sin\theta\cos\theta}{(mr^2+J)m_{\mathrm{tot}} - (mr\cos\theta)^2} \tag{24} \\[3ex]
+        \ddot x &= \frac{(mr^2+J)(f + mr\dot\theta^2\sin\theta) - (mr)^2g\sin\theta\cos\theta}{(mr^2+J)m_{\mathrm{tot}} - (mr\cos\theta)^2} \tag{20} \\[3ex]
 
     \end{align}
     <br/>
-    <blockquote style="background-color:eeeeee; padding: 14px">
-        <p>
-            Equations (20) and (22) are undefined when $\cos\theta=0$, i.e. when the pole is horizontal. They are retained to show the
-            algebraic elimination steps, but should not be used to evaluate the accelerations. Equations (19) and (23) provide the
-            corresponding nonsingular expressions.
-        </p>
-    </blockquote>
     <p>
-        Equations (19), (21), (23), and (24) leave $J$ unspecified so that different mass distributions can be modelled. Section 4
-        supplies the value for a uniform pole.
+        Equations (19) and (20) leave $J$ unspecified so that different mass distributions can be modelled. Section 4 supplies the value
+        for a uniform pole. The simultaneous equations can also be eliminated in the opposite order to obtain a closed expression for
+        $\ddot\theta$. That algebraically equivalent route is not developed here because the cart-acceleration-first sequence is used
+        throughout the remainder of the paper; Appendix D derives the alternative form where it is needed for direct comparison with Barto et al.
     </p>
 
     <blockquote style="background-color:eeeeee; padding: 14px">
@@ -694,17 +628,13 @@
         </p>
         <ol>
             <li>
-                Evaluate equation (24) to obtain $\ddot x$.
+                Evaluate equation (20) to obtain $\ddot x$.
             </li>
             <br/>
             <li>
-                Substitute that value into equation (23) to obtain $\ddot\theta$.
+                Substitute that value into equation (19) to obtain $\ddot\theta$.
             </li>
         </ol>
-        <p>
-            Alternatively, equation (21) can be evaluated first and its result substituted into equation (19). Equations (21) and (24)
-            can also be evaluated independently, but doing so repeats some of the same intermediate calculations.
-        </p>
     </blockquote>
     <br/>
 
@@ -724,7 +654,7 @@
     </p>
     <p>
         Sections 3.7.1 and 3.7.2 first derive Coulomb-friction models, then consider simpler alternatives. The linear damping models in
-        equations (34) and (40) are the models adopted for the recommended equations in section 5; the other models remain available when
+        equations (26) and (32) are the models adopted for the recommended equations in section 5; the other models remain available when
         their different physical assumptions are appropriate.
     </p>
     <p>
@@ -753,7 +683,7 @@
         Cart-track sliding friction as defined by Coulomb's law is given by:
     </p>
     <br/>
-    $$ F_f = -\mu_c N_c \sgn(\dot x) \tag{29}$$
+    $$ F_f = -\mu_c N_c \sgn(\dot x) \tag{21}$$
     <br/>
     <p>
         Here $N_c$ is the upward normal reaction exerted by the track on the cart, and $\mu_c$ is the dimensionless coefficient of friction
@@ -763,7 +693,7 @@
     <br/>
     <blockquote style="background-color:eeeeee; padding: 14px">
         <p>
-            Equation (29) assumes that the cart remains in contact with the track. If the pole's motion produces enough upward force to reduce
+            Equation (21) assumes that the cart remains in contact with the track. If the pole's motion produces enough upward force to reduce
             $N_c$ to zero, the cart loses contact with the track and this contact-friction model ceases to apply. A negative value of $N_c$ is
             therefore outside the model's valid domain.
         </p>
@@ -780,7 +710,7 @@
 
         N_c &= mg + m_c g - (\mathbf{F}^i_G)_y \\[3ex]
 
-        N_c &= m_{\mathrm{tot}} g - mr \left[ \ddot\theta \sin\theta + \dot\theta^2 \cos\theta \right] \tag{30} \\[3ex]
+        N_c &= m_{\mathrm{tot}} g - mr \left[ \ddot\theta \sin\theta + \dot\theta^2 \cos\theta \right] \tag{22} \\[3ex]
 
     \end{align}
     <br/>
@@ -788,20 +718,20 @@
     <blockquote style="background-color:eeeeee; padding: 14px">
         <p>
             When the pole is upright, the $\dot\theta^2$ term represents the pole mass pulling upward on the cart as it moves around the pivot.
-            This reduces the upward reaction required from the track, as indicated by its negative sign in equation (30).
+            This reduces the upward reaction required from the track, as indicated by its negative sign in equation (22).
         </p>
     </blockquote>
     <br/>
     <p>
-        Substituting (30) into (29):
+        Substituting (22) into (21):
     </p>
     <br/>
 
-    $$ F_f = -\mu_c \left[m_{\mathrm{tot}} g - mr \left( \ddot\theta \sin\theta + \dot\theta^2 \cos\theta \right)\right] \sgn(\dot x) \tag{31} $$
+    $$ F_f = -\mu_c \left[m_{\mathrm{tot}} g - mr \left( \ddot\theta \sin\theta + \dot\theta^2 \cos\theta \right)\right] \sgn(\dot x) \tag{23} $$
     <br/>
     <p>
-        Equation (31) applies only while its bracketed normal reaction is nonnegative. It is also inconvenient for direct simulation because
-        it contains $\ddot\theta$, one of the unknown accelerations being calculated. Substituting (31) into the equations of motion makes
+        Equation (23) applies only while its bracketed normal reaction is nonnegative. It is also inconvenient for direct simulation because
+        it contains $\ddot\theta$, one of the unknown accelerations being calculated. Substituting (23) into the equations of motion makes
         $F_f$ and $\ddot\theta$ mutually dependent, so they must be solved together rather than evaluated in a simple sequence. The following
         approximations avoid this additional simultaneous coupling.
     </p>
@@ -810,10 +740,10 @@
     <p>
         Alternatively, if the pole mass is small relative to the cart mass and the pole's angular velocity and acceleration remain moderate,
         the motion-dependent part of the normal reaction will be small compared with the combined weight $m_{\mathrm{tot}}g$. We can then approximate
-        (31) by omitting that motion-dependent term:
+        (23) by omitting that motion-dependent term:
     </p>
     <br/>
-    $$ F_f = -\mu_c m_{\mathrm{tot}} g \sgn(\dot x) \tag{32} $$
+    $$ F_f = -\mu_c m_{\mathrm{tot}} g \sgn(\dot x) \tag{24} $$
     <br/>
     <p>
         Noting that if the pendulum is being successfully balanced, its angle will tend to vary only slightly and with moderate angular 
@@ -822,7 +752,7 @@
         is based on the weight of the cart only, not including the pole.
     </p>
     <br/>
-    $$ F_f = -\mu_c m_c g \sgn(\dot x) \tag{33} $$
+    $$ F_f = -\mu_c m_c g \sgn(\dot x) \tag{25} $$
 
     <br/>
     <p>
@@ -845,7 +775,7 @@
         force that is proportional to velocity is a more practical approximation, as it results in a continuous gradient about zero velocity:
     </p>
     <br/>
-    $$ F_f = -b_c \dot x \tag{34} $$
+    $$ F_f = -b_c \dot x \tag{26} $$
     <br/>
     <p>
         Here $b_c$ is a linear damping coefficient, with units of force per velocity (N s/m, i.e. newton-seconds per metre).
@@ -856,7 +786,7 @@
         A related velocity-proportional model treats cart-track resistance as rotational damping in the cart's wheel bearings:
     </p>
     <br/>
-    $$ F_f = -b_w \frac{\dot x}{r_w^2} \tag{34-R}$$
+    $$ F_f = -b_w \frac{\dot x}{r_w^2} \tag{26-R}$$
     <br/>
     <p>
         Here $b_w$ is a rotational damping coefficient for the wheel bearings, with units of moment per angular velocity. Dividing cart
@@ -874,7 +804,7 @@
         friction can also be modelled with Coulomb's Law.
     </p>
     <br/>
-    $$ M_f = \mu_p r_p |\mathbf{N}_P|\sgn(\dot\theta) \tag{35}$$
+    $$ M_f = \mu_p r_p |\mathbf{N}_P|\sgn(\dot\theta) \tag{27}$$
     <br/>
 
     <p>
@@ -892,9 +822,9 @@
     <br/>
     \begin{align}
 
-        (\mathbf{N}_P)_x &= (\mathbf{F}^i_G)_x  \tag{36} \\[3ex]
+        (\mathbf{N}_P)_x &= (\mathbf{F}^i_G)_x  \tag{28} \\[3ex]
 
-        (\mathbf{N}_P)_y &= (\mathbf{F}^i_G)_y - mg \tag{37}
+        (\mathbf{N}_P)_y &= (\mathbf{F}^i_G)_y - mg \tag{29}
 
     \end{align}
     <br/>
@@ -908,7 +838,7 @@
 
         |\mathbf{N}_P| &= \sqrt{[(\mathbf{N}_P)_x]^2 + [(\mathbf{N}_P)_y]^2} \\[3ex]
 
-        |\mathbf{N}_P| &= \left[\left(mr\dot\theta^2\sin\theta -mr\ddot\theta\cos\theta -m\ddot x \right)^2 + \left(mr \ddot\theta \sin\theta + mr \dot\theta^2 \cos\theta -mg \right)^2\right]^\frac{1}{2} \tag{38} \\[3ex]
+        |\mathbf{N}_P| &= \left[\left(mr\dot\theta^2\sin\theta -mr\ddot\theta\cos\theta -m\ddot x \right)^2 + \left(mr \ddot\theta \sin\theta + mr \dot\theta^2 \cos\theta -mg \right)^2\right]^\frac{1}{2} \tag{30} \\[3ex]
 
     \end{align}
     <br/>
@@ -920,7 +850,7 @@
         reasonable in all scenarios. In light of this a positive value somewhere in the interval $(0,mg]$ is the next best option, e.g.:
     </p>
     <br/>
-    $$ M_f = \mu_p r_p \frac{mg}{2} \sgn(\dot\theta) \tag{39}$$
+    $$ M_f = \mu_p r_p \frac{mg}{2} \sgn(\dot\theta) \tag{31}$$
     <br/>
 
     <h5>Linear Damping Model (Adopted)</h5>
@@ -929,7 +859,7 @@
         This is consistent with viscous damping in a lubricated bearing and provides a continuous alternative to Coulomb friction:
     </p>
     <br/>
-    $$ M_f = b_p \dot\theta \tag{40} $$
+    $$ M_f = b_p \dot\theta \tag{32} $$
     <br/>
     <p>
         For multiple poles, each pivot may have its own damping coefficient. We therefore use the indexed form
@@ -946,11 +876,11 @@
     </p>
     <h5>Combined Damping and Coulomb Model (Optional)</h5>
     <p>
-        We could also choose to extend equation (40) with a normal force term, as the force being applied through the bearing will affect 
+        We could also choose to extend equation (32) with a normal force term, as the force being applied through the bearing will affect
         its behaviour. E.g. perhaps one reasonable choice is:
     </p>
     <br/>
-    $$ M_f = b_p \dot\theta + \mu_p r_p |\mathbf{N}_P| \sgn(\dot\theta) \tag{41} $$
+    $$ M_f = b_p \dot\theta + \mu_p r_p |\mathbf{N}_P| \sgn(\dot\theta) \tag{33} $$
     <br/>
     <p>
         This combines the velocity-proportional damping and Coulomb-friction models. Such independent linear terms may be appropriate for low
@@ -960,7 +890,7 @@
         Overall we expect the forces through the pole's pivot joint to be minimal and to have a minimal effect on joint friction. Furthermore,
         the use of a friction moment based only on the sign of the angular velocity will result in a discontinuity in the equations of motion (as
         discussed above in relation to the cart-track friction), therefore we prefer a friction moment proportional to angular velocity as given
-        by equation (40).
+        by equation (32).
     </p>
     <p>
         As a final alternative, we may consider pivot joint friction to be so low as to be inconsequential, especially if cart-track friction
@@ -973,30 +903,68 @@
     <p>
         The force equilibrium equations (12) and (18) can be extended to include the friction force $F_f$ and friction moment $M_f$, giving the
         following equations of motion. At this stage $F_f$ and $M_f$ may be supplied by any of the models above. Section 5 substitutes the
-        adopted linear damping models from equations (34) and (40). These are equations (19), (21), (23), and (24) extended to incorporate
-        friction terms:
+        adopted linear damping models from equations (26) and (32). With friction included, the two balances used in section 3.6 become:
     </p>
     <br/>
 
-    <p>Equation (19) extended to include friction:</p>
+    \begin{align}
 
-    $$ \ddot x = \frac{f - mr \ddot\theta \cos\theta + mr \dot\theta^2 \sin\theta + F_f}{m_{\mathrm{tot}}} \tag{19-F} $$
+        m_{\mathrm{tot}}\ddot x + mr\ddot\theta\cos\theta &= f + mr\dot\theta^2\sin\theta + F_f \\[3ex]
+
+        (mr^2+J)\ddot\theta + mr\ddot x\cos\theta &= mgr\sin\theta - M_f
+
+    \end{align}
+    <br/>
+    <p>
+        Rearranging the second balance gives the friction-extended form of (19):
+    </p>
+    <br/>
+    \begin{align}
+
+        (mr^2+J)\ddot\theta &= mr(g\sin\theta - \ddot x\cos\theta) - M_f \\[3ex]
+
+        \ddot\theta &= \frac{mr(g\sin\theta - \ddot x \cos\theta) - M_f}{mr^2+J} \tag{34}
+
+    \end{align}
+    <br/>
+    <p>
+        Substitute (34) into the first balance, multiply by $mr^2+J$, expand, and collect the terms containing $\ddot x$:
+    </p>
+    <br/>
+    \begin{align}
+
+        m_{\mathrm{tot}}\ddot x + mr\cos\theta
+        \left[\frac{mr(g\sin\theta-\ddot x\cos\theta)-M_f}{mr^2+J}\right]
+        &= f + mr\dot\theta^2\sin\theta + F_f \\[3ex]
+
+        (mr^2+J)m_{\mathrm{tot}}\ddot x
+        +(mr)^2g\sin\theta\cos\theta
+        -(mr\cos\theta)^2\ddot x
+        -mrM_f\cos\theta
+        &= (mr^2+J)(f+mr\dot\theta^2\sin\theta+F_f) \\[3ex]
+
+        \left[(mr^2+J)m_{\mathrm{tot}}-(mr\cos\theta)^2\right]\ddot x
+        &= (mr^2+J)(f+mr\dot\theta^2\sin\theta+F_f) \\
+        &\quad -(mr)^2g\sin\theta\cos\theta+mrM_f\cos\theta
+
+    \end{align}
     <br/>
 
-    <p>Equation (21) extended to include friction:</p>
-
-    $$ \ddot\theta = \frac{m_{\mathrm{tot}} m g r\sin\theta - mr\cos\theta (f + mr\dot\theta^2\sin\theta + F_f) - m_{\mathrm{tot}} M_f}{(mr^2+J)m_{\mathrm{tot}} - (mr\cos\theta)^2} \tag{21-F} $$
+    $$
+        \ddot x =
+        \frac{
+            \begin{aligned}
+                &(mr^2+J) \\
+                &\quad \cdot(f+mr\dot\theta^2\sin\theta+F_f) \\
+                &\quad -(mr)^2g\sin\theta\cos\theta+mrM_f\cos\theta
+            \end{aligned}
+        }{(mr^2+J)m_{\mathrm{tot}}-(mr\cos\theta)^2} \tag{35}
+    $$
     <br/>
-
-    <p>Equation (23) extended to include friction:</p>
-
-    $$ \ddot\theta = \frac{mr(g\sin\theta - \ddot x \cos\theta) - M_f}{mr^2+J} \tag{23-F} $$
-    <br/>
-
-    <p>Equation (24) extended to include friction:</p>
-
-    $$ \ddot x = \frac{(mr^2+J)(f + mr\dot\theta^2 \sin\theta + F_f) - (mr)^2g\sin\theta\cos\theta + mrM_f\cos\theta}{(mr^2+J)m_{\mathrm{tot}} - (mr\cos\theta)^2} \tag{24-F} $$
-    <br/>
+    <p>
+        The evaluation order remains the same: evaluate (35) to obtain $\ddot x$, then substitute that value into (34) to obtain
+        $\ddot\theta$.
+    </p>
     <br/>
 
     <h3>3.8 Multiple Poles</h3>
@@ -1015,7 +983,7 @@
     </p>
     <br/>
     
-    $$ \tilde{F_i} = -m_i \left[r_i \ddot\theta_i \cos\theta_i - r_i \dot\theta^2_i \sin\theta_i + \ddot x \right] \tag{42} $$
+    $$ \tilde{F_i} = -m_i \left[r_i \ddot\theta_i \cos\theta_i - r_i \dot\theta^2_i \sin\theta_i + \ddot x \right] \tag{36} $$
     <br/>
 
     <p>
@@ -1027,7 +995,7 @@
 
         f -m_c\ddot x + \sum_i \tilde{F_i} &= 0 \\[3ex]
 
-        m_c\ddot x - \sum_i \tilde{F_i} &= f \tag{43}
+        m_c\ddot x - \sum_i \tilde{F_i} &= f \tag{37}
 
     \end{align}
     <br/>
@@ -1041,7 +1009,7 @@
 
         m_i r_i (r_i \ddot\theta_i + \ddot x \cos\theta_i ) -m_i g r_i\, \sin\theta_i + J_i \ddot\theta_i = 0 \\[3ex]
 
-        (m_i r_i^2 + J_i) \ddot\theta_i + m_i r_i \ddot x \cos\theta_i -m_i g r_i\, \sin\theta_i = 0 \tag{44}
+        (m_i r_i^2 + J_i) \ddot\theta_i + m_i r_i \ddot x \cos\theta_i -m_i g r_i\, \sin\theta_i = 0 \tag{38}
 
     \end{align}
     <br/>
@@ -1052,7 +1020,7 @@
     </p>
 
     <p>
-        Rearranging (43) to give $\ddot x$:
+        Rearranging (37) to give $\ddot x$:
     </p>
     \begin{align}
 
@@ -1064,18 +1032,18 @@
 
         m_c\ddot x + \ddot x \sum_i m_i &= f - \sum_i \left[m_i r_i \left( \ddot\theta_i \cos\theta_i - \dot\theta^2_i \sin\theta_i \right)\right] \\[3ex]
 
-        \ddot x &= \frac{f - \sum_i \left[m_i r_i \left( \ddot\theta_i \cos\theta_i - \dot\theta^2_i \sin\theta_i \right)\right]}{m_c + \sum_i m_i} \tag{45} \\[3ex]
+        \ddot x &= \frac{f - \sum_i \left[m_i r_i \left( \ddot\theta_i \cos\theta_i - \dot\theta^2_i \sin\theta_i \right)\right]}{m_c + \sum_i m_i} \tag{39} \\[3ex]
 
     \end{align}
     <br/>
     <blockquote style="background-color:eeeeee; padding: 14px">
         <p>
-            Equation (45) is essentially (19) extended to multiple poles.
+            Equation (39) is the horizontal balance rearranged for a cart with multiple poles, before the angular accelerations are eliminated.
         </p>
     </blockquote>
     <br/>
     <p>
-        Rearranging (44) to give $\ddot\theta$:
+        Rearranging (38) to give $\ddot\theta$:
     </p>
     <br/>
 
@@ -1087,19 +1055,19 @@
 
         (m_i r_i^2+J_i) \ddot\theta_i &= m_i r_i(g\sin\theta_i - \ddot x\cos\theta_i) \\[3ex]
 
-        \ddot\theta_i &= \frac{m_i r_i(g\sin\theta_i - \ddot x\cos\theta_i)}{m_i r_i^2+J_i} \tag{46} \\[3ex]
+        \ddot\theta_i &= \frac{m_i r_i(g\sin\theta_i - \ddot x\cos\theta_i)}{m_i r_i^2+J_i} \tag{40} \\[3ex]
 
     \end{align}
     <br/>
 
     <blockquote style="background-color:eeeeee; padding: 14px">
         <p>
-            Equation (46) is (23) with the addition of pole index subscripts.
+            Equation (40) is (19) with the addition of pole index subscripts.
         </p>
     </blockquote>
     <br/>
     <p>
-        Substituting (46) into (45):
+        Substituting (40) into (39):
     </p>
     <br/>
     \begin{align}
@@ -1122,7 +1090,7 @@
 
         \left[m_{\mathrm{tot}} - \sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\cos^2\theta_i \right)\right] \ddot x &= f - g\sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\sin\theta_i\cos\theta_i\right) + \sum_i\left(m_i r_i \dot\theta_i^2\sin\theta_i\right) \\[3ex]
 
-        \ddot x &= \frac{f - g\sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\sin\theta_i\cos\theta_i\right) + \sum_i\left(m_i r_i \dot\theta_i^2\sin\theta_i\right)}{m_{\mathrm{tot}} - \sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\cos^2\theta_i \right)} \tag{47} \\[3ex]
+        \ddot x &= \frac{f - g\sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\sin\theta_i\cos\theta_i\right) + \sum_i\left(m_i r_i \dot\theta_i^2\sin\theta_i\right)}{m_{\mathrm{tot}} - \sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\cos^2\theta_i \right)} \tag{41} \\[3ex]
 
     \end{align}
     <br/>
@@ -1131,20 +1099,20 @@
             This presents the following evaluation procedure for a cart with multiple poles:
         </p>
         <ol>
-            <li>Evaluate (47) to obtain $\ddot x$</li><br/>
-            <li>Evaluate (46) separately for each of the $N$ poles (using the previously calculated value for $\ddot x$) to obtain each of the $\ddot\theta_i$</li>
+            <li>Evaluate (41) to obtain $\ddot x$</li><br/>
+            <li>Evaluate (40) separately for each of the $N$ poles (using the previously calculated value for $\ddot x$) to obtain each of the $\ddot\theta_i$</li>
         </ol>
     </blockquote>
     <br/>
 
     <p>
-        If we include friction terms in the equilibrium equations (43) and (44), and repeat the same derivation steps, we obtain:
+        If we include friction terms in the equilibrium equations (37) and (38), and repeat the same derivation steps, we obtain:
     </p>
 
     <br/>
-    $$ \ddot x = \frac{f - g\sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\sin\theta_i\cos\theta_i\right) + \sum_i\left(m_i r_i \dot\theta_i^2\sin\theta_i\right) + \sum_i \left( \cfrac{m_i r_i M_{f,i} \cos\theta_i}{m_i r_i^2+J_i} \right) + F_f}{m_{\mathrm{tot}} - \sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\cos^2\theta_i \right)} \tag{48} $$
+    $$ \ddot x = \frac{f - g\sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\sin\theta_i\cos\theta_i\right) + \sum_i\left(m_i r_i \dot\theta_i^2\sin\theta_i\right) + \sum_i \left( \cfrac{m_i r_i M_{f,i} \cos\theta_i}{m_i r_i^2+J_i} \right) + F_f}{m_{\mathrm{tot}} - \sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\cos^2\theta_i \right)} \tag{42} $$
     <br/>
-    $$ \ddot\theta_i = \frac{m_i r_i(g\sin\theta_i - \ddot x\cos\theta_i) - M_{f,i}}{m_i r_i^2+J_i} \tag{49} $$
+    $$ \ddot\theta_i = \frac{m_i r_i(g\sin\theta_i - \ddot x\cos\theta_i) - M_{f,i}}{m_i r_i^2+J_i} \tag{43} $$
     <br/>
     <br/>
     <br/>
@@ -1179,44 +1147,34 @@
 
     <h3>4.2 Single Pole Equations for a Uniform Pole</h3>
     <p>
-        We now apply the above substitutions to equations (19-F), (21-F), (23-F), and (24-F), to give the equations for a single uniform pole
-        (including friction terms):
+        We now apply the above substitutions to the friction-extended equations from section 3.7.3, to give the recommended
+        cart-acceleration-first equations for a single uniform pole:
     </p>
     <br/>
-    <p>Equation (19-F) specialized for a uniform pole:</p>
+    <p>The angular-acceleration equation specialized for a uniform pole:</p>
 
-    $$ \ddot x = \frac{f - mr \ddot\theta \cos\theta + mr \dot\theta^2 \sin\theta + F_f}{m_{\mathrm{tot}}} \tag{50} $$
+    $$ \ddot\theta = \frac{g\sin\theta - \ddot x \cos\theta - \cfrac{M_f}{mr}}{\frac{4}{3}r} \tag{44} $$
     <br/>
 
-    <p>Equation (21-F) specialized for a uniform pole:</p>
+    <p>The cart-acceleration equation specialized for a uniform pole:</p>
 
-    $$ \ddot\theta = \frac{m_{\mathrm{tot}} g\sin\theta - \cos\theta (f + mr\dot\theta^2\sin\theta + F_f) - \cfrac{m_{\mathrm{tot}}M_f}{mr}}{\frac{4}{3} m_{\mathrm{tot}} r - mr\cos^2\theta} \tag{51} $$
-    <br/>
-
-    <p>Equation (23-F) specialized for a uniform pole:</p>
-
-    $$ \ddot\theta = \frac{g\sin\theta - \ddot x \cos\theta - \cfrac{M_f}{mr}}{\frac{4}{3}r} \tag{52} $$
-    <br/>
-
-    <p>Equation (24-F) specialized for a uniform pole:</p>
-
-    $$ \ddot x = \frac{f + mr\dot\theta^2 \sin\theta + F_f - \frac{3}{4}mg\sin\theta\cos\theta + \cfrac{3M_f \cos\theta}{4r}}{m_{\mathrm{tot}} - \frac{3}{4}m\cos^2\theta} \tag{53} $$
+    $$ \ddot x = \frac{f + mr\dot\theta^2 \sin\theta + F_f - \frac{3}{4}mg\sin\theta\cos\theta + \cfrac{3M_f \cos\theta}{4r}}{m_{\mathrm{tot}} - \frac{3}{4}m\cos^2\theta} \tag{45} $$
     <br/>
     <br/>
 
     <h3>4.3 Multiple Pole Equations for Uniform Poles</h3>
     <p>
-        We now apply the above substitutions to equations (48) and (49), to give the equations for multiple uniform poles (including friction terms).
+        We now apply the above substitutions to equations (42) and (43), to give the equations for multiple uniform poles (including friction terms).
     </p>
 
-    <p>Equation (48) specialized for uniform poles:</p>
+    <p>Equation (42) specialized for uniform poles:</p>
     <br/>
-    $$ \ddot x = \frac{f - \frac{3}{4} g \sum_i\left(m_i\sin\theta_i\cos\theta_i\right) + \sum_i\left(m_i r_i \dot\theta_i^2\sin\theta_i\right) + \frac{3}{4} \sum_i \left( \cfrac{M_{f,i} \cos\theta_i}{r_i} \right) + F_f}{m_{\mathrm{tot}} - \frac{3}{4} \sum_i\left(m_i\cos^2\theta_i \right)} \tag{54} $$
+    $$ \ddot x = \frac{f - \frac{3}{4} g \sum_i\left(m_i\sin\theta_i\cos\theta_i\right) + \sum_i\left(m_i r_i \dot\theta_i^2\sin\theta_i\right) + \frac{3}{4} \sum_i \left( \cfrac{M_{f,i} \cos\theta_i}{r_i} \right) + F_f}{m_{\mathrm{tot}} - \frac{3}{4} \sum_i\left(m_i\cos^2\theta_i \right)} \tag{46} $$
     <br/>
 
-    <p>Equation (49) specialized for uniform poles:</p>
+    <p>Equation (43) specialized for uniform poles:</p>
     <br/>
-    $$ \ddot\theta_i = \frac{g\sin\theta_i - \ddot x\cos\theta_i - \cfrac{M_{f,i}}{m_i r_i}}{\frac{4}{3}r_i} \tag{55} $$
+    $$ \ddot\theta_i = \frac{g\sin\theta_i - \ddot x\cos\theta_i - \cfrac{M_{f,i}}{m_i r_i}}{\frac{4}{3}r_i} \tag{47} $$
     <br/>
 
     <br/>
@@ -1239,44 +1197,48 @@
         pendulum is a different model choice and is obtained from the general equations by setting $J=0$.
     </p>
     <p>
-        As such we will use equations (52) and (53) for the single pole task, and equations (54) and (55) for the multiple pole
+        As such we will use equations (44) and (45) for the single pole task, and equations (46) and (47) for the multiple pole
         equations.
     </p>
     <br/>
 
     <b>Cart-Track Friction</b>
     <p>
-        For cart-track friction we adopt the simplified linear damping model based on cart velocity from equation (34), repeated here:
+        For cart-track friction we adopt the simplified linear damping model based on cart velocity from equation (26), repeated here:
     </p>
     <br/>
-    $$ F_f = -b_c \dot x \tag{34} $$
+    $$ F_f = -b_c \dot x \tag{26} $$
     <br/>
 
     <b>Cart-Pole Friction</b>
     <p>
-        For pivot friction we adopt the simplified linear damping model based on angular velocity from equation (40), repeated here:
+        For pivot friction we adopt the simplified linear damping model based on angular velocity from equation (32), repeated here:
     </p>
     <br/>
-    $$ M_f = b_p \dot\theta \tag{40} $$
+    $$ M_f = b_p \dot\theta \tag{32} $$
     <br/>
 
     <h3>5.2 Single Pole Equations</h3>
     <p>
         Therefore the final recommended equations for a single pole are:
     </p>
-    <p>Substituting (34) and (40) into (53):</p>
+    <p>Substituting (26) and (32) into (45):</p>
     <br/>
 
-    $$ \ddot x = \frac{f + mr\dot\theta^2 \sin\theta -b_c \dot x - \frac{3}{4}mg\sin\theta\cos\theta + \cfrac{3b_p \dot\theta \cos\theta}{4r}}{m_{\mathrm{tot}} - \frac{3}{4}m\cos^2\theta} \tag{56} $$
+    $$ \ddot x = \frac{f + mr\dot\theta^2 \sin\theta -b_c \dot x - \frac{3}{4}mg\sin\theta\cos\theta + \cfrac{3b_p \dot\theta \cos\theta}{4r}}{m_{\mathrm{tot}} - \frac{3}{4}m\cos^2\theta} \tag{48} $$
     <br/>
     
-    <p>Substituting (40) into (52):</p>
+    <p>Substituting (32) into (44):</p>
     <br/>
-    $$ \ddot\theta = \frac{3}{4r} \left(g\sin\theta - \ddot x \cos\theta - \cfrac{b_p \dot\theta}{mr}\right) \tag{57} $$
+    $$ \ddot\theta = \frac{3}{4r} \left(g\sin\theta - \ddot x \cos\theta - \cfrac{b_p \dot\theta}{mr}\right) \tag{49} $$
     <br/>
 
+    <p>
+        Evaluate (48) first to obtain $\ddot x$, then substitute that value into (49) to obtain $\ddot\theta$.
+    </p>
+
     <blockquote style="background-color:eeeeee; padding:20px">
-        <span><b>Table 2: Symbols used in equations (56) and (57)</b></span>
+        <span><b>Table 2: Symbols used in equations (48) and (49)</b></span>
         <br/>
         <table class="notationTable">
 
@@ -1308,9 +1270,9 @@
 
             <tr><td>$\ddot \theta$ &nbsp;</td><td>Angular acceleration of the pole. A positive value represents clockwise acceleration.</td></tr>
 
-            <tr><td>$b_c$&nbsp;</td><td>Linear cart-track damping coefficient used in equation (34), in N s/m (newton-seconds per metre).</td></tr>
+            <tr><td>$b_c$&nbsp;</td><td>Linear cart-track damping coefficient used in equation (26), in N s/m (newton-seconds per metre).</td></tr>
 
-            <tr><td>$b_p$&nbsp;</td><td>Linear pivot damping coefficient used in equation (40), in N m s/rad (newton-metre-seconds per radian).</td></tr>
+            <tr><td>$b_p$&nbsp;</td><td>Linear pivot damping coefficient used in equation (32), in N m s/rad (newton-metre-seconds per radian).</td></tr>
             
         </table>       
     </blockquote>
@@ -1321,19 +1283,23 @@
         The final recommended equations for multiple poles are:
     </p>
     <p>
-        Substituting (34) and $M_{f,i}=b_{p,i}\dot\theta_i$ into (54) and rearranging:
+        Substituting (26) and $M_{f,i}=b_{p,i}\dot\theta_i$ into (46) and rearranging:
     </p>
     <br/>
-    $$ \ddot x = \frac{f - \frac{3}{4}g\sum_i\left(m_i\sin\theta_i\cos\theta_i\right) + \sum_i\left(m_i r_i \dot\theta^2_i \sin\theta_i\right) - b_c \dot x + \frac{3}{4}\sum_i\left(\cfrac{b_{p,i}\dot\theta_i\cos\theta_i}{r_i}\right)}{m_{\mathrm{tot}} - \frac{3}{4}\sum_i\left(m_i\cos^2\theta_i\right)} \tag{58} $$
+    $$ \ddot x = \frac{f - \frac{3}{4}g\sum_i\left(m_i\sin\theta_i\cos\theta_i\right) + \sum_i\left(m_i r_i \dot\theta^2_i \sin\theta_i\right) - b_c \dot x + \frac{3}{4}\sum_i\left(\cfrac{b_{p,i}\dot\theta_i\cos\theta_i}{r_i}\right)}{m_{\mathrm{tot}} - \frac{3}{4}\sum_i\left(m_i\cos^2\theta_i\right)} \tag{50} $$
     <br/>
 
-    <p>Substituting $M_{f,i}=b_{p,i}\dot\theta_i$ into (55):</p>
+    <p>Substituting $M_{f,i}=b_{p,i}\dot\theta_i$ into (47):</p>
     <br/>
-    $$ \ddot\theta_i = \frac{3}{4r_i} \left(g\sin\theta_i - \ddot x\cos\theta_i - \frac{b_{p,i} \dot\theta_i}{m_i r_i} \right) \tag{59} $$
+    $$ \ddot\theta_i = \frac{3}{4r_i} \left(g\sin\theta_i - \ddot x\cos\theta_i - \frac{b_{p,i} \dot\theta_i}{m_i r_i} \right) \tag{51} $$
     <br/>
+
+    <p>
+        Evaluate (50) once to obtain the shared cart acceleration $\ddot x$, then substitute that value into (51) for each pole $i$.
+    </p>
 
     <blockquote style="background-color:eeeeee; padding:20px">
-        <span><b>Table 3: Symbols used in equations (58) and (59)</b> [in addition to the symbols defined in table 2]</span>
+        <span><b>Table 3: Symbols used in equations (50) and (51)</b> [in addition to the symbols defined in table 2]</span>
         <br/>
         <table class="notationTable">
 
@@ -1397,7 +1363,7 @@
     <p>
         We now devise an experiment to demonstrate the importance of the choice of timestep size and numerical method. We define a fixed set of
         cart-pole model parameters, and run multiple simulations from the same initial model state, each with a different combination of timestep 
-        size and numerical method. The experiment model has a single pole, and utilises equations (56) and (57) from section 5.2. The model parameters 
+        size and numerical method. The experiment model has a single pole, and utilises equations (48) and (49) from section 5.2. The model parameters
         are as follows:
     </p>
     <br/>
@@ -1782,7 +1748,7 @@
         terms included. Expanding the second equation shows the two separate inertia contributions:
     </p>
     <p>
-        Equations (C1)-(C5) below are algebraic steps performed in this appendix. To keep them directly comparable with Cannon's equations,
+        Equations (C1)-(C4) below are algebraic steps performed in this appendix. To keep them directly comparable with Cannon's equations,
         they continue to use his length symbol $l$. The local shorthand $m_{\mathrm{tot}}=m_c+m$ is introduced explicitly when first needed. The final
         comparison then applies $l\mapsto r$ to recover this paper's notation.
     </p>
@@ -1827,63 +1793,9 @@
         Equation (Cannon 22.56) again makes clear that Cannon's pivot inertia is $J + ml^2$, not $J$ alone.
     </p>
     <p>
-        We now derive the same explicit acceleration equations as in section 3.6, starting from Cannon's nonlinear pair and retaining
-        Cannon's symbols as described above. First, rearrange the first equation of (Cannon 22.55) to give $\ddot x$:
-    </p>
-    <br/>
-
-    \begin{align}
-
-        m_c\ddot x + m\ddot x + ml\ddot\theta\cos\theta - ml\dot\theta^2\sin\theta &= f \\[3ex]
-
-        (m_c + m)\ddot x &= f - ml\ddot\theta\cos\theta + ml\dot\theta^2\sin\theta \\[3ex]
-
-        m_{\mathrm{tot}} &= m_c + m \\[3ex]
-
-        \ddot x &= \frac{f - ml\ddot\theta\cos\theta + ml\dot\theta^2\sin\theta}{m_{\mathrm{tot}}}
-
-    \end{align}
-    <br/>
-    <p>
-        Next, substitute $J = \frac{1}{3}ml^2$ into the second equation of (Cannon 22.55), and rearrange to give $\ddot x$:
-    </p>
-    <br/>
-
-    \begin{align}
-
-        J\ddot\theta + ml(\ddot x\cos\theta + l\ddot\theta) - mgl\sin\theta &= 0 \\[3ex]
-
-        ml\ddot x\cos\theta + (J + ml^2)\ddot\theta - mgl\sin\theta &= 0 \\[3ex]
-
-        ml\ddot x\cos\theta + \frac{4}{3}ml^2\ddot\theta - mgl\sin\theta &= 0 \\[3ex]
-
-        ml\ddot x\cos\theta &= mgl\sin\theta - \frac{4}{3}ml^2\ddot\theta \\[3ex]
-
-        \ddot x &= \frac{mgl\sin\theta - \frac{4}{3}ml^2\ddot\theta}{ml\cos\theta}
-
-    \end{align}
-    <br/>
-    <p>
-        Equating the right hand sides of the two expressions for $\ddot x$, and rearranging to give $\ddot\theta$:
-    </p>
-    <br/>
-
-    \begin{align}
-
-        \frac{f - ml\ddot\theta\cos\theta + ml\dot\theta^2\sin\theta}{m_{\mathrm{tot}}} &= \frac{mgl\sin\theta - \frac{4}{3}ml^2\ddot\theta}{ml\cos\theta} \\[3ex]
-
-        ml\cos\theta(f + ml\dot\theta^2\sin\theta) - (ml\cos\theta)^2\ddot\theta &= m_{\mathrm{tot}} mgl\sin\theta - \frac{4}{3}m_{\mathrm{tot}} ml^2\ddot\theta \\[3ex]
-
-        \frac{4}{3}m_{\mathrm{tot}} ml^2\ddot\theta - (ml\cos\theta)^2\ddot\theta &= m_{\mathrm{tot}} mgl\sin\theta - ml\cos\theta(f + ml\dot\theta^2\sin\theta) \\[3ex]
-
-        \ddot\theta &= \frac{m_{\mathrm{tot}} mgl\sin\theta - ml\cos\theta(f + ml\dot\theta^2\sin\theta)}{\frac{4}{3}m_{\mathrm{tot}} ml^2 - (ml\cos\theta)^2} \\[3ex]
-
-        \ddot\theta &= \frac{m_{\mathrm{tot}} g\sin\theta - \cos\theta(f + ml\dot\theta^2\sin\theta)}{\frac{4}{3}m_{\mathrm{tot}} l - ml\cos^2\theta} \tag{C3}
-
-    \end{align}
-    <br/>
-    <p>
-        Alternatively, rearranging the second equation of (Cannon 22.55) directly gives $\ddot\theta$ in terms of $\ddot x$:
+        We now derive the same cart-acceleration-first sequence as in section 3.6, starting from Cannon's nonlinear pair and retaining
+        Cannon's symbols as described above. First substitute $J=\frac{1}{3}ml^2$ into the second equation of (Cannon 22.55), then
+        rearrange it to give $\ddot\theta$ in terms of $\ddot x$:
     </p>
     <br/>
 
@@ -1893,17 +1805,21 @@
 
         \frac{4}{3}ml^2\ddot\theta &= mgl\sin\theta - ml\ddot x\cos\theta \\[3ex]
 
-        \ddot\theta &= \frac{3}{4l} (g\sin\theta - \ddot x \cos\theta) \tag{C4}
+        \ddot\theta &= \frac{3}{4l} (g\sin\theta - \ddot x \cos\theta) \tag{C3}
 
     \end{align}
     <br/>
     <p>
-        We can now substitute (C4) into the expression for $\ddot x$ obtained from the cart force balance, and rearrange to obtain an explicit
-        equation for $\ddot x$:
+        We now rearrange the first equation of (Cannon 22.55) to give $\ddot x$, using
+        $m_{\mathrm{tot}}=m_c+m$, substitute (C3), and collect the terms containing $\ddot x$:
     </p>
     <br/>
 
     \begin{align}
+
+        m_c\ddot x + m\ddot x + ml\ddot\theta\cos\theta - ml\dot\theta^2\sin\theta &= f \\[3ex]
+
+        \ddot x &= \frac{f - ml\ddot\theta\cos\theta + ml\dot\theta^2\sin\theta}{m_{\mathrm{tot}}} \\[3ex]
 
         \ddot x &= \frac{f - ml\left[\frac{3}{4l} (g\sin\theta - \ddot x \cos\theta)\right]\cos\theta + ml\dot\theta^2\sin\theta}{m_{\mathrm{tot}}} \\[3ex]
 
@@ -1913,21 +1829,21 @@
 
         \left(m_{\mathrm{tot}} - \frac{3}{4}m\cos^2\theta\right)\ddot x &= f + ml\dot\theta^2\sin\theta - \frac{3}{4}mg\sin\theta\cos\theta \\[3ex]
 
-        \ddot x &= \frac{f + ml\dot\theta^2\sin\theta - \frac{3}{4}mg\sin\theta\cos\theta}{m_{\mathrm{tot}} - \frac{3}{4}m\cos^2\theta} \tag{C5}
+        \ddot x &= \frac{f + ml\dot\theta^2\sin\theta - \frac{3}{4}mg\sin\theta\cos\theta}{m_{\mathrm{tot}} - \frac{3}{4}m\cos^2\theta} \tag{C4}
 
     \end{align}
     <br/>
 
     <p>
-        Equations (C3), (C4), and (C5) are the same as equations (21), (23), and (24) specialized for a uniform pole, with Cannon's $l$
-        corresponding to this paper's $r$. For example, substituting $l = r$ into (C3) gives:
+        Equations (C3) and (C4) are the same as equations (19) and (20) specialized for a uniform pole, with Cannon's $l$
+        corresponding to this paper's $r$. Substituting $l=r$ into (C3) gives the angular-acceleration equation:
     </p>
 
-    $$ \ddot\theta = \frac{m_{\mathrm{tot}} g\sin\theta - \cos\theta (f + mr\dot\theta^2\sin\theta)}{\frac{4}{3}m_{\mathrm{tot}} r - mr\cos^2\theta} $$
+    $$ \ddot\theta = \frac{3}{4r}(g\sin\theta-\ddot x\cos\theta) $$
     <br/>
 
     <p>
-        Substituting $l=r$ into (C5) gives equation (24) directly in its uniform-pole form:
+        Substituting $l=r$ into (C4) gives equation (20) directly in its uniform-pole form:
     </p>
 
     $$ \ddot x = \frac{f + mr\dot\theta^2\sin\theta - \frac{3}{4}mg\sin\theta\cos\theta}{m_{\mathrm{tot}} - \frac{3}{4}m\cos^2\theta} $$
@@ -1988,30 +1904,53 @@
         the friction terms were derived.
     </p>
     <p>
-        To compare the algebraic form of (Barto pole) with the local equations, rearrange equation (21-F) with
-        $J=\frac{1}{3}mr^2$. This comparison uses this paper's positive gravitational magnitude $g$; Barto's listed negative value is
-        considered separately below.
+        The main derivation evaluates cart acceleration first. Barto's pole equation instead gives angular acceleration explicitly, so this
+        appendix performs the opposite elimination order once for direct comparison. Starting from the friction balances in section 3.7.3
+        and substituting the uniform-pole inertia $J=\frac{1}{3}mr^2$, the horizontal balance gives:
     </p>
     <br/>
-
     \begin{align}
 
-        \ddot\theta &= \frac{m_{\mathrm{tot}} g\sin\theta - \cos\theta (f + mr\dot\theta^2\sin\theta + F_f) - \cfrac{m_{\mathrm{tot}}M_f}{mr}}{\frac{4}{3}m_{\mathrm{tot}} r - mr\cos^2\theta} \tag{21-F} \\[6ex]
+        m_{\mathrm{tot}}\ddot x + mr\ddot\theta\cos\theta &= f + mr\dot\theta^2\sin\theta + F_f \\[3ex]
 
-        \ddot\theta &= \frac{g\sin\theta - \cos\theta \left[\cfrac{f + mr\dot\theta^2\sin\theta + F_f}{m_{\mathrm{tot}}}\right] - \cfrac{M_f}{mr}}{ r \left[\frac{4}{3} - \cfrac{m\cos^2\theta}{m_{\mathrm{tot}}} \right]} \\[6ex]
+        \ddot x &= \frac{f + mr\dot\theta^2\sin\theta + F_f - mr\ddot\theta\cos\theta}{m_{\mathrm{tot}}}
 
-        \ddot\theta &= \frac{g\sin\theta + \cos\theta \left[\cfrac{-f - mr\dot\theta^2\sin\theta - F_f}{m_{\mathrm{tot}}}\right] - \cfrac{M_f}{mr}}{ r \left[\frac{4}{3} - \cfrac{m\cos^2\theta}{m_{\mathrm{tot}}} \right]} \tag{D1} \\[6ex]
+    \end{align}
+    <br/>
+    <p>
+        Substitute this expression for $\ddot x$ into the uniform-pole moment balance, then collect the terms containing
+        $\ddot\theta$. This comparison uses this paper's positive gravitational magnitude $g$; Barto's listed negative value is considered
+        separately below.
+    </p>
+    <br/>
+    \begin{align}
+
+        \frac{4}{3}mr^2\ddot\theta + mr\ddot x\cos\theta &= mgr\sin\theta - M_f \\[3ex]
+
+        \frac{4}{3}mr^2\ddot\theta
+        + mr\cos\theta\left[\frac{f+mr\dot\theta^2\sin\theta+F_f-mr\ddot\theta\cos\theta}{m_{\mathrm{tot}}}\right]
+        &= mgr\sin\theta-M_f \\[3ex]
+
+        \frac{4}{3}r\ddot\theta
+        + \cos\theta\left[\frac{f+mr\dot\theta^2\sin\theta+F_f}{m_{\mathrm{tot}}}\right]
+        - \frac{mr\cos^2\theta}{m_{\mathrm{tot}}}\ddot\theta
+        &= g\sin\theta-\frac{M_f}{mr} \\[3ex]
+
+        r\left[\frac{4}{3}-\frac{m\cos^2\theta}{m_{\mathrm{tot}}}\right]\ddot\theta
+        &= g\sin\theta
+        -\cos\theta\left[\frac{f+mr\dot\theta^2\sin\theta+F_f}{m_{\mathrm{tot}}}\right]
+        -\frac{M_f}{mr} \\[3ex]
+
+        \ddot\theta &= \frac{g\sin\theta + \cos\theta \left[\cfrac{-f - mr\dot\theta^2\sin\theta - F_f}{m_{\mathrm{tot}}}\right] - \cfrac{M_f}{mr}}{ r \left[\frac{4}{3} - \cfrac{m\cos^2\theta}{m_{\mathrm{tot}}} \right]} \tag{D1}
 
     \end{align}
     <br/>
     <br/>
     <p>
-        The local equivalent of (Barto cart) is obtained with a minor rearrangement of (19-F):
+        The horizontal-balance expression above also gives the local equivalent of (Barto cart):
     </p>
     <br/>
     \begin{align}
-
-        \ddot x &= \frac{f - mr \ddot\theta \cos\theta + mr \dot\theta^2 \sin\theta + F_f}{m_{\mathrm{tot}}} \tag{19-F} \\[6ex]
 
         \ddot x &= \frac{f + mr \left[\dot\theta^2 \sin\theta - \ddot\theta \cos\theta\right] + F_f}{m_c  + m} \tag{D2}
 
@@ -2050,17 +1989,17 @@
     <b>Interpretation of Cart-Track Friction</b>
     <p>
         The cart-track friction term $\mu_c\sgn(\dot x_t)$ in (Barto pole) and (Barto cart) corresponds to the simplified constant-force
-        models in equations (32) and (33), which omit the pole's motion from the normal-force calculation. Here $\mu_c$ is the constant
+        models in equations (24) and (25), which omit the pole's motion from the normal-force calculation. Here $\mu_c$ is the constant
         magnitude of the friction force and therefore has units of newtons, despite being described in [1] as a coefficient of friction.
         The force acts opposite to the cart's motion. This is a valid modelling choice; the recommended equations in section 5 instead use
-        the velocity-proportional model in equation (34) to avoid a discontinuity about zero velocity.
+        the velocity-proportional model in equation (26) to avoid a discontinuity about zero velocity.
     </p>
     <br/>
 
     <b>Interpretation of Pivot Friction</b>
     <p>
         The pivot-friction term in (Barto pole) is proportional to the pole's angular velocity and represents a damping moment opposing its
-        rotation. It is therefore consistent with equation (40), where the corresponding local damping coefficient is $b_p$. Dimensional
+        rotation. It is therefore consistent with equation (32), where the corresponding local damping coefficient is $b_p$. Dimensional
         consistency requires Barto's $\mu_p$ to have units of moment per angular velocity (N m s/rad), despite its description in [1] as a
         coefficient of friction. This is a difference in parameter terminology, not in the form of the damping model.
     </p>
@@ -2142,8 +2081,7 @@
     <br/>
     <p>
         Wieland uses $g_W=-9.8\,\mathrm{m/s^2}$ as a signed acceleration, whereas this paper uses $g=9.8\,\mathrm{m/s^2}$ as a positive
-        magnitude. Substituting $g_W=-g$ into (E1) gives equation (24-F) specialized to a uniform pole with
-        $J=\frac{1}{3}mr^2$.
+        magnitude. Substituting $g_W=-g$ into (E1) gives the uniform-pole cart-acceleration equation (45).
     </p>
     <p>
         Applying the notation mappings and rearranging (Wieland 10) gives:
@@ -2152,8 +2090,7 @@
     <br/>
 
     <p>
-        With the same substitution $g_W=-g$, equation (E2) is equation (23-F) specialized to a
-        uniform pole.
+        With the same substitution $g_W=-g$, equation (E2) is the uniform-pole angular-acceleration equation (44).
     </p>
     <br/>
     <br/>
@@ -2176,7 +2113,7 @@
     <b>Cart-Pole Friction</b>
     <p>
         Equations (E1) and (E2) use the local signed moment $M_f$ for Wieland's velocity-proportional pivot friction term. In Wieland's source
-        equations, $M_f=\mu_p\dot\theta$; this represents a damping moment opposing the pole's rotation and is consistent with equation (40),
+        equations, $M_f=\mu_p\dot\theta$; this represents a damping moment opposing the pole's rotation and is consistent with equation (32),
         where the local damping coefficient is $b_p$. Dimensional consistency requires Wieland's $\mu_p$ to have units N m s/rad.
     </p>
     <br/>
