@@ -9,7 +9,7 @@
    role="img"
    aria-labelledby="figure1-title figure1-description">
   <title id="figure1-title">Cart-pole centre-of-mass schematic</title>
-  <desc id="figure1-description">A cart on a horizontal track with a pendulum or pole pivoted at P. Point G is the centre of mass at distance r from P. The angle theta is measured clockwise from the upright vertical. Applied force f points right, weight mg points downward, and the fixed XY and rotating RT coordinate frames are shown. Line PG does not necessarily represent the full physical pole length.</desc>
+  <desc id="figure1-description">A cart on a horizontal track with a pendulum or pole pivoted at P. Point G is the centre of mass partway along the illustrated pole, at distance r from P. The pole continues beyond G to a schematic endpoint; that endpoint does not imply a uniform mass distribution. The angle theta is measured clockwise from the upright vertical. Applied force f points right, weight mg points downward, and the fixed XY and rotating RT coordinate frames are shown.</desc>
   <style type="text/css">
     .marker-overflow { overflow:visible }
     .marker-path { fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1 }
@@ -18,18 +18,31 @@
     .wheel-hub { fill:#d8e0e5;stroke:#263746;stroke-width:0.36 }
     .applied-force { fill:none;fill-rule:evenodd;stroke:#2563a6;stroke-width:0.46500003;marker-end:url(#markerAppliedForce) }
     .gravity-force { fill:none;fill-rule:evenodd;stroke:#b2473e;stroke-width:0.465;marker-end:url(#markerGravity) }
-    .applied-force-colour { fill:#2563a6 }
-    .gravity-force-colour { fill:#b2473e }
+    .pole { fill:none;stroke:#263746;stroke-width:1.111111;stroke-linecap:round }
+    .pole-point { fill:#000000;stroke:#000000;stroke-width:0.444444 }
+    .angle { fill:none;stroke:#000000;stroke-width:0.333333;marker-end:url(#angleArrow) }
     .point { fill:#000000;stroke:#000000;stroke-width:0.60000002;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill }
     .dashed-guide { fill:none;fill-rule:evenodd;stroke:#5f5f5f;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:2.11666656, 1.05833328;stroke-dashoffset:2.64583325;stroke-opacity:1 }
-    .sans-text { font-style:normal;font-weight:normal;font-size:4.93888903px;line-height:100%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1 }
-    .sans-symbol { font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;line-height:100%;font-family:sans-serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke-width:0.26458332px }
-    .sans-label { font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;line-height:100%;font-family:sans-serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1 }
-    .serif-text { font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888855px;line-height:125%;font-family:serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1 }
-    .serif-italic { font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;font-family:serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332px }
-    .serif-label { font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;font-family:serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332px }
+    .symbol { font-style:italic;font-weight:normal;font-size:6.222222px;font-family:serif;fill:#000000 }
+    .angle-symbol { font-size:5.333333px }
+    .frame-symbol { font-style:italic;font-weight:normal;font-size:4.6px;font-family:serif;fill:#4f4f4f }
+    .point-label { font-style:normal;font-weight:normal;font-size:5.333333px;font-family:serif;fill:#000000 }
+    .applied-force-colour { fill:#2563a6 }
+    .gravity-force-colour { fill:#b2473e }
   </style>
   <defs>
+    <marker
+       id="angleArrow"
+       markerWidth="1.555556"
+       markerHeight="1.555556"
+       refX="1.444444"
+       refY="0.777778"
+       orient="auto"
+       markerUnits="userSpaceOnUse">
+      <path
+         d="M 0,0 1.555556,0.777778 0,1.555556 Z"
+         style="fill:#000000" />
+    </marker>
     <marker
        class="marker-overflow"
        id="marker1444"
@@ -142,65 +155,30 @@
        class="dashed-guide"
        d="M 60.941405,26.528123 V 152.04475" />
     <path
-       style="fill:none;fill-opacity:0;fill-rule:nonzero;stroke:#000000;stroke-width:0.16500001;stroke-linecap:round;stroke-dashoffset:9.99999905;marker-end:url(#marker1444);paint-order:stroke markers fill"
+       class="angle"
        d="M 90.976524,67.4850 A 45,45 0 0 1 98.790,68.168" />
-<text
-
-       class="sans-text"
-       x="92.7"
-       y="79.0"><tspan
-         x="92.7"
-         y="79.0"
-         style="font-size:4.23333311px;line-height:100%;font-family:sans-serif;stroke-width:0.26458332px">θ</tspan></text>
+    <text class="symbol angle-symbol" x="92.7" y="79.0">θ</text>
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.16500001;marker-end:url(#marker1444)"
        d="m 60.918707,148.96491 h 29.65413" />
-    <text
-
-       class="sans-text"
-       x="73.453163"
-       y="147.89124"><tspan
-         x="73.453163"
-         y="147.89124"
-         class="sans-symbol">𝑥</tspan></text>
+    <text class="symbol" x="73.453163" y="147.89124">x</text>
     <path
        style="fill:none;fill-rule:evenodd;stroke:#5f5f5f;stroke-width:0.26458332;stroke-dasharray:2.11666666, 1.05833333;stroke-dashoffset:2.64583325"
-       d="M 117.22498,30.939546 105.7847,28.922306" />
+       d="M 101.003692,54.625184 111.639616,56.500586" />
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.16500001;stroke-dashoffset:2.6500001;marker-start:url(#marker10780);marker-end:url(#marker10732)"
-       d="M 116.18646,30.903156 101.51344,113.83277" />
-    <text
-
-       style="font-size:4.93888903px;line-height:100%;font-family:sans-serif;fill:#000000;stroke:none;stroke-width:0.26458332px"
-       x="112.83652"
-       y="56.005821"><tspan
-         x="112.83652"
-         y="56.005821"
-         style="font-size:4.93888903px;line-height:100%;font-family:sans-serif;fill:#000000;stroke-width:0.26458332px">𝑟</tspan></text>
+       d="M 111.639616,56.500586 101.49698,114.022298" />
+    <text class="symbol" x="110.2" y="84.0">r</text>
     <circle
        class="point"
        cx="91.484398"
        cy="112.48503"
        r="0.34156466" />
-    <text
-
-       class="sans-text"
-       x="59.804447"
-       y="24.971638"><tspan
-         x="59.804447"
-         y="24.971638"
-         class="sans-symbol">𝑦</tspan></text>
+    <text class="frame-symbol" x="59.804447" y="24.971638">y</text>
     <path
        class="dashed-guide"
        d="M 141.96214,112.1564 H 45.032969" />
-    <text
-
-       class="sans-text"
-       x="142.37643"
-       y="113.0845"><tspan
-         x="142.37643"
-         y="113.0845"
-         class="sans-symbol">𝑥</tspan></text>
+    <text class="frame-symbol" x="141.5" y="113.0845">x</text>
     <circle
        class="point"
        cx="60.944134"
@@ -214,90 +192,35 @@
        d="M 127.42696,118.69746 90.97578,112.27013" />
     <path
        class="gravity-force"
-       d="m 105.56462,29.977538 c 0,19.05 0,20.505208 0,20.505208" />
-    <text
-
-       class="sans-label"
-       x="106.33965"
-       y="39.667805"><tspan
-         x="106.33965"
-         y="39.667805"
-         class="sans-symbol gravity-force-colour">𝑚𝑔</tspan></text>
+       d="M 101.217776,54.629701 V 75.134909" />
+    <text class="symbol gravity-force-colour" x="101.992806" y="64.319967">mg</text>
     <path
        class="applied-force"
        d="m 63.563411,122.07209 c 7.962457,0 8.570701,0 8.570701,0" />
-    <text
-
-       class="sans-label"
-       x="65.154671"
-       y="119.92926"><tspan
-         x="65.154671"
-         y="119.92926"
-         class="sans-symbol applied-force-colour">𝑓</tspan></text>
+    <text class="symbol applied-force-colour" x="65.154671" y="119.92926">f</text>
     <circle
        class="point"
        cx="90.976524"
        cy="121.3756"
        r="0.34156466" />
-    <text
-
-       class="serif-text"
-       x="123.00419"
-       y="122.46126"><tspan
-         x="123.00419"
-         y="122.46126"
-         class="serif-italic">T</tspan></text>
-    <text
-
-       class="serif-text"
-       x="108.40938"
-       y="21.003164"><tspan
-         x="108.40938"
-         y="21.003164"
-         class="serif-italic">R</tspan></text>
-    <text
-
-       class="serif-text"
-       x="85.978539"
-       y="122.81345"><tspan
-         x="85.978539"
-         y="122.81345"
-         class="serif-label">C</tspan></text>
-    <text
-
-       style="font-size:4.23333311px;line-height:125%;font-family:serif;fill:#000000;stroke:none;stroke-width:0.26458332px"
-       x="83.915039"
-       y="110.55453"><tspan
-         x="83.915039"
-         y="110.55453"
-         class="serif-label">P</tspan></text>
-    <text
-
-       class="serif-text"
-       x="100.24975"
-       y="27.773424"><tspan
-         x="100.24975"
-         y="27.773424"
-         class="serif-label">G</tspan></text>
-    <text
-
-       class="serif-text"
-       x="56.659908"
-       y="116.19553"><tspan
-         x="56.659908"
-         y="116.19553"
-         class="serif-label">O</tspan></text>
-    <g
-       transform="translate(-57.551974,2.6823066)">
-      <path
-         d="M 148.41303,109.46459 C 162.90251,27.290715 162.90251,27.290715 162.90251,27.290715"
-         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.66500008" />
-      <path
-         d="m 148.60074,108.3841 a 1.1406982,1.0758549 10 0 1 0.93655,1.25759 1.1406982,1.0758549 10 0 1 -1.31019,0.86143 1.1406982,1.0758549 10 0 1 -0.93654,-1.25759 1.1406982,1.0758549 10 0 1 1.31018,-0.86143 z"
-         style="fill:#000000;stroke:#000000;stroke-width:0.60000008;stroke-linecap:round;paint-order:stroke markers fill" />
-      <path
-         d="m 163.29272,25.065215 a 1.6913321,1.6009386 10.686962 0 1 1.38847,1.871604 1.6913321,1.6009386 10.686962 0 1 -1.9424,1.282019 1.6913321,1.6009386 10.686962 0 1 -1.38845,-1.871603 1.6913321,1.6009386 10.686962 0 1 1.94238,-1.28202 z"
-         class="point" />
-    </g>
+    <text class="frame-symbol" x="123.00419" y="122.46126">T</text>
+    <text class="frame-symbol" x="108.40938" y="21.5">R</text>
+    <text class="point-label" x="85.978539" y="122.81345">C</text>
+    <text class="point-label" x="83.915039" y="110.55453">P</text>
+    <text class="point-label" x="95.902906" y="52.425586">G</text>
+    <text class="point-label" x="56.659908" y="116.19553">O</text>
+    <path
+       class="pole"
+       d="M 90.861056,112.146897 105.350536,29.973022" />
+    <circle
+       class="pole-point"
+       cx="90.861056"
+       cy="112.146897"
+       r="1.111111" />
+    <circle
+       class="pole-point"
+       cx="101.003692"
+       cy="54.625184"
+       r="1.555556" />
   </g>
 </svg>
