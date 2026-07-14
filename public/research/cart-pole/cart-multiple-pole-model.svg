@@ -9,7 +9,7 @@
    role="img"
    aria-labelledby="multiple-pole-title multiple-pole-description">
   <title id="multiple-pole-title">Two separate poles attached to one cart</title>
-  <desc id="multiple-pole-description">A topology schematic of two unjointed poles attached directly to the same cart at separate pivots P1 and P2. Each pole has its own angle and centre of mass G1 or G2. The poles are not connected to one another, and both pivots move horizontally with the cart.</desc>
+  <desc id="multiple-pole-description">A topology schematic of two unjointed poles of unequal illustrated lengths attached directly to the same cart at separate pivots P1 and P2. Each pole extends beyond its centre of mass G1 or G2 and has its own angle. Dimension lines mark the centre-of-mass distances r1 and r2 from the pivots. The poles are not connected to one another, and both pivots move horizontally with the cart.</desc>
   <style type="text/css">
     .cart-body { fill:#7893a8;stroke:#263746;stroke-width:2 }
     .wheel { fill:#667783;stroke:#263746;stroke-width:3 }
@@ -18,19 +18,32 @@
     .point { fill:#000000;stroke:#000000;stroke-width:2 }
     .upright-guide { fill:none;stroke:#5f5f5f;stroke-width:1.5;stroke-dasharray:8 5 }
     .angle { fill:none;stroke:#000000;stroke-width:1.5;marker-end:url(#angleArrow) }
+    .dimension { fill:none;stroke:#000000;stroke-width:1.25;marker-start:url(#dimensionArrow);marker-end:url(#dimensionArrow) }
+    .dimension-guide { fill:none;stroke:#5f5f5f;stroke-width:1.25;stroke-dasharray:6 4 }
     .symbol { font-style:italic;font-size:28px;font-family:serif;fill:#000000 }
+    .angle-symbol { font-size:24px }
     .point-label { font-size:24px;font-family:serif;fill:#000000 }
   </style>
   <defs>
     <marker
        id="angleArrow"
-       markerWidth="8"
-       markerHeight="8"
-       refX="7"
-       refY="4"
+       markerWidth="7"
+       markerHeight="7"
+       refX="6.5"
+       refY="3.5"
        orient="auto"
-       markerUnits="strokeWidth">
-      <path d="M 0,0 8,4 0,8 Z" style="fill:#000000" />
+       markerUnits="userSpaceOnUse">
+      <path d="M 0,0 7,3.5 0,7 Z" style="fill:#000000" />
+    </marker>
+    <marker
+       id="dimensionArrow"
+       markerWidth="7"
+       markerHeight="7"
+       refX="6.5"
+       refY="3.5"
+       orient="auto-start-reverse"
+       markerUnits="userSpaceOnUse">
+      <path d="M 0,0 7,3.5 0,7 Z" style="fill:#000000" />
     </marker>
     <pattern
        id="groundHatch"
@@ -44,9 +57,14 @@
   <rect x="60" y="390" width="600" height="60" style="fill:url(#groundHatch)" />
   <path d="M 60,390 H 660" style="fill:none;stroke:#000000;stroke-width:4" />
 
-  <rect x="170" y="300" width="380" height="60" rx="3" class="cart-body" />
-  <path d="M 284,300 V 282 Q 284,270 300,270 Q 316,270 316,282 V 300 Z" class="cart-body" />
-  <path d="M 404,300 V 282 Q 404,270 420,270 Q 436,270 436,282 V 300 Z" class="cart-body" />
+  <path d="M 300,275 269.543417,284.818174 M 246.307,108.441 215.850417,118.259174" class="dimension-guide" />
+  <path d="M 269.543417,284.818174 215.850417,118.259174" class="dimension" />
+  <path d="M 420,275 448.501123,289.549433 M 478.88,159.659 507.381123,174.208433" class="dimension-guide" />
+  <path d="M 448.501123,289.549433 507.381123,174.208433" class="dimension" />
+
+  <rect x="213.249" y="300" width="293.502" height="60" rx="3" class="cart-body" />
+  <path d="M 272.562,300 V 275 A 27.438,15.853 0 0 1 327.438,275 V 300 Z" class="cart-body" />
+  <path d="M 392.562,300 V 275 A 27.438,15.853 0 0 1 447.438,275 V 300 Z" class="cart-body" />
 
   <circle cx="260" cy="370" r="20" class="wheel" />
   <circle cx="260" cy="370" r="6" class="wheel-hub" />
@@ -56,24 +74,24 @@
   <path d="M 300,275 V 65" class="upright-guide" />
   <path d="M 420,275 V 65" class="upright-guide" />
 
-  <path d="M 300,275 251,123" class="pole" />
-  <path d="M 420,275 493,132" class="pole" />
+  <path d="M 300,275 223.295,37.058" class="pole" />
+  <path d="M 420,275 504.114,110.228" class="pole" />
 
-  <path d="M 300,230 A 45,45 0 0 0 286,232" class="angle" />
-  <path d="M 420,230 A 45,45 0 0 1 440,235" class="angle" />
+  <path d="M 300,165 A 110,110 0 0 0 266.25,170.306" class="angle" />
+  <path d="M 420,165 A 110,110 0 0 1 470.014,177.027" class="angle" />
 
   <circle cx="300" cy="275" r="5" class="point" />
   <circle cx="420" cy="275" r="5" class="point" />
-  <circle cx="251" cy="123" r="7" class="point" />
-  <circle cx="493" cy="132" r="7" class="point" />
+  <circle cx="246.307" cy="108.441" r="7" class="point" />
+  <circle cx="478.88" cy="159.659" r="7" class="point" />
 
-  <text x="308" y="268" class="point-label">P₁</text>
-  <text x="429" y="268" class="point-label">P₂</text>
-  <text x="218" y="115" class="point-label">G₁</text>
-  <text x="502" y="128" class="point-label">G₂</text>
-  <text x="252" y="232" class="symbol">θ₁</text>
-  <text x="443" y="222" class="symbol">θ₂</text>
-  <text x="222" y="184" class="symbol">r₁</text>
-  <text x="466" y="203" class="symbol">r₂</text>
+  <text x="313.96402" y="258.74551" class="point-label">P₁</text>
+  <text x="376.89459" y="259.90231" class="point-label">P₂</text>
+  <text x="248.78258" y="98.12738" class="point-label">G₁</text>
+  <text x="445.07797" y="150.26054" class="point-label">G₂</text>
+  <text x="288.0372" y="193.66852" class="symbol angle-symbol" text-anchor="middle">θ₁</text>
+  <text x="436.08817" y="213.06992" class="symbol angle-symbol" text-anchor="middle">θ₂</text>
+  <text x="190" y="136.77119" class="symbol">r₁</text>
+  <text x="509" y="191.6293" class="symbol">r₂</text>
   <text x="352" y="340" class="point-label">C</text>
 </svg>

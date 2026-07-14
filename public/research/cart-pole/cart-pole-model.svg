@@ -14,7 +14,8 @@
     .marker-overflow { overflow:visible }
     .marker-path { fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1 }
     .cart-body { fill:#7893a8;stroke:#263746;stroke-width:0.26499999 }
-    .wheel { fill:#667783;stroke:#263746;stroke-width:0.60000002;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill }
+    .wheel { fill:#667783;stroke:#263746;stroke-width:0.6 }
+    .wheel-hub { fill:#d8e0e5;stroke:#263746;stroke-width:0.36 }
     .applied-force { fill:none;fill-rule:evenodd;stroke:#2563a6;stroke-width:0.46500003;marker-end:url(#markerAppliedForce) }
     .gravity-force { fill:none;fill-rule:evenodd;stroke:#b2473e;stroke-width:0.465;marker-end:url(#markerGravity) }
     .applied-force-colour { fill:#2563a6 }
@@ -87,51 +88,47 @@
     <pattern
        id="groundHatch"
        patternUnits="userSpaceOnUse"
-       width="1.3087"
-       height="3.8604">
+       width="2.1"
+       height="2.1">
       <path
-         d="M 1.276,0.016 0.033,3.845"
-         style="fill:none;stroke:#000000;stroke-width:0.08" />
+         d="M 0.525,-0.525 -0.525,0.525 M 2.625,-0.525 -0.525,2.625 M 2.625,1.575 1.575,2.625"
+         style="fill:none;stroke:#000000;stroke-width:0.175" />
     </pattern>
   </defs>
   <g
      transform="translate(-45.032969,-17.148158)">
     <g>
-      <path
-         d="m 72.921664,116.24719 h 35.224676 v 10.44233 H 72.921664 Z"
+      <rect
+         x="72.921664"
+         y="116.24719"
+         width="35.224676"
+         height="10.44233"
+         rx="0.52212"
          class="cart-body" />
       <path
-         d="m 90.861221,109.16178 a 4.0090431,3.4472327 0 0 0 -3.999757,3.28957 h -0.0093 v 0.15754 3.64755 h 8.018114 v -3.64755 -0.15754 h -0.0062 a 4.0090431,3.4472327 0 0 0 -4.002857,-3.28957 z"
+         d="M 86.361,116.24719 V 112.147 A 4.5,2.6 0 0 1 95.361,112.147 V 116.24719 Z"
          class="cart-body" />
     </g>
-    <g
-       transform="translate(26.18572,-15.047522)">
-      <circle
-         r="2.1680026"
-         transform="rotate(82.08517)"
-         cy="-33.218586"
-         cx="150.29735"
-         class="wheel" />
-      <circle
-         r="0.34156466"
-         cy="144.24582"
-         cx="53.596268"
-         class="point" />
-    </g>
-    <g
-       transform="translate(47.148995,-15.070083)">
-      <circle
-         r="2.1680026"
-         transform="rotate(82.08517)"
-         cy="-33.218586"
-         cx="150.29735"
-         class="wheel" />
-      <circle
-         r="0.34156466"
-         cy="144.24582"
-         cx="53.596268"
-         class="point" />
-    </g>
+    <circle
+       cx="81.26435"
+       cy="128.47403"
+       r="3.56902"
+       class="wheel" />
+    <circle
+       cx="81.26435"
+       cy="128.47403"
+       r="1.07071"
+       class="wheel-hub" />
+    <circle
+       cx="99.80365"
+       cy="128.47403"
+       r="3.56902"
+       class="wheel" />
+    <circle
+       cx="99.80365"
+       cy="128.47403"
+       r="1.07071"
+       class="wheel-hub" />
     <path
        style="fill:url(#groundHatch);fill-rule:nonzero;stroke:none"
        d="M 47.695088,132.04305 H 135.9916 v 10.70847 H 47.695088 Z" />
