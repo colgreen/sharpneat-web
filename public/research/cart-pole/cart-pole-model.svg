@@ -9,7 +9,7 @@
    role="img"
    aria-labelledby="figure1-title figure1-description">
   <title id="figure1-title">Cart-pole centre-of-mass schematic</title>
-  <desc id="figure1-description">A cart on a horizontal track with a pendulum or pole pivoted at P. Point G is the centre of mass at distance r from P. The angle theta is measured clockwise from the upright vertical. Applied force f points right, weight mg points downward, and the fixed XY and rotating TR coordinate frames are shown. Line PG does not necessarily represent the full physical pole length.</desc>
+  <desc id="figure1-description">A cart on a horizontal track with a pendulum or pole pivoted at P. Point G is the centre of mass at distance r from P. The angle theta is measured clockwise from the upright vertical. Applied force f points right, weight mg points downward, and the fixed XY and rotating RT coordinate frames are shown. Line PG does not necessarily represent the full physical pole length.</desc>
   <style type="text/css">
     .marker-overflow { overflow:visible }
     .marker-path { fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1 }

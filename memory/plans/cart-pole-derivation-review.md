@@ -3,7 +3,7 @@
 - Reviewed: 2026-07-13
 - Reviewed page: `public/research/cart-pole/cart-pole-equations.html`
 - Reviewed revision: `d07bb73` (`Refine cart-pole derivation and figure`)
-- Status: In progress; F1-F6, F11, and F14 resolved on 2026-07-13; F7-F10 and F12 resolved on 2026-07-14
+- Status: In progress; F1-F6, F11, and F14 resolved on 2026-07-13; F7-F10 and F12-F13 resolved on 2026-07-14
 
 ## Review Goal
 
@@ -65,7 +65,7 @@ The primary-source transcriptions and quotations in Appendices C-E were not inde
 | F10 | P2 | The numerical “trajectory” discussion is broader than the endpoint-only error measure | [x] Resolved 2026-07-14 |
 | F11 | P2 | Calling torque a “rotational force” blurs two quantities with different units | [x] Resolved 2026-07-13 |
 | F12 | P2 | Historical/source asides interrupt the main instructional path | [x] Resolved 2026-07-14 |
-| F13 | P3 | Equation (9)'s vector notation is nonstandard and its frame name changes from TR to RT | [ ] Open |
+| F13 | P3 | Equation (9)'s vector notation is nonstandard and its frame name changes from TR to RT | [x] Resolved 2026-07-14 |
 | F14 | P3 | Equation numbering jumps from (24) to (29), which looks like missing content | [x] Resolved 2026-07-13 |
 | F15 | P3 | Several local prose, notation, accessibility, and dating issues remain | [ ] Open |
 | F16 | P3 | Optional friction discussion sometimes overstates or weakly motivates approximations | [ ] Open |
@@ -378,6 +378,24 @@ The explanatory text also changes the name of the rotating frame from TR to RT.
 
 **Recommended change:** If the optional block is retained, use conventional scalar-times-unit-vector notation and one consistent frame name.
 
+**Outcome (2026-07-14):** Resolved by recognizing equation (9) as a local adaptation of Cannon's equation (22.51), not an accidental
+function-like construction. At the user's direction, the paper retains Cannon's unit-vector symbols but writes their scalar coefficients
+as explicit products:
+
+```text
+a^G = x-double-dot 1_x + r theta-double-dot 1_T - r theta-dot^2 1_R.
+```
+
+The note now identifies Cannon's source equation, the mappings from point Q and distance $l$ to point G and distance $r$, and the explicit
+multiplication adaptation. It defines the fixed x-axis, tangential, and radial unit vectors directly. The same notation was applied to the
+main moment derivation by replacing radial-vector form `1_R(r)` with `r 1_R` in the prose and equation (13).
+
+The rotating coordinate frame is now called `RT` consistently in table 1, Figure 1's HTML alternative text, the optional source note, and
+the SVG description. Table 1 expands this as the radial-tangential frame and defines `R` as parallel to PG and `T` as perpendicular to it.
+This also resolves the first editorial subfinding under F15. No equation value, tag, or drawing geometry changed.
+Verification found 61 balanced `align` environments, main equation tags (1)-(51) with only the intentional repeated (26) and (32), no
+remaining Cannon-style `1_x(...)`, `1_T(...)`, or `1_R(...)` forms in the public paper, and 467 MathJax containers after rendering.
+
 ### F14 — Resolve or explain the equation-number gap
 
 **Original location:** Between former equations (24) and (29), before the 2026-07-13 renumbering.
@@ -392,7 +410,7 @@ The sequence skips (25)-(28). To a reader, this looks like missing equations or 
 
 **Locations and proposed corrections:**
 
-- Section 3.2 says “RT coordinate frame” after defining TR.
+- Resolved with F13: the paper and Figure 1 metadata now use “RT coordinate frame” consistently.
 - The paragraph before (25) begins “Noting that if ...”, which is a sentence fragment.
 - Table 2 should state explicitly that `theta` is in radians, as Table 1 does.
 - The prose after table 4 calls cart position and velocities “model parameters”; they are initial state variables.
@@ -449,7 +467,7 @@ Work in small passes so that mathematical and editorial changes remain reviewabl
 
 1. **Mechanics foundations (resolved 2026-07-14):** F7 and F8.
 2. **Implementation and numerical claims (resolved 2026-07-14):** F9 and F10.
-3. **Optional depth and notation:** F12 resolved 2026-07-14; F13 and F16 remain open.
+3. **Optional depth and notation:** F12-F13 resolved 2026-07-14; F16 remains open.
 4. **Editorial integrity:** F15.
 5. **Dedicated coordinate-convention decision:** F17, when a full rederivation and artefact-regeneration pass is desired.
 

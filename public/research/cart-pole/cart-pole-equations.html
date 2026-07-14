@@ -149,7 +149,7 @@
 
     <figure>
         <br/>
-        <img src="cart-pole-model.svg" alt="Centre-of-mass schematic of a cart on a horizontal track with a pendulum or pole pivoted to the cart, showing points O, C, P, and G; coordinates x and theta; distance r from pivot P to centre of mass G; and the fixed XY and rotating TR coordinate frames. The line PG does not necessarily show the full physical pole length." />
+        <img src="cart-pole-model.svg" alt="Centre-of-mass schematic of a cart on a horizontal track with a pendulum or pole pivoted to the cart, showing points O, C, P, and G; coordinates x and theta; distance r from pivot P to centre of mass G; and the fixed XY and rotating RT coordinate frames. The line PG does not necessarily show the full physical pole length." />
         <br/>
         <figcaption><b>Figure 1.</b><br/>Centre-of-mass schematic of the cart-pole balancing model. The line PG shows the distance $r$ from pivot P to centre of mass G; it does not necessarily represent the full physical pole length.</figcaption>
     </figure>
@@ -163,8 +163,9 @@
             <tr><td>$G$ &nbsp;</td><td>The pendulum or pole's centre of mass, located at distance $r$ from point P.</td></tr>
             <tr><td>$L$ &nbsp;</td><td>Full physical length of the pole.</td></tr>
             <tr><td>$r$ &nbsp;</td><td>Distance from pivot point P to the pendulum or pole's centre of mass. For a uniform pole $r=L/2$.</td></tr>
-            <tr><td>$T,R$ &nbsp;</td><td>An alternative coordinate frame with the <i>R</i> axis parallel to the pendulum (vector PG). The <i>TR</i> coordinate frame
-                rotates and moves horizontally relative to the fixed (or 'world') Cartesian coordinate frame.</td></tr>
+            <tr><td>$R,T$ &nbsp;</td><td>The radial-tangential (<i>RT</i>) coordinate frame. The radial <i>R</i> axis is parallel to the pendulum
+                (vector PG), and the tangential <i>T</i> axis is perpendicular to it. This frame rotates and moves horizontally relative
+                to the fixed (or 'world') Cartesian coordinate frame.</td></tr>
             <tr><td>$x$ &nbsp;</td><td>Horizontal coordinate of the cart on the track.</td></tr>
             <tr><td>$\theta$ &nbsp; </td><td>Angle of the pendulum in radians, measured as a deviation from the vertical. The pendulum is at 0° when oriented vertically straight up,
                 +90° when horizontal and to the right of the pivot point, -90° when horizontal and to the left of the pivot point,
@@ -366,17 +367,18 @@
 
     <blockquote style="background-color:eeeeee;padding:20px">
         <p>
-            <b>Optional source note: Cannon's rotating-frame notation.</b> The main derivation continues with the XY component equations
+            <b>Optional source note: Cannon's rotating-frame decomposition.</b> The main derivation continues with the XY component equations
             above; this equivalent notation is not used later and may be skipped. Cannon [2] uses vector notation and the alternative
-            coordinate frame TR shown in figure 1, giving the following more concise definition of the pole mass centre's acceleration,
-            here written using point G and distance $r$. <a href="#appendixC">Appendix C</a> provides the full Cannon comparison.
+            RT coordinate frame shown in figure 1. His equation (22.51), mapped to point G and distance $r$ and written with scalar
+            multiplication explicit, gives the following concise definition of the pole mass centre's acceleration.
+            <a href="#appendixC">Appendix C</a> provides the full Cannon comparison.
         </p>
 
-        $$ \mathbf{a}^G = \mathbf{1}_x(\ddot x) + \mathbf{1}_T(r\ddot\theta) + \mathbf{1}_R(-r \dot\theta^2) \tag{9} \\[2ex]$$
+        $$ \mathbf{a}^G = \ddot x\,\mathbf{1}_x + r\ddot\theta\,\mathbf{1}_T - r\dot\theta^2\,\mathbf{1}_R \tag{9} \\[2ex]$$
 
         <p>
-            Where $\mathbf{1}_x()$ denotes a unit vector in the x-axis, $\mathbf{1}_T()$ denotes a unit vector in the T-axis of the RT 
-            coordinate frame, and so on.
+            Here $\mathbf{1}_x$ denotes the fixed x-axis unit vector, while $\mathbf{1}_T$ and $\mathbf{1}_R$ denote the tangential and
+            radial unit vectors, respectively, of the rotating RT coordinate frame.
         </p>
     </blockquote>
     <br/>
@@ -496,14 +498,14 @@
     </p>
     <p>
         The inertial force on G is $\mathbf{F}^i_G$, whose x and y components are given by equations (10) and (11). Equations (1) and (2)
-        give the components of the radial vector $\mathbf{1}_R(r)$ (vector PG) as $r\sin\theta$ and $r\cos\theta$. Substituting these four
+        give the components of the radial vector $r\mathbf{1}_R$ (vector PG) as $r\sin\theta$ and $r\cos\theta$. Substituting these four
         components into the rule above gives the signed moment about P:
     </p>
     <br/>
 
     \begin{align}
 
-        M_G & = \left[ \mathbf{1}_R(r) \times \mathbf{F}^i_G \right]_z \tag{13} \\[3ex]
+        M_G & = \left[ r\mathbf{1}_R \times \mathbf{F}^i_G \right]_z \tag{13} \\[3ex]
 
             &= (r\sin\theta)(\mathbf{F}^i_G)_y-(r\cos\theta)(\mathbf{F}^i_G)_x \\[3ex]
 
