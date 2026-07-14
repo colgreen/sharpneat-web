@@ -3,7 +3,7 @@
 - Reviewed: 2026-07-13
 - Reviewed page: `public/research/cart-pole/cart-pole-equations.html`
 - Reviewed revision: `d07bb73` (`Refine cart-pole derivation and figure`)
-- Status: In progress; F1-F6, F11, and F14 resolved on 2026-07-13; F7-F10, F12-F13, and F15 resolved on 2026-07-14
+- Status: In progress; F1-F6, F11, and F14 resolved on 2026-07-13; F7-F10, F12-F13, and F15-F16 resolved on 2026-07-14
 
 ## Review Goal
 
@@ -68,7 +68,7 @@ The primary-source transcriptions and quotations in Appendices C-E were not inde
 | F13 | P3 | Equation (9)'s vector notation is nonstandard and its frame name changes from TR to RT | [x] Resolved 2026-07-14 |
 | F14 | P3 | Equation numbering jumps from (24) to (29), which looks like missing content | [x] Resolved 2026-07-13 |
 | F15 | P3 | Several local prose, notation, accessibility, and dating issues remain | [x] Resolved 2026-07-14 |
-| F16 | P3 | Optional friction discussion sometimes overstates or weakly motivates approximations | [ ] Open |
+| F16 | P3 | Optional friction discussion sometimes overstates or weakly motivates approximations | [x] Resolved 2026-07-14 |
 | F17 | P2 | Angular variables are clockwise-positive while right-hand-rule moments are anticlockwise-positive | [ ] Deferred for a dedicated sign-convention pass |
 
 Priority meanings:
@@ -448,6 +448,23 @@ Several optional passages are more speculative than the core derivation:
 
 **Recommended change:** Retain the model alternatives, but label empirical constants as calibration choices, remove claims of general superiority, and keep the adopted linear-damping rationale tied to the intended simulation method.
 
+**Outcome (2026-07-14):** The optional cart and pivot Coulomb models now distinguish the state-dependent reactions from
+the constant effective loads used in simplified models. The cart-only $m_cg$ load in (25) and the $mg/2$ pivot load in (31)
+are explicitly empirical choices to calibrate, not generally preferable approximations; the latter's factor of one half is
+identified as illustrative rather than derived.
+
+The numerical-method discussion now scopes the zero-velocity discontinuity to the paper's simple fixed-step Euler and
+Runge-Kutta workflow, while acknowledging that event-aware, switching, and nonsmooth methods can handle Coulomb friction.
+The adopted velocity-proportional damping model is described as smooth and convenient for that workflow, but not as a
+physical reproduction of speed-independent Coulomb friction or sticking. The remote motor-speed analogy was removed, and
+$b_p$ is instead tied to bearing data or angular-decay calibration.
+
+The combined model is labelled a phenomenological superposition, and the closing advice now permits omitting pivot friction
+only when its losses are negligible to the required accuracy. Cart and pivot damping are not substitutes because they act on
+different generalized velocities. No equation, tag, or recommended force/moment substitution changed. Verification found 61
+balanced `align` environments, main equation tags (1)-(51) with only the intentional repeated (26) and (32), and 478 MathJax
+containers after rendering.
+
 ### F17 — Reconsider the angular sign convention
 
 **Location:** Figure 1 and table 1; the kinematic and dynamic derivations in sections 3.1-5.3; the source comparisons in Appendices C-E; and the supporting C# implementation and numerical artefacts.
@@ -481,7 +498,7 @@ Work in small passes so that mathematical and editorial changes remain reviewabl
 
 1. **Mechanics foundations (resolved 2026-07-14):** F7 and F8.
 2. **Implementation and numerical claims (resolved 2026-07-14):** F9 and F10.
-3. **Optional depth and notation:** F12-F13 resolved 2026-07-14; F16 remains open.
+3. **Optional depth and notation (resolved 2026-07-14):** F12-F13 and F16.
 4. **Editorial integrity (resolved 2026-07-14):** F15.
 5. **Dedicated coordinate-convention decision:** F17, when a full rederivation and artefact-regeneration pass is desired.
 

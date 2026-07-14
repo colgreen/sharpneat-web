@@ -830,39 +830,40 @@
     $$ F_f = -\mu_c m_{\mathrm{tot}} g \sgn(\dot x) \tag{24} $$
     <br/>
     <p>
-        If the pendulum is being successfully balanced, its angle will tend to vary only slightly and with moderate angular velocity.
-        Under this assumption, the approximate normal force above is expected to deviate significantly from the true force only if the
-        pendulum is swinging wildly. If the pendulum does happen to swing with high angular velocity then perhaps a more appropriate
-        normal force approximation is based on the weight of the cart only, not including the pole.
+        Equation (24) uses the static combined weight as a constant effective load. If the omitted motion-dependent term is not small,
+        equation (22) shows that the true track reaction can be either less than or greater than $m_{\mathrm{tot}}g$, depending on the
+        pole's angle, angular velocity, and angular acceleration. High angular velocity alone therefore does not make the cart weight
+        $m_cg$ a generally more accurate approximation. It is simply another possible constant effective load:
     </p>
     <br/>
     $$ F_f = -\mu_c m_c g \sgn(\dot x) \tag{25} $$
 
     <br/>
     <p>
-        Thus, in general, a constant magnitude with a sign opposite to the cart's direction of motion is a reasonable approximation for
-        the cart-track friction force.
+        Equation (25) is not derived from the dynamic reaction; it selects the lower constant load $m_cg$. More generally, a model may use
+        a constant effective load $N_{c,\mathrm{eff}}$ in $F_f=-\mu_cN_{c,\mathrm{eff}}\sgn(\dot x)$. Its value should be chosen from
+        measurements or calibrated for the intended operating regime. A constant magnitude can be a useful simplification when load
+        variation is unimportant, but it is an empirical approximation rather than a generally accurate replacement for (23).
     </p>
     <h5>Linear Damping Model (Adopted)</h5>
     <p>
-        However, a constant friction force based on the sign of the velocity term is not conducive to simulation of the cart-pole system. This
-        is because simulation requires use of a numerical method (see §6) to obtain updates to the model state variables (i.e. the position and
-        velocity of both the cart and the pole) at successive discrete timesteps, and such numerical methods are based on calculating the gradient 
-        (i.e. instantaneous rate of change) of each state variable and projecting those gradients forward in time to obtain a new model state 
-        one timestep in the future. The use of a constant friction term that changes sign only, results in a discontinuity in the gradients 
-        about velocity zero, and this discontinuity greatly impedes the ability of any numerical method to accurately project forward to the 
-        correct state at the next timestep.
+        The sign term in a Coulomb model makes the right-hand side discontinuous at zero velocity. A simple fixed-step integrator for a
+        smooth ordinary differential equation, such as the Euler and Runge-Kutta methods used in section 6, can step across a zero crossing
+        without locating it. The friction force may then retain the old sign for part of that timestep and incorrectly accelerate rather
+        than retard the cart.
     </p>
     <p>
-        For example, if the velocity zero crossing occurs halfway between two timesteps, then the friction force may be applied in the wrong
-        direction for the latter half of the timestep interval, thus propelling the cart rather than retarding its motion. As such, a friction
-        force that is proportional to velocity is a more practical approximation, as it results in a continuous gradient about zero velocity:
+        This is not a limitation of every numerical method. Dry friction can instead be handled with zero-crossing event detection,
+        explicit switching between sticking and sliding regimes, or a nonsmooth integration method. Those approaches are outside this
+        paper's fixed-step smooth-ODE workflow. For that workflow we adopt velocity-proportional damping, which is continuous at zero:
     </p>
     <br/>
     $$ F_f = -b_c \dot x \tag{26} $$
     <br/>
     <p>
         Here $b_c$ is a linear damping coefficient, with units of force per velocity (N s/m, i.e. newton-seconds per metre).
+        Equation (26) is a smooth damping model; it does not reproduce the speed-independent magnitude or sticking behaviour of Coulomb
+        friction. Its coefficient should be obtained from measurements or calibrated for the intended system.
     </p>
 
     <h5>Wheel-Bearing Interpretation (Optional)</h5>
@@ -941,14 +942,17 @@
     <br/>
     <h5>Simplified Coulomb Approximation (Optional)</h5>
     <p>
-        As with cart-track friction we may wish to employ a simpler approximation of cart-pole friction by replacing the normal force equation
-        with a constant normal force. In this case the average normal force depends strongly on the system dynamics, for example
-        whether the pole remains balanced or swings wildly. As such there is no obvious choice for a single constant normal force that is
-        reasonable in all scenarios. In light of this a positive value somewhere in the interval $(0,mg]$ is the next best option, e.g.:
+        As with cart-track friction, we may replace the varying pivot-reaction magnitude with a constant effective bearing load
+        $N_{p,\mathrm{eff}}$. There is no universal value because the reaction depends on the cart and pole motion. It should be measured
+        or calibrated for the intended regime. Equation (31) illustrates the particular choice $N_{p,\mathrm{eff}}=mg/2$:
     </p>
     <br/>
     $$ M_f = \mu_p r_p \frac{mg}{2} \sgn(\dot\theta) \tag{31}$$
     <br/>
+
+    <p>
+        The factor $1/2$ is illustrative, not derived; an appropriate effective load may be smaller or larger for a particular system.
+    </p>
 
     <h5>Linear Damping Model (Adopted)</h5>
     <p>
@@ -965,33 +969,31 @@
     <br/>
 
     <p>
-        As discussed in the opening of section 3.7, this model is more consistent with a lubricated ball bearing joint, which we may consider to be more
-        appropriate in situations where high angular velocities are expected, perhaps in the hundreds or thousands of
-        <a href="https://en.wikipedia.org/wiki/Revolutions_per_minute">rpm</a> range, such as in a motor car engine.
         Here $b_p$ is a linear rotational damping coefficient, with units of moment per angular velocity (N m s/rad, i.e.
-        newton-metre-seconds per radian).
+        newton-metre-seconds per radian). This model is consistent with viscous damping in a lubricated bearing over a suitable range of
+        speed and load. In a physical model, $b_p$ should be obtained from bearing data or fitted to measured angular-decay behaviour.
     </p>
     <h5>Combined Damping and Coulomb Model (Optional)</h5>
     <p>
-        We could also choose to extend equation (32) with a normal force term, as the force being applied through the bearing will affect
-        its behaviour. E.g. perhaps one reasonable choice is:
+        A phenomenological model may superimpose the velocity-proportional and load-dependent Coulomb terms:
     </p>
     <br/>
     $$ M_f = b_p \dot\theta + \mu_p r_p |\mathbf{N}_P| \sgn(\dot\theta) \tag{33} $$
     <br/>
     <p>
-        This combines the velocity-proportional damping and Coulomb-friction models. Such independent linear terms may be appropriate for low
-        forces, whereas high forces may cause the bearing to distort, resulting in non-linear changes in friction that also affect the damping term.
+        This superposition is a modelling assumption, not a general bearing law. The coefficients and effective radius should be calibrated
+        together over the intended operating range; a more detailed bearing model may be needed when friction varies nonlinearly with load
+        or speed.
     </p>
     <p>
-        Overall we expect the forces through the pole's pivot joint to be minimal and to have a minimal effect on joint friction. Furthermore,
-        the use of a friction moment based only on the sign of the angular velocity will result in a discontinuity in the equations of motion (as
-        discussed above in relation to the cart-track friction), therefore we prefer a friction moment proportional to angular velocity as given
-        by equation (32).
+        For the recommended equations we use the linear moment (32), which is physically plausible for a lubricated joint and compatible
+        with the intended fixed-step smooth-ODE integration. The Coulomb and combined alternatives remain available when their additional
+        parameters and nonsmooth behaviour are important to the simulation.
     </p>
     <p>
-        As a final alternative, we may consider pivot joint friction to be so low as to be inconsequential, especially if cart-track friction
-        is being modelled, i.e. so long as there is friction somewhere in the model.
+        As a final alternative, pivot friction may be set to zero when bearing losses are negligible relative to the required modelling
+        accuracy. Cart damping is not a general substitute: cart and pivot damping act on different generalized velocities, $\dot x$ and
+        $\dot\theta$, even though the cart and pole motions are coupled.
     </p>
     <br/>
     <br/>
