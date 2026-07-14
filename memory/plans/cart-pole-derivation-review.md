@@ -3,7 +3,7 @@
 - Reviewed: 2026-07-13
 - Reviewed page: `public/research/cart-pole/cart-pole-equations.html`
 - Reviewed revision: `d07bb73` (`Refine cart-pole derivation and figure`)
-- Status: In progress; F1-F6, F11, and F14 resolved on 2026-07-13
+- Status: In progress; F1-F6, F11, and F14 resolved on 2026-07-13; F7-F8 resolved on 2026-07-14
 
 ## Review Goal
 
@@ -59,8 +59,8 @@ The primary-source transcriptions and quotations in Appendices C-E were not inde
 | F4 | P1 | Later specialization and multiple-pole friction steps are substantially compressed | [x] Resolved 2026-07-13 |
 | F5 | P1 | The alternative solution route appears before the recommended route | [x] Resolved 2026-07-13 |
 | F6 | P1 | The multiple-pole topology, index scope, and identical-length claim need clarification | [x] Resolved 2026-07-13 |
-| F7 | P2 | The track and pivot reaction-force balances need explicit direction definitions | [ ] Open |
-| F8 | P2 | The pivot-to-cart kinematic assumption is used without being written as an equation | [ ] Open |
+| F7 | P2 | The track and pivot reaction-force balances need explicit direction definitions | [x] Resolved 2026-07-14 |
+| F8 | P2 | The pivot-to-cart kinematic assumption is used without being written as an equation | [x] Resolved 2026-07-14 |
 | F9 | P2 | The recommended equations need a self-contained evaluation recipe and denominator check | [~] Partly resolved 2026-07-13 |
 | F10 | P2 | The numerical “trajectory” discussion is broader than the endpoint-only error measure | [ ] Open |
 | F11 | P2 | Calling torque a “rotational force” blurs two quantities with different units | [x] Resolved 2026-07-13 |
@@ -236,6 +236,15 @@ The reverse force exerted by the cart on the pole has the opposite components bu
 
 **Recommended change:** Add the relevant free-body balance, define which body acts on which, note the equal-and-opposite alternative, and then take the magnitude.
 
+**Outcome (2026-07-14):** Resolved. Section 3.7.1 now writes the combined system's vertical dynamic-equilibrium balance as
+$N_c-m_{\mathrm{tot}}g+(\mathbf F^i_G)_y=0$ before solving for (22), with every force direction and the cancellation of the
+internal pivot forces stated. Section 3.7.2 defines $\mathbf N_P$ as the resultant pivot reaction exerted by the pole on the cart and
+uses its magnitude as an effective bearing load in the Coulomb model. It identifies $-\mathbf N_P$ as the cart-on-pole reaction, writes
+the pole's horizontal and vertical component balances, and then derives (28)-(29). The static upright case gives
+$\mathbf N_P=(0,-mg)$, as required for the downward pole-on-cart load; symbolic substitution reduced all three added balance residuals
+to zero. The additions preserve the force units of (22), the moment units of (27), and the existing equation numbering. Desktop and
+narrow-width rendering showed no clipping.
+
 ### F8 — Write the pivot kinematic assumption explicitly
 
 **Location:** Transition from section 3.1 to section 3.2.
@@ -250,6 +259,11 @@ y_P-double-dot = 0.
 ```
 
 They follow from P being rigidly fixed to a cart constrained to horizontal translation, but the equation should be stated before it is used. It would also make clear that any fixed horizontal or vertical offset between C and P does not affect the acceleration relation.
+
+**Outcome (2026-07-14):** Resolved. Section 3.2 now introduces fixed constants $d_x$ and $d_y$ with
+$x_P=x+d_x$, $y_P=d_y$, $\ddot x_P=\ddot x$, and $\ddot y_P=0$ before forming the absolute acceleration of G. The first lines of
+(7) and (8) now add $\ddot x_P$ and $\ddot y_P$ explicitly. This makes the horizontal-translation constraint and the irrelevance of any
+fixed cart-to-pivot offset visible without adding or renumbering a tagged equation. The rendered equations fit at desktop and narrow widths.
 
 ### F9 — Make section 5 a complete implementation handoff
 
@@ -385,7 +399,7 @@ Under this transformation, sine terms change sign while cosine terms do not. Eve
 
 Work in small passes so that mathematical and editorial changes remain reviewable:
 
-1. **Mechanics foundations:** F7 and F8.
+1. **Mechanics foundations (resolved 2026-07-14):** F7 and F8.
 2. **Implementation and numerical claims:** the remainder of F9 and F10.
 3. **Optional depth and notation:** F12, F13, and F16.
 4. **Editorial integrity:** F15.

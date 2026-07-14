@@ -322,15 +322,31 @@
     <h3>3.2 Absolute Acceleration of Point G</h3>
 
     <p>
-        Equations (5) and (6) describe the acceleration of point G relative to P. Therefore to obtain the absolute acceleration of G (i.e. acceleration
-        relative to point O, or the 'world' XY frame) we add the x-axis acceleration of point P to equation (5). The cart does not move vertically, therefore
-        the absolute y-axis acceleration is given by $\ddot y_{G|P}$.
+        Equations (5) and (6) describe the acceleration of point G relative to P. Pivot P is rigidly fixed to the cart, and the cart is
+        constrained to horizontal translation. If $d_x$ is P's fixed horizontal offset from the cart coordinate and $d_y$ is P's
+        fixed height, then
+    </p>
+    <br/>
+
+    \begin{align}
+
+        x_P &= x + d_x, & y_P &= d_y \\[3ex]
+
+        \ddot x_P &= \ddot x, & \ddot y_P &= 0.
+
+    \end{align}
+    <br/>
+
+    <p>
+        Thus any fixed offset between the cart and P has no effect on their acceleration relationship. To obtain the absolute acceleration
+        of G (i.e. acceleration relative to point O, or the 'world' XY frame), we add the acceleration of P to the acceleration of G relative
+        to P.
     </p>
 
     <p>Absolute acceleration (x-axis):</p>
     \begin{align}
 
-        \ddot x_G &= \ddot x_{G|P} + \ddot x \\[3ex]
+        \ddot x_G &= \ddot x_{G|P} + \ddot x_P \\[3ex]
 
         \ddot x_G &= r \left( \ddot\theta \cos\theta - \dot\theta^2 \sin\theta \right) + \ddot x \tag{7}
 
@@ -341,7 +357,7 @@
     
     \begin{align}
 
-        \ddot y_G &= \ddot y_{G|P} \\[3ex]
+        \ddot y_G &= \ddot y_{G|P} + \ddot y_P \\[3ex]
 
         \ddot y_G &= -r \left( \ddot\theta \sin\theta + \dot\theta^2 \cos\theta \right) \tag{8}
 
@@ -737,14 +753,18 @@
     <br/>
 
     <p>
-        The upward normal reaction exerted by the track on the cart balances the combined weight of the cart and pole together with the varying
-        vertical force resulting from motion of the pole.
+        To determine $N_c$, write the vertical dynamic-equilibrium balance for the combined cart-pole system. Positive vertical force is
+        upward, so the external terms are the upward track reaction $N_c$, the downward combined weight $m_{\mathrm{tot}}g$, and the
+        pole's vertical inertial-force component $(\mathbf{F}^i_G)_y$ from equation (11). The cart has no vertical acceleration, and the
+        internal pivot forces cancel when the cart and pole are considered together. Therefore
     </p>
     <br/>
 
     \begin{align}
 
-        N_c &= mg + m_c g - (\mathbf{F}^i_G)_y \\[3ex]
+        N_c - m_{\mathrm{tot}} g + (\mathbf{F}^i_G)_y &= 0 \\[3ex]
+
+        N_c &= m_{\mathrm{tot}} g - (\mathbf{F}^i_G)_y \\[3ex]
 
         N_c &= m_{\mathrm{tot}} g - mr \left[ \ddot\theta \sin\theta + \dot\theta^2 \cos\theta \right] \tag{22} \\[3ex]
 
@@ -845,15 +865,28 @@
 
     <p>
         Here $M_f$ is the signed moment of friction, $\mu_p$ is the dimensionless Coulomb coefficient of friction at the pivot, $r_p$ is
-        an effective friction radius, and $\mathbf{N}_P$ is the normal-force vector at point P
-        between the pole and the cart. Note that a positive (clockwise) angular velocity will result in a positive (anticlockwise) friction moment
+        an effective friction radius, and $\mathbf{N}_P$ is the resultant pivot reaction exerted by the pole on the cart at P. Its magnitude
+        is used here as an effective bearing load for the Coulomb model. Note that a positive (clockwise) angular velocity will result in a
+        positive (anticlockwise) friction moment
         (see the conventions in table 1), hence no minus sign is required. The product $\mu_p|\mathbf{N}_P|$ is the tangential friction-force magnitude,
         and multiplication by $r_p$ converts that force into a moment.
     </p>
-    <p> 
-        The normal force in this case is a force with varying direction, i.e. the internal surfaces within the joint that meet under force depend 
-        on the angle of the pole and the direction of the force being applied by the pole onto the cart. As such $\mathbf{N}_P$ should be considered to be
-        a vector. Here we treat the x and y components of that vector separately:
+    <p>
+        The cart exerts the equal-and-opposite force $-\mathbf{N}_P$ on the pole. Applying dynamic equilibrium to the pole alone, its
+        horizontal and vertical force-component balances are therefore
+    </p>
+    <br/>
+    \begin{align}
+
+        -(\mathbf{N}_P)_x + (\mathbf{F}^i_G)_x &= 0 \\[3ex]
+
+        -(\mathbf{N}_P)_y - mg + (\mathbf{F}^i_G)_y &= 0.
+
+    \end{align}
+    <br/>
+
+    <p>
+        Solving these balances for the pole-on-cart reaction components gives
     </p>
     <br/>
     \begin{align}
