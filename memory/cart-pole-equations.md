@@ -7,7 +7,7 @@ Last updated: 2026-07-14
 - Canonical article: `public/research/cart-pole/cart-pole-equations.html`.
 - The completed revision was promoted to the canonical filename on 2026-07-12; no separate staging HTML remains.
 - The mathematical, notation, source-comparison, prose, Figure 1, and numerical-artifact review passes recorded below were completed on 2026-07-12.
-- A derivation and pedagogy review at revision `d07bb73` is recorded in `plans/cart-pole-derivation-review.md`. It found no incorrect final equation and opened prioritized work required to fully meet the intended audience goal. The reader may be assumed to understand basic calculus, trigonometry, and summation notation. Findings F1-F6, F11, and F14 were resolved on 2026-07-13; F7-F9 were resolved on 2026-07-14; the remaining findings stay open.
+- A derivation and pedagogy review at revision `d07bb73` is recorded in `plans/cart-pole-derivation-review.md`. It found no incorrect final equation and opened prioritized work required to fully meet the intended audience goal. The reader may be assumed to understand basic calculus, trigonometry, and summation notation. Findings F1-F6, F11, and F14 were resolved on 2026-07-13; F7-F10 were resolved on 2026-07-14; the remaining findings stay open.
 - Section 3.6 now uses one cart-acceleration-first route: derive (19), substitute it directly into the horizontal balance, and derive (20), without dividing by `cos(theta)`. Section 3.7.3 repeats that nonsingular pattern step by step for friction in (34)-(35). The unused alternative main-paper formulas were removed, all main equation tags were renumbered continuously from (1) through (51), and the recommended evaluation order is stated after both final equation pairs.
 - The paper now uses “moment” as its primary term for the turning effect of a force, with “torque” introduced as its synonym. Do not call a moment a “rotational force”: force has units N, while moment has units N m. Appendix B may retain conventional torque-vector notation while the planar equations use signed scalar moments `M`.
 - Section 3.5 now introduces the planar identity `[r cross F]_z=r_x F_y-r_y F_x`, substitutes the radial-vector and inertial-force components explicitly, derives the gravity moment through the same rule, and explains why the ideal pivot reaction has zero moment about P. Appendix A states the compact rotational equation about the centre of mass and shows that a balance about accelerating pivot P must also include the centre-of-mass inertial-force moment; do not restore the former unrestricted “chosen axis” wording.
@@ -19,6 +19,7 @@ Last updated: 2026-07-14
   Sections 5.2 and 5.3 restate the uniform-pole bounds $m_c+m/4$ and $m_c+\frac14\sum_i m_i$, respectively. They also inventory
   the current state, input, and parameters required by (48)-(51), and require every right-hand-side value to come from one instantaneous
   state without advancing any state variable between the cart- and pole-acceleration evaluations.
+- Section 6 now identifies RK2 as Heun's method and separates visual trajectory agreement in Figure 4 from the endpoint-only metric in Table 5. Table 5 measures absolute pole-angle error at exactly 15 seconds against the fine RK4 reference; it does not establish a full-trajectory error bound or a universal timestep. The accepted RK2 and RK4 timesteps are respectively about 2,825 and exactly 7,163 times Euler's timestep, so both exceed it by more than three orders of magnitude for this endpoint experiment.
 - The current public equations retain clockwise-positive $\theta$, $\dot\theta$, and $\ddot\theta$, while moment vectors are positive anticlockwise by the right-hand rule. Review finding F17 records a deferred reconsideration of this mismatch. The provisional preference is to keep the standard moment convention and consider making the angular variables anticlockwise-positive, but that must be a coordinated rederivation, source-mapping, code, figure, and numerical-artefact pass rather than a partial sign edit.
 - Supporting C# repository: `/mnt/d/home/projects/code/cartpole-physics/main`.
 - The corrected C# solution builds with zero warnings and errors, and its analysis results match the article.
@@ -76,6 +77,7 @@ Last updated: 2026-07-14
 - Rewrote the Euler procedure using saved timestep state and conventional indices `n`, `n+1`, and pole index `i`; all next-state values are applied simultaneously.
 - Regenerated the six Euler/RK4 CSV files and Figures 2-3 using the corrected C# equations.
 - Recalculated Table 5 against a converged RK4 reference and documented the exact-duration `15/N` search and strict `|e|<0.01` rad criterion.
+- Identified RK2 as Heun's method and narrowed all Table 5 claims to its final-angle metric; trajectory-wide comparisons require maximum errors for each state component over the sampled interval.
 - Quantified single-versus-double precision differences in section 6.4.
 - Corrected the experiment cart damping parameter to the source-backed `b_c=0.1` N s/m.
 
@@ -112,6 +114,7 @@ Last updated: 2026-07-14
 - Keep reaction directions explicit: $N_c$ is the upward track-on-cart scalar reaction, while $\mathbf N_P$ is the pole-on-cart pivot-reaction vector and $-\mathbf N_P$ acts on the pole.
 - Preserve the denominator guarantees: (20) has denominator $mr^2[m_c+m\sin^2\theta]+J(m_c+m)>0$; (41) has denominator at least $m_c>0$; the uniform-pole denominators in (48) and (50) are at least $m_c+m/4$ and $m_c+\frac14\sum_i m_i$.
 - When implementing (48)-(51), evaluate every right-hand-side quantity from the same instantaneous state. Compute $\ddot x$ first, pass only that intermediate into the angular-acceleration equation(s), and do not advance the cart or pole state between those evaluations.
+- Treat Table 5 only as an endpoint experiment: its metric is the absolute pole-angle error at exactly 15 seconds against the fine RK4 reference. Do not infer a whole-trajectory accuracy bound or a universal timestep from it. If trajectory accuracy matters, report maximum absolute errors in $x$, $\dot x$, $\theta$, and $\dot\theta$ over the sampled interval. Keep the RK2 label tied to Heun's method.
 - Do not present $\sum M=I\alpha$ as valid about an arbitrary accelerating point. About pivot P, retain both the moment of the inertial force at G and the separate body inertial moment.
 - Until the dedicated F17 pass is undertaken, preserve the current clockwise-positive angular variables and anticlockwise-positive right-hand-rule moments. Do not change either convention in isolation.
 

@@ -3,7 +3,7 @@
 - Reviewed: 2026-07-13
 - Reviewed page: `public/research/cart-pole/cart-pole-equations.html`
 - Reviewed revision: `d07bb73` (`Refine cart-pole derivation and figure`)
-- Status: In progress; F1-F6, F11, and F14 resolved on 2026-07-13; F7-F9 resolved on 2026-07-14
+- Status: In progress; F1-F6, F11, and F14 resolved on 2026-07-13; F7-F10 resolved on 2026-07-14
 
 ## Review Goal
 
@@ -62,7 +62,7 @@ The primary-source transcriptions and quotations in Appendices C-E were not inde
 | F7 | P2 | The track and pivot reaction-force balances need explicit direction definitions | [x] Resolved 2026-07-14 |
 | F8 | P2 | The pivot-to-cart kinematic assumption is used without being written as an equation | [x] Resolved 2026-07-14 |
 | F9 | P2 | The recommended equations need a self-contained evaluation recipe and denominator check | [x] Resolved 2026-07-14 |
-| F10 | P2 | The numerical “trajectory” discussion is broader than the endpoint-only error measure | [ ] Open |
+| F10 | P2 | The numerical “trajectory” discussion is broader than the endpoint-only error measure | [x] Resolved 2026-07-14 |
 | F11 | P2 | Calling torque a “rotational force” blurs two quantities with different units | [x] Resolved 2026-07-13 |
 | F12 | P2 | Historical/source asides interrupt the main instructional path | [ ] Open |
 | F13 | P3 | Equation (9)'s vector notation is nonstandard and its frame name changes from TR to RT | [ ] Open |
@@ -315,6 +315,26 @@ The sentence saying Euler needs a timestep “approximately three orders of magn
 
 Also identify the RK2 variant as Heun's method, matching the accompanying implementation, rather than calling it only “the standard form”; several second-order Runge-Kutta schemes are standard.
 
+**Outcome (2026-07-14):** Resolved by retaining table 5's reproducible endpoint experiment and narrowing its claims, rather than adding
+a new trajectory-wide dataset. Section 6.2 now distinguishes three different evidential scopes: the plotted curves support qualitative
+visual trajectory comparisons; the fine RK4 run supplies a reference only for pole angle at exactly 15 seconds; and neither result implies
+a numerical bound on full-state error throughout the interval. The convergence guidance now requires the state quantity, time or interval,
+error measure, and tolerance to be named. It recommends an endpoint test only when an endpoint is the intended result, and otherwise suggests
+trajectory-wide measures such as the maximum absolute error in each of $x$, $\dot x$, $\theta$, and $\dot\theta$.
+
+The table lead-in now asks explicitly for the largest timestep satisfying
+$|\theta_{\mathrm{candidate}}(15)-\theta_{\mathrm{reference}}(15)|<0.01$ rad. The reference-timestep halving result is tied only to that
+final-angle metric, the reported search result is called an endpoint-error threshold, and the conclusion states that table 5 provides
+neither full-trajectory accuracy nor a universal timestep recommendation. The RK2 variant is identified as Heun's method (the explicit
+trapezoidal Runge-Kutta method), matching the source implementation's full-step predictor and averaged start/end gradients; table 5 labels
+it `RK2 (Heun)`.
+
+Using the exact step counts, the accepted RK2 timestep is $1{,}203{,}384/426\approx2{,}824.845$ times the Euler timestep, and the RK4
+timestep is $1{,}203{,}384/168=7{,}163$ times the Euler timestep. The paper now reports about 2,825 and 7,163 times, both more than three
+orders of magnitude, instead of “approximately three orders”. No numerical artefact or table value changed. All 61 `align` environments
+remain balanced, equation tags remain (1)-(51), MathJax produced 466 containers, the desktop PDF rendered without clipping, and table 5
+fit within a 485-pixel content viewport with a measured width of about 350 pixels and no overflow.
+
 ### F11 — Prefer “moment” or “torque” over “rotational force”
 
 **Location:** Table 1 and sections 3.5, 3.7.2, and 3.7.3.
@@ -417,7 +437,7 @@ Under this transformation, sine terms change sign while cosine terms do not. Eve
 Work in small passes so that mathematical and editorial changes remain reviewable:
 
 1. **Mechanics foundations (resolved 2026-07-14):** F7 and F8.
-2. **Implementation and numerical claims:** F9 resolved 2026-07-14; F10 remains open.
+2. **Implementation and numerical claims (resolved 2026-07-14):** F9 and F10.
 3. **Optional depth and notation:** F12, F13, and F16.
 4. **Editorial integrity:** F15.
 5. **Dedicated coordinate-convention decision:** F17, when a full rederivation and artefact-regeneration pass is desired.

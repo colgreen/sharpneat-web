@@ -1741,6 +1741,11 @@
         consecutive timesteps), hence there is a trade-off between increased accuracy and algorithmic complexity (CPU work per timestep).
     </p>
     <p>
+        The second-order method denoted by RK2 below and in the accompanying implementation [6] is Heun's method, also known as the
+        explicit trapezoidal Runge-Kutta method. It averages the derivative at the start of a timestep with the derivative at an
+        Euler-predicted endpoint.
+    </p>
+    <p>
         Runge-Kutta is widely used, although alternative methods exist, such as
         <a href="https://en.wikipedia.org/wiki/Linear_multistep_method">Adams-Bashforth</a>.
     </p>
@@ -1797,13 +1802,15 @@
 
     <p>
         We also repeat the three simulations using RK4. The resulting trajectories for timestep sizes 0.001, 0.005, and 0.01 seconds agree
-        closely over the 15-second simulation and are therefore not plotted separately. This agreement indicates that the RK4 solution is
-        numerically converged to the resolution of this comparison.
+        closely at the plot's visual resolution over the 15-second simulation and are therefore not plotted separately. This visual
+        agreement supports using the RK4 curve as a comparison in figure 4, but does not provide a numerical bound on error throughout
+        the trajectory.
     </p>
     <p>
         Numerical solutions should approach the solution of the underlying differential equations as the timestep is reduced. If substantially
-        reducing the timestep produces no significant change in the trajectory, the numerical error at the larger timestep is likely to be small
-        relative to the chosen comparison tolerance. This test assesses numerical convergence; it does not by itself establish how faithfully
+        reducing the timestep produces no significant change under a specified error metric, the numerical error at the larger timestep is
+        likely to be small relative to that metric's tolerance. A convergence claim must therefore identify the state quantity, time or time
+        interval, error measure, and tolerance being tested. It also assesses only the numerical solution; it does not establish how faithfully
         the equations represent a physical cart-pole system.
     </p>
     <p>Figure 4 compares Euler's method and RK4 for the 1/1000th of a second timestep size:</p>
@@ -1819,14 +1826,15 @@
     <p>
         Figure 4 shows that the Euler trajectory deviates by a modest but visible amount from the RK4 trajectory, even though both use a
         timestep of 0.001 seconds. Because the RK4 trajectories at timestep sizes 0.001, 0.005, and 0.01 seconds agree closely, we use the
-        RK4 trajectory as a numerically converged reference for this comparison. It is not assumed to be an exact solution, but its remaining
-        numerical error is small relative to the difference shown here. In both trajectories, the maximum pole angle decreases on each
-        successive swing, as expected for this damped system with no external force supplying energy.
+        RK4 trajectory as the visual reference for this figure. It is not assumed to be an exact solution, and this graphical comparison
+        does not establish a trajectory-wide error bound. The finer reference used for the final-angle test in table 5 is defined separately
+        below. In both plotted trajectories, the maximum pole angle decreases on each successive swing, as expected for this damped system
+        with no external force supplying energy.
     </p>
     <p>
-        We might now ask what the timestep size threshold is at which RK4 begins to deviate significantly from the correct path (in our limited experimental 
-        model that runs for just 15 seconds). Furthermore, we might ask what that threshold is for Euler's method, and for good measure we also include the
-        standard form of the second-order Runge-Kutta method (RK2):
+        We now ask a narrower quantitative question: for each method, how large can the timestep be while the absolute pole-angle error
+        at exactly 15 seconds remains below 0.01 radians relative to a fine-step RK4 reference? We compare Euler's method, Heun's
+        second-order Runge-Kutta method (RK2), and RK4:
     </p>
     <br/>
 
@@ -1837,7 +1845,7 @@
         <table class="tg" align="center">
             <tr><th>Method</th><th>Timestep (seconds)</th><th>Steps over 15 seconds</th><th>Signed pole-angle error at 15 seconds (rad)</th> </tr>
             <tr><td>RK4</td><td>0.0892857</td><td>168</td><td>+0.00969373</td></tr>
-            <tr><td>RK2</td><td>0.0352113</td><td>426</td><td>-0.00978981</td></tr>
+            <tr><td>RK2 (Heun)</td><td>0.0352113</td><td>426</td><td>-0.00978981</td></tr>
             <tr><td>Euler</td><td>0.0000124648</td><td>1,203,384</td><td>-0.0099999965</td></tr>
         </table>      
     </blockquote>
@@ -1845,20 +1853,27 @@
     <p>
         The reference pole angle was calculated using RK4 with a timestep of 0.000005 seconds (3,000,000 steps), giving
         $\theta(15)=2.8896449084416695$ radians. Halving the reference timestep from 0.00001 seconds changed this value by approximately
-        $8.4\times10^{-13}$ radians. Candidate timesteps were restricted to $15/N$ seconds for integer step counts $N$, so that every run ended
-        exactly at 15 seconds. For each method, the step count was increased until the strict acceptance criterion $|e|&lt;0.01$ radians was met,
-        then a binary search identified the convergence threshold: the smallest accepted $N$ within the search bracket. Signed error is defined as
-        the candidate final angle minus the reference final angle. The immediately coarser counts failed for all three methods: 167 steps for RK4,
-        425 for RK2, and 1,203,383 for Euler.
+        $8.4\times10^{-13}$ radians. Because this change is far below the 0.01-radian tolerance, it supports treating the reference as
+        numerically converged for this final pole-angle metric; it does not establish a trajectory-wide error bound. Candidate timesteps
+        were restricted to $15/N$ seconds for integer step counts $N$, so that every run ended exactly at 15 seconds. For each method,
+        the step count was increased until the strict acceptance
+        criterion $|e|&lt;0.01$ radians was met, then a binary search identified the endpoint-error threshold: the smallest accepted $N$ within
+        the search bracket. Signed error is defined as the candidate final angle minus the reference final angle. The immediately coarser
+        counts failed for all three methods: 167 steps for RK4, 425 for RK2, and 1,203,383 for Euler.
     </p>
 
     <br/> 
     <p>
-        For this experiment, Euler's method requires a timestep approximately three orders of magnitude smaller than those accepted for RK2
-        and RK4. We therefore prefer RK2 or RK4 when numerical accuracy is important, particularly for simulations lasting more than a few
-        seconds. The timestep limits in table 5 apply only to the model parameters, simulation duration, error measure, and tolerance used here.
-        For other configurations, an appropriate timestep should be established by repeating the convergence test: reduce the timestep until
-        further reductions no longer change the result by more than the required tolerance.
+        For this final-angle experiment, RK2's accepted timestep is about 2,825 times Euler's, and RK4's is 7,163 times Euler's; both
+        ratios exceed three orders of magnitude. RK2 and RK4 therefore meet this particular tolerance with far fewer timesteps. The limits
+        in table 5 apply only to the model parameters, 15-second duration, final-angle error measure, and tolerance used here; they do not
+        establish full-trajectory accuracy or a universal timestep recommendation.
+    </p>
+    <p>
+        For another use case, choose convergence metrics that match the intended result. If only a final angle matters, an endpoint test like
+        table 5 may be sufficient. If the full state trajectory matters, compare quantities such as $x$, $\dot x$, $\theta$, and $\dot\theta$
+        over the sampled time interval—for example by bounding the maximum absolute error in each quantity. Reduce the timestep until further
+        reductions change every required metric by less than its chosen tolerance.
     </p>
     <br/>
 
