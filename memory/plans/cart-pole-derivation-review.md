@@ -3,7 +3,7 @@
 - Reviewed: 2026-07-13
 - Reviewed page: `public/research/cart-pole/cart-pole-equations.html`
 - Reviewed revision: `d07bb73` (`Refine cart-pole derivation and figure`)
-- Status: In progress; F1-F6, F11, and F14 resolved on 2026-07-13; F7-F10 and F12-F13 resolved on 2026-07-14
+- Status: In progress; F1-F6, F11, and F14 resolved on 2026-07-13; F7-F10, F12-F13, and F15 resolved on 2026-07-14
 
 ## Review Goal
 
@@ -67,7 +67,7 @@ The primary-source transcriptions and quotations in Appendices C-E were not inde
 | F12 | P2 | Historical/source asides interrupt the main instructional path | [x] Resolved 2026-07-14 |
 | F13 | P3 | Equation (9)'s vector notation is nonstandard and its frame name changes from TR to RT | [x] Resolved 2026-07-14 |
 | F14 | P3 | Equation numbering jumps from (24) to (29), which looks like missing content | [x] Resolved 2026-07-13 |
-| F15 | P3 | Several local prose, notation, accessibility, and dating issues remain | [ ] Open |
+| F15 | P3 | Several local prose, notation, accessibility, and dating issues remain | [x] Resolved 2026-07-14 |
 | F16 | P3 | Optional friction discussion sometimes overstates or weakly motivates approximations | [ ] Open |
 | F17 | P2 | Angular variables are clockwise-positive while right-hand-rule moments are anticlockwise-positive | [ ] Deferred for a dedicated sign-convention pass |
 
@@ -414,11 +414,25 @@ The sequence skips (25)-(28). To a reader, this looks like missing equations or 
 - The paragraph before (25) begins “Noting that if ...”, which is a sentence fragment.
 - Table 2 should state explicitly that `theta` is in radians, as Table 1 does.
 - The prose after table 4 calls cart position and velocities “model parameters”; they are initial state variables.
-- Figure 2's alternative text says it shows cart and pole trajectories, but the plot shows pole angle only.
-- Figure 3's alternative text says “at several timestep sizes”, but the plot compares two methods at one timestep, 0.001 seconds.
+- Figure 3's alternative text says it shows cart and pole trajectories, but the plot shows pole angle only. (This was Figure 2 at the reviewed revision.)
+- Figure 4's alternative text says “at several timestep sizes”, but the plot compares two methods at one timestep, 0.001 seconds. (This was Figure 3 at the reviewed revision.)
 - The signature says January 4, 2020 despite extensive 2026 revision work. Preserve the original date if desired, but add a visible revision date so readers can identify the version.
 - Use one style for `theta-dot_i^2` throughout; both `dot(theta)^2_i` and `dot(theta_i)^2` forms currently appear.
 - “Directionless magnitude” is understandable but slightly awkward; “positive magnitude” is more precise for `g`.
+
+**Outcome (2026-07-14):** Resolved all nine editorial and accessibility items, including the RT naming item already completed with F13.
+The fragment before (25) is now a complete two-sentence statement; its modelling claim remains assigned to F16. Table 2 identifies $\theta$
+as radians. Section 6.2 now distinguishes physical parameters from initial state, labels table 4 accordingly, and names the zero-valued state
+variables $x$, $\dot x$, and $\dot\theta$.
+
+After visual inspection of the plot files, Figure 3's alternative text now describes pole-angle curves for Euler timesteps 0.001, 0.005,
+and 0.01 seconds, while Figure 4's describes Euler and RK4 at the same 0.001-second timestep. The original January 4, 2020 publication date
+is preserved and a visible July 14, 2026 last-revised date is added; the 2020 copyright remains unchanged. All indexed angular-velocity
+squares now use $\dot\theta_i^2$, and both symbol tables define $g$ as the positive magnitude whose downward direction is encoded by signs.
+
+No physical model, equation value, numerical artifact, or drawing changed. Verification found 61 balanced `align` environments, main
+equation tags (1)-(51) with only the intentional repeated (26) and (32), six images with six nonempty alternative-text attributes, and 469
+MathJax containers after rendering.
 
 ### F16 — Tighten optional friction modelling prose
 
@@ -468,7 +482,7 @@ Work in small passes so that mathematical and editorial changes remain reviewabl
 1. **Mechanics foundations (resolved 2026-07-14):** F7 and F8.
 2. **Implementation and numerical claims (resolved 2026-07-14):** F9 and F10.
 3. **Optional depth and notation:** F12-F13 resolved 2026-07-14; F16 remains open.
-4. **Editorial integrity:** F15.
+4. **Editorial integrity (resolved 2026-07-14):** F15.
 5. **Dedicated coordinate-convention decision:** F17, when a full rederivation and artefact-regeneration pass is desired.
 
 For each pass:

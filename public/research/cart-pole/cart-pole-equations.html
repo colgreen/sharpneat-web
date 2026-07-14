@@ -171,9 +171,8 @@
                 +90° when horizontal and to the right of the pivot point, -90° when horizontal and to the left of the pivot point,
                  and $\pm180^\circ$ when oriented vertically down.</td></tr>
             <tr><td>$m$ &nbsp;</td><td>Mass of the pendulum or pole.</td></tr>
-            <tr><td>$g$ &nbsp;</td><td>Gravitational acceleration (in m/s<sup>2</sup>). Here g is taken to be the directionless magnitude of the acceleration caused 
-                by gravity (i.e. approximately 9.8 m/s<sup>2</sup> for gravity on Earth). The direction of gravitational acceleration is taken into account in the 
-                formulation of the equations, therefore the sign of g is positive.</td></tr>
+            <tr><td>$g$ &nbsp;</td><td>Gravitational acceleration (in m/s<sup>2</sup>). Here $g$ is the positive magnitude of the acceleration
+                caused by gravity (approximately 9.8 m/s<sup>2</sup> on Earth); its downward direction is encoded by the signs in the equations.</td></tr>
             <tr><td>$f$ &nbsp;</td><td>An external variable horizontal force applied to the cart (in <a href="https://en.wikipedia.org/wiki/Newton_(unit)">Newtons</a>). A positive
                 value represents a push to the right, and a negative value represents a push to the left.</td></tr>
         </table>
@@ -831,10 +830,10 @@
     $$ F_f = -\mu_c m_{\mathrm{tot}} g \sgn(\dot x) \tag{24} $$
     <br/>
     <p>
-        Noting that if the pendulum is being successfully balanced, its angle will tend to vary only slightly and with moderate angular 
-        velocity, i.e. this approximate normal force will only deviate significantly from the true force if the pendulum is swinging 
-        wildly. If the pendulum does happen to swing with high angular velocity then perhaps a more appropriate normal force approximation 
-        is based on the weight of the cart only, not including the pole.
+        If the pendulum is being successfully balanced, its angle will tend to vary only slightly and with moderate angular velocity.
+        Under this assumption, the approximate normal force above is expected to deviate significantly from the true force only if the
+        pendulum is swinging wildly. If the pendulum does happen to swing with high angular velocity then perhaps a more appropriate
+        normal force approximation is based on the weight of the cart only, not including the pole.
     </p>
     <br/>
     $$ F_f = -\mu_c m_c g \sgn(\dot x) \tag{25} $$
@@ -1102,7 +1101,7 @@
     </p>
     <br/>
     
-    $$ \tilde{F_i} = -m_i \left[r_i \ddot\theta_i \cos\theta_i - r_i \dot\theta^2_i \sin\theta_i + \ddot x \right] \tag{36} $$
+    $$ \tilde{F_i} = -m_i \left[r_i \ddot\theta_i \cos\theta_i - r_i \dot\theta_i^2 \sin\theta_i + \ddot x \right] \tag{36} $$
     <br/>
 
     <p>
@@ -1145,13 +1144,13 @@
 
         m_c\ddot x - \sum_i \tilde{F_i} &= f \\[3ex]
 
-        m_c\ddot x + \sum_i \left[m_i \left(r_i \ddot\theta_i \cos\theta_i - r_i \dot\theta^2_i \sin\theta_i + \ddot x \right)\right] &= f \\[3ex]
+        m_c\ddot x + \sum_i \left[m_i \left(r_i \ddot\theta_i \cos\theta_i - r_i \dot\theta_i^2 \sin\theta_i + \ddot x \right)\right] &= f \\[3ex]
 
-        m_c\ddot x + \sum_i \left[m_i r_i \left( \ddot\theta_i \cos\theta_i - \dot\theta^2_i \sin\theta_i \right)\right] + \ddot x \sum_i m_i &= f \\[3ex]
+        m_c\ddot x + \sum_i \left[m_i r_i \left( \ddot\theta_i \cos\theta_i - \dot\theta_i^2 \sin\theta_i \right)\right] + \ddot x \sum_i m_i &= f \\[3ex]
 
-        m_c\ddot x + \ddot x \sum_i m_i &= f - \sum_i \left[m_i r_i \left( \ddot\theta_i \cos\theta_i - \dot\theta^2_i \sin\theta_i \right)\right] \\[3ex]
+        m_c\ddot x + \ddot x \sum_i m_i &= f - \sum_i \left[m_i r_i \left( \ddot\theta_i \cos\theta_i - \dot\theta_i^2 \sin\theta_i \right)\right] \\[3ex]
 
-        \ddot x &= \frac{f - \sum_i \left[m_i r_i \left( \ddot\theta_i \cos\theta_i - \dot\theta^2_i \sin\theta_i \right)\right]}{m_c + \sum_i m_i} \tag{39} \\[3ex]
+        \ddot x &= \frac{f - \sum_i \left[m_i r_i \left( \ddot\theta_i \cos\theta_i - \dot\theta_i^2 \sin\theta_i \right)\right]}{m_c + \sum_i m_i} \tag{39} \\[3ex]
 
     \end{align}
     <br/>
@@ -1191,7 +1190,7 @@
     <br/>
     \begin{align}
 
-        \ddot x &= \frac{f - \sum_i \Biggl[m_i r_i \left( \left[ \frac{m_i r_i(g\sin\theta_i - \ddot x\cos\theta_i)}{m_i r_i^2+J_i} \right] \cos\theta_i - \dot\theta^2_i \sin\theta_i \right) \Biggr]}{m_c + \sum_i m_i} \\[3ex]
+        \ddot x &= \frac{f - \sum_i \Biggl[m_i r_i \left( \left[ \frac{m_i r_i(g\sin\theta_i - \ddot x\cos\theta_i)}{m_i r_i^2+J_i} \right] \cos\theta_i - \dot\theta_i^2 \sin\theta_i \right) \Biggr]}{m_c + \sum_i m_i} \\[3ex]
 
         \ddot x &= \frac{f - g\sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\sin\theta_i\cos\theta_i\right) + \ddot x\sum_i\left(\frac{(m_i r_i)^2}{m_i r_i^2+J_i}\cos^2\theta_i \right) + \sum_i\left(m_i r_i \dot\theta_i^2\sin\theta_i\right)}{m_c + \sum_i m_i} \\[3ex]
 
@@ -1630,15 +1629,14 @@
 
             <tr><td>$r$&nbsp;</td><td>Distance from the pivot to the pole's centre of mass (in metres). For a uniform pole, $r=L/2$.</td></tr>
 
-            <tr><td>$g$ &nbsp;</td><td>Gravitational acceleration (in m/s<sup>2</sup>). Here $g$ is taken to be the directionless magnitude of the acceleration caused 
-                by gravity (i.e. approximately 9.8 m/s<sup>2</sup> for gravity on Earth). The direction of gravitational acceleration is taken into account in the 
-                formulation of the equations, therefore the sign of g is positive.</td></tr>
+            <tr><td>$g$ &nbsp;</td><td>Gravitational acceleration (in m/s<sup>2</sup>). Here $g$ is the positive magnitude of the acceleration
+                caused by gravity (approximately 9.8 m/s<sup>2</sup> on Earth); its downward direction is encoded by the signs in the equations.</td></tr>
 
             <tr><td>$f$ &nbsp;</td><td>An external horizontal force applied to the cart (in Newtons). A positive
                 value represents a push to the right, and a negative value represents a push to the left.</td></tr>
 
 
-            <tr><td>$\theta$ &nbsp;</td><td>Angle of the pole. The pole is at 0° when oriented vertically straight up, 
+            <tr><td>$\theta$ &nbsp;</td><td>Angle of the pole, in radians. The pole is at 0° when oriented vertically straight up,
                 +90° when horizontal and to the right of the pivot point, -90° when horizontal and to the left of the pivot point,
                 and $\pm180^\circ$ when oriented vertically down.</td></tr>
 
@@ -1662,7 +1660,7 @@
         Substituting (26) and $M_{f,i}=b_{p,i}\dot\theta_i$ into (46) and rearranging:
     </p>
     <br/>
-    $$ \ddot x = \frac{f - \frac{3}{4}g\sum_i\left(m_i\sin\theta_i\cos\theta_i\right) + \sum_i\left(m_i r_i \dot\theta^2_i \sin\theta_i\right) - b_c \dot x + \frac{3}{4}\sum_i\left(\cfrac{b_{p,i}\dot\theta_i\cos\theta_i}{r_i}\right)}{m_{\mathrm{tot}} - \frac{3}{4}\sum_i\left(m_i\cos^2\theta_i\right)} \tag{50} $$
+    $$ \ddot x = \frac{f - \frac{3}{4}g\sum_i\left(m_i\sin\theta_i\cos\theta_i\right) + \sum_i\left(m_i r_i \dot\theta_i^2 \sin\theta_i\right) - b_c \dot x + \frac{3}{4}\sum_i\left(\cfrac{b_{p,i}\dot\theta_i\cos\theta_i}{r_i}\right)}{m_{\mathrm{tot}} - \frac{3}{4}\sum_i\left(m_i\cos^2\theta_i\right)} \tag{50} $$
     <br/>
 
     <p>Substituting $M_{f,i}=b_{p,i}\dot\theta_i$ into (47):</p>
@@ -1761,14 +1759,14 @@
 
     <h3>6.2 Comparing the Accuracy of Numerical Methods</h3>
     <p>
-        We now devise an experiment to demonstrate the importance of the choice of timestep size and numerical method. We define a fixed set of
-        cart-pole model parameters, and run multiple simulations from the same initial model state, each with a different combination of timestep 
-        size and numerical method. The experiment model has a single pole, and utilises equations (48) and (49) from section 5.2. The model parameters
-        are as follows:
+        We now devise an experiment to demonstrate the importance of the choice of timestep size and numerical method. We define a fixed
+        cart-pole configuration and run multiple simulations from the same initial state, each with a different combination of timestep
+        size and numerical method. The experiment model has a single pole and utilises equations (48) and (49) from section 5.2. Its shared
+        physical parameters and nonzero initial state value are as follows:
     </p>
     <br/>
     <blockquote style="background-color:eeeeee; padding:20px">
-        <span><b>Table 4: Model parameters for the numerical integration experiments</b></span>
+        <span><b>Table 4: Physical parameters and nonzero initial state value for the numerical integration experiments</b></span>
         <br/>
         <table class="notationTable">
             <tr><td>Cart mass ($m_c$)&nbsp;</td><td>1 kg</td></tr>
@@ -1781,7 +1779,8 @@
     </blockquote>
     <br/>
     <p>
-        All other model parameters are initialised to zero, specifically, the cart position and the cart and pole velocities.
+        The remaining initial state variables are set to zero: cart position $x$, cart velocity $\dot x$, and pole angular velocity
+        $\dot\theta$.
     </p>
     <p>
         For each experiment run the cart-pole system is simulated for a number of seconds, and the pole angle is recorded at each timestep. No external
@@ -1792,7 +1791,7 @@
 
     <figure>
         <br/>
-        <img src="eulers-method.png" alt="Plot comparing cart and pole trajectories produced by Euler integration at several timestep sizes over 15 seconds."/>
+        <img src="eulers-method.png" alt="Line plot of pole angle over 15 seconds for Euler timesteps of 0.001, 0.005, and 0.01 seconds; the trajectories increasingly diverge as the timestep grows."/>
         <br/>
         <figcaption><b>Figure 3.</b><br/>Cart-pole Simulations in which Euler's method is applied with three different timestep durations.</figcaption>
     </figure>
@@ -1825,7 +1824,7 @@
     <br/>
     <figure>
         <br/>
-        <img src="euler-vs-RK4.png" alt="Plot comparing pole-angle trajectories produced by Euler and fourth-order Runge-Kutta integration at several timestep sizes over 15 seconds."/>
+        <img src="euler-vs-RK4.png" alt="Line plot of pole angle over 15 seconds comparing Euler and fourth-order Runge-Kutta integration at the same 0.001-second timestep; the trajectories remain close but gradually shift apart."/>
         <br/>
         <figcaption><b>Figure 4.</b><br/>Euler's method vs. fourth-order Runge-Kutta (RK4); timestep size 0.001 seconds.</figcaption>
     </figure>
@@ -2666,7 +2665,8 @@
     <p>
         <i>
             Colin,
-            <br />January 4th, 2020
+            <br />Originally published January 4, 2020
+            <br />Last revised July 14, 2026
         </i>
     </p>
     <br/>
