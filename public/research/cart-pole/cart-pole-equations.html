@@ -366,8 +366,10 @@
 
     <blockquote style="background-color:eeeeee;padding:20px">
         <p>
-            In Cannon [2] a vector notation is used as well as an alternative coordinate frame TR (shown in figure 1), use of which results in the following more 
-            concise definition of the pendulum mass centre's acceleration, here written using point G and distance $r$:
+            <b>Optional source note: Cannon's rotating-frame notation.</b> The main derivation continues with the XY component equations
+            above; this equivalent notation is not used later and may be skipped. Cannon [2] uses vector notation and the alternative
+            coordinate frame TR shown in figure 1, giving the following more concise definition of the pole mass centre's acceleration,
+            here written using point G and distance $r$. <a href="#appendixC">Appendix C</a> provides the full Cannon comparison.
         </p>
 
         $$ \mathbf{a}^G = \mathbf{1}_x(\ddot x) + \mathbf{1}_T(r\ddot\theta) + \mathbf{1}_R(-r \dot\theta^2) \tag{9} \\[2ex]$$
@@ -438,16 +440,20 @@
 
     <blockquote style="background-color:eeeeee; padding: 14px">
         <p>
-            Equation (12) is equivalent to the first equation of (22.55) in Cannon [2], with Cannon's length variable mapped to
-            the centre-of-mass distance $r$ used here. This indicates that Cannon used the convention of a positive force being
-            a push to the right for the cart-pole equations, whereas the opposite convention is used elsewhere in that book.
-            Cannon states (§2.2, p.40): <i>"...it is convenient to choose to make the positive direction for each force
-            opposite to that for the corresponding motion, and we shall normally do so in this book, purely for convenience."</i>
+            <b>Optional source note: Cannon's applied-force sign.</b> This comparison is not required for the derivation below;
+            <a href="#appendixC">Appendix C</a> gives the full equation comparison.
         </p>
         <p>
-            To demonstrate the point, note that the cart's inertial force appears as $-m_c \ddot x$ in the equilibrium sum
-            before rearranging. Thus a positive acceleration of the cart corresponds to an inertial force acting in the negative
-            x direction, as expected under d'Alembert's principle.
+            Equation (12) is equivalent to the first equation of (22.55) in Cannon [2], with Cannon's length variable mapped to
+            the centre-of-mass distance $r$ used here. In Cannon's preceding horizontal balance (22.52), the applied traction
+            force appears as $+f$, while (22.54) defines the cart's inertial force as $-m_c\ddot x$. Thus, for this example,
+            positive $f$ acts in the positive x-axis direction, while positive cart acceleration produces an inertial force in the
+            negative x-axis direction.
+        </p>
+        <p>
+            This example-specific applied-force sign differs from the convention Cannon says he normally adopts. He states
+            (§2.2, p.40): <i>"...it is convenient to choose to make the positive direction for each force opposite to that for
+            the corresponding motion, and we shall normally do so in this book, purely for convenience."</i>
         </p>
     </blockquote>
     <br/>
@@ -2126,7 +2132,7 @@
     <br/>
 
     <hr/>
-    <h2>Appendix C: Comparison with the Equations of Cannon</h2>
+    <h2 id="appendixC">Appendix C: Comparison with the Equations of Cannon</h2>
     <p>
         Cannon [2] (§22.4, p.705) derives equations for an unstable stick balancer using d'Alembert's principle. His length variable $l$
         is the distance from the pivot to the stick's mass centre, i.e. half the stick's full length. Thus Cannon's $l$ corresponds to

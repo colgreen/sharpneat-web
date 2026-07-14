@@ -3,7 +3,7 @@
 - Reviewed: 2026-07-13
 - Reviewed page: `public/research/cart-pole/cart-pole-equations.html`
 - Reviewed revision: `d07bb73` (`Refine cart-pole derivation and figure`)
-- Status: In progress; F1-F6, F11, and F14 resolved on 2026-07-13; F7-F10 resolved on 2026-07-14
+- Status: In progress; F1-F6, F11, and F14 resolved on 2026-07-13; F7-F10 and F12 resolved on 2026-07-14
 
 ## Review Goal
 
@@ -64,7 +64,7 @@ The primary-source transcriptions and quotations in Appendices C-E were not inde
 | F9 | P2 | The recommended equations need a self-contained evaluation recipe and denominator check | [x] Resolved 2026-07-14 |
 | F10 | P2 | The numerical “trajectory” discussion is broader than the endpoint-only error measure | [x] Resolved 2026-07-14 |
 | F11 | P2 | Calling torque a “rotational force” blurs two quantities with different units | [x] Resolved 2026-07-13 |
-| F12 | P2 | Historical/source asides interrupt the main instructional path | [ ] Open |
+| F12 | P2 | Historical/source asides interrupt the main instructional path | [x] Resolved 2026-07-14 |
 | F13 | P3 | Equation (9)'s vector notation is nonstandard and its frame name changes from TR to RT | [ ] Open |
 | F14 | P3 | Equation numbering jumps from (24) to (29), which looks like missing content | [x] Resolved 2026-07-13 |
 | F15 | P3 | Several local prose, notation, accessibility, and dating issues remain | [ ] Open |
@@ -353,6 +353,17 @@ Both blocks are relevant evidence, but neither is needed to follow the main deri
 
 **Recommended change:** Move these blocks to Appendix C or label them conspicuously as optional source notes. Keep the main derivation focused on the notation it actually uses.
 
+**Outcome (2026-07-14):** Resolved by retaining both Cannon blocks in their existing locations but labelling each conspicuously as an
+optional source note. The note after (8) now states that the main derivation continues with the XY component equations, that Cannon's
+rotating-frame notation is not used later, and that the note may be skipped. The note after (12) now states that its force-convention
+comparison is not required for the derivation below. It distinguishes the applied traction-force sign in Cannon's equations (22.52) and
+(22.55) from the opposing inertial-force sign defined in (22.54), and describes Cannon's §2.2 convention as his usual rather than universal
+choice. Both notes link to the full source comparison, and Appendix C now has the stable fragment identifier `appendixC`.
+
+This approach preserves the evidence, main equation numbering, and existing source-comparison structure while giving readers an explicit
+route past both detours. Equation (9)'s notation was deliberately left for the separate F13 pass. Verification found 61 balanced `align`
+environments, main equation tags (1)-(51) with only the intentional repeated (26) and (32), and 467 MathJax containers after rendering.
+
 ### F13 — Normalize equation (9)'s vector notation
 
 **Location:** Section 3.2, equation (9) and its explanation.
@@ -438,7 +449,7 @@ Work in small passes so that mathematical and editorial changes remain reviewabl
 
 1. **Mechanics foundations (resolved 2026-07-14):** F7 and F8.
 2. **Implementation and numerical claims (resolved 2026-07-14):** F9 and F10.
-3. **Optional depth and notation:** F12, F13, and F16.
+3. **Optional depth and notation:** F12 resolved 2026-07-14; F13 and F16 remain open.
 4. **Editorial integrity:** F15.
 5. **Dedicated coordinate-convention decision:** F17, when a full rederivation and artefact-regeneration pass is desired.
 
