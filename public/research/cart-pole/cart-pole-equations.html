@@ -668,6 +668,27 @@
     \end{align}
     <br/>
     <p>
+        The denominator in (20) cannot vanish for physical parameters. Let $D$ denote that denominator. For $m_c>0$, $m>0$,
+        $r>0$, and $J\geq0$:
+    </p>
+    <br/>
+    \begin{align}
+
+        D
+        &= (mr^2+J)m_{\mathrm{tot}}-(mr\cos\theta)^2 \\[3ex]
+
+        &= mr^2\left(m_c+m\sin^2\theta\right)+J(m_c+m) \\[3ex]
+
+        &> 0.
+
+    \end{align}
+    <br/>
+    <p>
+        The strictly positive term $mr^2m_c$ establishes the final inequality. Thus (20) remains defined when the pole is upright or
+        downward, where $\cos^2\theta=1$, and when it is horizontal, where $\cos^2\theta=0$. The denominator $mr^2+J$ in (19) is
+        also positive under the same conditions.
+    </p>
+    <p>
         Equations (19) and (20) leave $J$ unspecified so that different mass distributions can be modelled. Section 4 supplies the value
         for a uniform pole. The simultaneous equations can also be eliminated in the opposite order to obtain a closed expression for
         $\ddot\theta$. That algebraically equivalent route is not developed here because the cart-acceleration-first sequence is used
@@ -1184,6 +1205,39 @@
 
     \end{align}
     <br/>
+    <p>
+        This multiple-pole denominator is also strictly positive for physical parameters. For every pole with $m_i>0$, $r_i>0$, and
+        $J_i\geq0$, the denominator $m_i r_i^2+J_i$ is at least $m_i r_i^2$, and $0\leq\cos^2\theta_i\leq1$. Therefore
+    </p>
+    <br/>
+    \begin{align}
+
+        0 < \frac{(m_i r_i)^2}{m_i r_i^2+J_i} &\leq m_i \\[3ex]
+
+        \frac{(m_i r_i)^2}{m_i r_i^2+J_i}\cos^2\theta_i &\leq m_i.
+
+    \end{align}
+    <br/>
+    <p>
+        Therefore, using $m_{\mathrm{tot}}=m_c+\sum_i m_i$ and $m_c>0$, the denominator $D_N$ of (41) satisfies
+    </p>
+    <br/>
+    \begin{align}
+
+        D_N
+        &= m_{\mathrm{tot}}-\sum_i\left(
+        \frac{(m_i r_i)^2}{m_i r_i^2+J_i}\cos^2\theta_i\right) \\[3ex]
+
+        &\geq m_c+\sum_i m_i-\sum_i m_i \\[3ex]
+
+        &= m_c > 0.
+
+    \end{align}
+    <br/>
+    <p>
+        Hence (41), and the friction-extended equation (42) below, are defined for every combination of pole angles in this physical
+        parameter domain. Each denominator $m_i r_i^2+J_i$ in (40) is positive as well.
+    </p>
     <blockquote style="background-color:eeeeee; padding: 14px">
         <p>
             This presents the following evaluation procedure for a cart with multiple poles:
@@ -1528,7 +1582,27 @@
     <br/>
 
     <p>
-        Evaluate (48) first to obtain $\ddot x$, then substitute that value into (49) to obtain $\ddot\theta$.
+        At one instant $t$, supply the current state $(x,\dot x,\theta,\dot\theta)$, the applied input $f(t)$, and the parameters
+        $m_c$, $m$, $r$, $g$, $b_c$, and $b_p$, with $m_{\mathrm{tot}}=m_c+m$. The position $x$ is retained as an integration state
+        even though it does not appear explicitly on the right-hand side of (48) or (49). Use values from this same instantaneous state
+        throughout the calculation: evaluate (48) first to obtain $\ddot x$, then substitute that value into (49) to obtain
+        $\ddot\theta$. Do not advance any state variable between those two evaluations.
+    </p>
+    <p>
+        For physical masses and geometry, $m_c>0$, $m>0$, and $r>0$. The cart-acceleration denominator is bounded by
+    </p>
+    <br/>
+    \begin{align}
+
+        m_{\mathrm{tot}}-\frac{3}{4}m\cos^2\theta
+        &=m_c+m\left(1-\frac{3}{4}\cos^2\theta\right) \\[3ex]
+
+        &\geq m_c+\frac{1}{4}m > 0.
+
+    \end{align}
+    <br/>
+    <p>
+        Thus (48) has no angle-dependent singularity; the factors $r$ and $mr$ in (49) are also non-zero in this parameter domain.
     </p>
 
     <blockquote style="background-color:eeeeee; padding:20px">
@@ -1589,7 +1663,26 @@
     <br/>
 
     <p>
-        Evaluate (50) once to obtain the shared cart acceleration $\ddot x$, then substitute that value into (51) for each pole $i$.
+        At one instant $t$, for a specified number $N$ of poles, supply the current state
+        $(x,\dot x,\{\theta_i,\dot\theta_i\}_{i=1}^{N})$, the applied input $f(t)$, and the parameters $m_c$, $g$, $b_c$, and
+        $\{m_i,r_i,b_{p,i}\}_{i=1}^{N}$, with
+        $m_{\mathrm{tot}}=m_c+\sum_i m_i$. Use values from this same instantaneous state throughout the calculation: evaluate (50)
+        once to obtain the shared cart acceleration $\ddot x$, then substitute that value into (51) for every pole $i$. Do not advance
+        the cart or any pole state between these evaluations.
+    </p>
+    <p>
+        With $m_c>0$, $m_i>0$, and $r_i>0$ for every pole, the denominator in (50) satisfies
+    </p>
+    <br/>
+    \begin{align}
+
+        m_{\mathrm{tot}}-\frac{3}{4}\sum_i\left(m_i\cos^2\theta_i\right)
+        &\geq m_c+\frac{1}{4}\sum_i m_i > 0.
+
+    \end{align}
+    <br/>
+    <p>
+        Therefore (50) is defined for every combination of pole angles, and the factors $r_i$ and $m_i r_i$ in (51) are non-zero.
     </p>
 
     <blockquote style="background-color:eeeeee; padding:20px">

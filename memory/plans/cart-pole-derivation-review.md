@@ -3,7 +3,7 @@
 - Reviewed: 2026-07-13
 - Reviewed page: `public/research/cart-pole/cart-pole-equations.html`
 - Reviewed revision: `d07bb73` (`Refine cart-pole derivation and figure`)
-- Status: In progress; F1-F6, F11, and F14 resolved on 2026-07-13; F7-F8 resolved on 2026-07-14
+- Status: In progress; F1-F6, F11, and F14 resolved on 2026-07-13; F7-F9 resolved on 2026-07-14
 
 ## Review Goal
 
@@ -61,7 +61,7 @@ The primary-source transcriptions and quotations in Appendices C-E were not inde
 | F6 | P1 | The multiple-pole topology, index scope, and identical-length claim need clarification | [x] Resolved 2026-07-13 |
 | F7 | P2 | The track and pivot reaction-force balances need explicit direction definitions | [x] Resolved 2026-07-14 |
 | F8 | P2 | The pivot-to-cart kinematic assumption is used without being written as an equation | [x] Resolved 2026-07-14 |
-| F9 | P2 | The recommended equations need a self-contained evaluation recipe and denominator check | [~] Partly resolved 2026-07-13 |
+| F9 | P2 | The recommended equations need a self-contained evaluation recipe and denominator check | [x] Resolved 2026-07-14 |
 | F10 | P2 | The numerical “trajectory” discussion is broader than the endpoint-only error measure | [ ] Open |
 | F11 | P2 | Calling torque a “rotational force” blurs two quantities with different units | [x] Resolved 2026-07-13 |
 | F12 | P2 | Historical/source asides interrupt the main instructional path | [ ] Open |
@@ -284,7 +284,24 @@ when `m_c>0`, `m>0`, `r>0`, and `J>=0`. For the recommended uniform-pole equatio
 
 The multiple-pole denominator is likewise positive for physical parameters because `(m_i r_i)^2/(m_i r_i^2+J_i) <= m_i`; a short bound can be supplied after (41), then restated for its uniform-pole specialization (46).
 
-**Progress (2026-07-13):** The evaluation order is now stated immediately after both recommended pairs: evaluate (48) before (49), and evaluate the shared cart acceleration (50) before applying (51) to each pole. The required-state inventory and denominator proofs remain open, so this finding is only partly resolved.
+**Outcome (2026-07-14):** Resolved. Section 3.6 expands the general single-pole denominator as
+$mr^2[m_c+m\sin^2\theta]+J(m_c+m)$ and identifies the strictly positive $mr^2m_c$ term. It also states that $mr^2+J>0$,
+so both general equations remain defined at upright, horizontal, and downward angles. After (41), section 3.8 uses
+$(m_i r_i)^2/(m_i r_i^2+J_i)\leq m_i$ and $\cos^2\theta_i\leq1$ to prove the general multiple-pole denominator is at
+least $m_c>0$; every indexed pole denominator is positive as well.
+
+Sections 5.2 and 5.3 now inventory the current state, applied input, model parameters, and derived total mass needed for one evaluation.
+They state that every right-hand-side value must come from the same instantaneous state, that cart acceleration is the only intermediate
+passed to the angular equations, and that no state may be advanced between those evaluations. The position $x$ is retained explicitly as
+an integration state even though the acceleration right-hand sides do not depend on it. Next to the recommended uniform-pole equations,
+the single-pole denominator is bounded below by $m_c+m/4$, and the multiple-pole denominator by
+$m_c+\frac14\sum_i m_i$; the remaining angular-equation divisors are also identified as non-zero for positive masses and geometry.
+
+Symbolic expansion reduced the general single-pole identity to zero. The excess above the single uniform bound reduced to
+$\frac34m\sin^2\theta$, the per-pole general bound remainder to $m_iJ_i/(m_i r_i^2+J_i)$, and the two-pole uniform excess to
+$\frac34\sum_i m_i\sin^2\theta_i$. Upright, horizontal, and downward checks all satisfied the stated bounds. Main equation tags remain
+(1)-(51), all 61 `align` environments are balanced, MathJax produced 465 rendered containers, the desktop PDF showed no clipping, and a
+targeted 485-pixel content-width check reported equal scroll and client widths for all five new displays.
 
 ### F10 — Keep numerical claims aligned with the measured error
 
@@ -400,7 +417,7 @@ Under this transformation, sine terms change sign while cosine terms do not. Eve
 Work in small passes so that mathematical and editorial changes remain reviewable:
 
 1. **Mechanics foundations (resolved 2026-07-14):** F7 and F8.
-2. **Implementation and numerical claims:** the remainder of F9 and F10.
+2. **Implementation and numerical claims:** F9 resolved 2026-07-14; F10 remains open.
 3. **Optional depth and notation:** F12, F13, and F16.
 4. **Editorial integrity:** F15.
 5. **Dedicated coordinate-convention decision:** F17, when a full rederivation and artefact-regeneration pass is desired.
