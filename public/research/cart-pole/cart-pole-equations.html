@@ -967,6 +967,11 @@
 
     \end{align}
     <br/>
+    <p>
+        Equation (30) contains both unknown accelerations, $\ddot x$ and $\ddot\theta$. Consequently, substituting the reaction magnitude
+        from (30) into the Coulomb model (27) makes $M_f$ and the accelerations mutually dependent. They must be solved together rather
+        than by calculating $M_f$ first and then evaluating the acceleration equations in sequence.
+    </p>
     <h5>Simplified Coulomb Approximation (Optional)</h5>
     <p>
         As with cart-track friction, we may replace the varying pivot-reaction magnitude with a constant effective bearing load
@@ -1010,7 +1015,8 @@
     <p>
         This superposition is a modelling assumption, not a general bearing law. The coefficients and effective radius should be calibrated
         together over the intended operating range; a more detailed bearing model may be needed when friction varies nonlinearly with load
-        or speed.
+        or speed. Because equation (33) retains the reaction-dependent term from (27), it also retains the implicit acceleration coupling
+        identified after equation (30).
     </p>
     <p>
         For the recommended equations we use the linear moment (32), which is physically plausible for a lubricated joint and compatible
@@ -1028,8 +1034,10 @@
     <h4>3.7.3 Equations of Motion with Friction</h4>
     <p>
         The horizontal-force balance (12) and moment balance (18) can be extended to include the friction force $F_f$ and friction moment $M_f$, giving the
-        following equations of motion. At this stage $F_f$ and $M_f$ may be supplied by any of the models above. Section 5 substitutes the
-        adopted linear damping models from equations (26) and (32). With friction included, the two balances used in section 3.6 become:
+        following equations of motion. These algebraic relations can be combined with any of the models above, but they form a direct
+        evaluation sequence only when $F_f$ and $M_f$ can be calculated from the current state and parameters without already knowing
+        $\ddot x$ or $\ddot\theta$. Section 5 uses the acceleration-independent linear damping models from equations (26) and (32).
+        With friction included, the two balances used in section 3.6 become:
     </p>
     <br/>
 
@@ -1088,8 +1096,15 @@
     $$
     <br/>
     <p>
-        The evaluation order remains the same: evaluate (35) to obtain $\ddot x$, then substitute that value into (34) to obtain
-        $\ddot\theta$.
+        For acceleration-independent friction models, the evaluation order remains the same: calculate $F_f$ and $M_f$ from the current
+        state, evaluate (35) to obtain $\ddot x$, then substitute that value into (34) to obtain $\ddot\theta$. This applies, in particular,
+        to the adopted linear damping models (26) and (32).
+    </p>
+    <p>
+        The reaction-dependent Coulomb models do not permit that simple sequence. Equation (23) contains $\ddot\theta$, while equations
+        (27) and (33) depend through (30) on both $\ddot x$ and $\ddot\theta$. With any of those choices, equations (34)-(35), the selected
+        friction definitions, and any required contact or zero-velocity regime conditions form one implicit, generally nonlinear and
+        piecewise system that must be solved simultaneously.
     </p>
     <br/>
 
@@ -1288,7 +1303,8 @@
     <p>
         We now add the signed cart-track friction force $F_f$ and the signed pivot friction moment $M_{f,i}$. The cart friction force
         appears on the applied-force side of the horizontal balance, while the pivot friction moment appears in the moment balance for
-        pole $i$:
+        pole $i$. As in the single-pole case, the resulting cart-first calculation is explicit only when these friction loads can be
+        evaluated without already knowing the accelerations:
     </p>
     <br/>
     \begin{align}
@@ -1379,11 +1395,17 @@
     $$
     <br/>
     <p>
-        The angular-acceleration expression used in that substitution is the second equation in the evaluation sequence:
+        The angular-acceleration expression used in that substitution is:
     </p>
     <br/>
     $$ \ddot\theta_i = \frac{m_i r_i(g\sin\theta_i - \ddot x\cos\theta_i) - M_{f,i}}{m_i r_i^2+J_i} \tag{43} $$
     <br/>
+    <p>
+        If $F_f$ and every $M_{f,i}$ depend only on the current state and parameters, evaluate (42) first and then evaluate (43) for
+        each pole. If any selected friction load depends on an unknown acceleration through a dynamic contact reaction, equations (42)-(43)
+        remain valid algebraic relations but not an explicit evaluation sequence; the acceleration and friction equations must instead be
+        solved together.
+    </p>
     <br/>
     <br/>
 
