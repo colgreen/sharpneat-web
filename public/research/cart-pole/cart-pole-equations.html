@@ -387,13 +387,15 @@
 
     <h3>3.3 Inertial Force on Point G</h3>
     <p>
-        We now adopt d'Alembert's principle (see <a href="#appendixA">appendix A</a>).
+        We now use d'Alembert's principle to write Newton's Second Law in dynamic-equilibrium form. In this form, an inertial bookkeeping
+        force $\mathbf{F}^i_G=-m\mathbf{a}_G$ is added to the ordinary applied forces so that their sum can be written as zero; it is not an
+        additional physical force. Readers unfamiliar with this construction should read <a href="#appendixA">appendix A</a> before
+        continuing, where the translational and rotational forms used in sections 3.3-3.5 are explained.
     </p>
     <p>
-        The pendulum or pole's mass at point G resists acceleration, resulting in an inertial force (denoted with a superscript i)
-        with a direction opposite to the direction of acceleration. We obtain this force by multiplying equations
-        (7) and (8) with the pendulum's mass (m) as per Newton's Second Law of motion $F=ma$, and changing the sign to 
-        obtain a force in the opposite direction to the acceleration of G:
+        For the pole's translational motion, the resultant inertial force (denoted with a superscript i) is represented at its centre of
+        mass G and points opposite to the acceleration of G. We obtain its components by multiplying the accelerations in equations
+        (7) and (8) by $-m$:
     </p>
 
     <p>Inertial force (x-axis)</p>
@@ -1997,9 +1999,10 @@
         the underlying equations and model parameters are unchanged.
     </p>
     <p>
-        The main derivation and simulation guidance end here. Appendices A and B provide optional introductory background on d'Alembert's
-        principle and moment (torque) sign conventions. Appendices C-E provide optional historical verification against Cannon, Barto et al., and Wieland; they are not
-        required to implement the recommended equations.
+        The main derivation and simulation guidance end here. Appendices A and B provide supporting background on d'Alembert's principle
+        and moment (torque) sign conventions. Readers unfamiliar with the d'Alembert construction should consult appendix A when it is first
+        linked in section 3.3; readers already familiar with it may treat that appendix as optional. Appendices C-E provide optional historical
+        verification against Cannon, Barto et al., and Wieland; they are not required to implement the recommended equations.
     </p>
     <p>
         The source comparisons retain each source's notation at the point of quotation. They show that the familiar $\frac{4}{3}$ and

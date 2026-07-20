@@ -45,7 +45,7 @@ The review found one conditional correctness problem in the instructions for eva
 | ID | Priority | Finding | Status |
 | --- | --- | --- | --- |
 | F18 | P1 | Restrict or qualify the explicit evaluation order for acceleration-dependent friction models | Resolved 2026-07-20 |
-| F19 | P1 | Teach the essential d'Alembert mechanics before using it | Open |
+| F19 | P1 | Teach the essential d'Alembert mechanics before using it | Resolved 2026-07-20 |
 | F20 | P1 | Derive the uniform-pole body inertia rather than importing it silently | Open |
 | F21 | P2 | Move optional friction detail out of the main derivation path | Open |
 | F22 | P2 | Label equation (12) consistently as a combined-system balance | Open |
@@ -99,6 +99,10 @@ The phrase "the pendulum or pole's mass at point G resists acceleration" should 
 - The reader can distinguish an inertial bookkeeping force from a physical applied or contact force.
 - The use of both `-m a_G` and `-J alpha` for an extended body is motivated before the moment balance.
 - No essential premise is available only after the main derivation has ended.
+
+**Outcome (2026-07-20):** Resolved with a navigation-and-signposting compromise that preserves the derivation's flow and keeps Appendix A intact. Section 3.3 now states the d'Alembert rule needed immediately: the inertial bookkeeping force is $\mathbf F^i_G=-m\mathbf a_G$, it is included so that the ordinary applied and inertial forces can be written as a zero sum, and it is not an additional physical force. Readers unfamiliar with the construction are explicitly directed to read Appendix A before continuing, where the translational and rotational forms used in sections 3.3-3.5 are explained. The following paragraph now describes $\mathbf F^i_G$ as the resultant translational inertial force represented at the centre of mass, avoiding the former implication that an extended pole's distributed mass is physically concentrated at G. The conclusion calls Appendices A-B supporting background and qualifies Appendix A as optional only for readers already familiar with the construction.
+
+No Appendix A material or derivation section was relocated. Main equation numbering remains unchanged; all 63 `align` environments and all paragraph tags remain balanced, the section 3.3 link has exactly one Appendix A target, and a headless Chrome render produced no `mjx-merror` element.
 
 ### F20 - Derive the uniform-pole body inertia rather than importing it silently
 
@@ -199,10 +203,9 @@ and explain that the zero value belongs to this kinetic-friction-only mathematic
 
 ## Suggested Resolution Order
 
-1. F19 - place the required mechanics foundation before its first use.
-2. F20 - derive the uniform-rod inertia formula.
-3. F22 - correct the combined-system heading and references.
-4. F23 - define `sgn` at first use.
-5. F21 - reorganize the optional friction material after the local content is stable.
+1. F20 - derive the uniform-rod inertia formula.
+2. F22 - correct the combined-system heading and references.
+3. F23 - define `sgn` at first use.
+4. F21 - reorganize the optional friction material after the local content is stable.
 
 After each change, verify equation references, MathJax rendering, print layout, and consistency with the mathematical and notation invariants in `../cart-pole-equations.md`.
