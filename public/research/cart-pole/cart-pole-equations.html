@@ -195,8 +195,10 @@
             <tr><td>A positive angular velocity represents clockwise rotation.</td></tr>
             <tr><td>A positive angular acceleration represents clockwise acceleration.</td></tr>
             <tr><td>A moment is the turning effect of a force about a point or axis; it is also called torque.</td></tr>
-            <tr><td>The rotational sign conventions deliberately use opposite positive directions: moments follow the right-hand rule and are
-                positive <b>anticlockwise</b>, whereas $	heta$, $\dot\theta$, and $\ddot\theta$ are positive clockwise. See appendix B for a fuller explanation.</td></tr>
+            <tr><td>Moments follow the right-hand rule and are positive <b>anticlockwise</b>, whereas the angular-coordinate scalars
+                $\theta$, $\dot\theta$, and $\ddot\theta$ are positive clockwise. With $\hat{\mathbf z}$ denoting the unit vector pointing
+                out of the page, their vector forms are therefore $\boldsymbol{\omega}=-\dot\theta\hat{\mathbf z}$ and
+                $\boldsymbol{\alpha}=-\ddot\theta\hat{\mathbf z}$. See appendix B for a fuller explanation.</td></tr>
         </table>
     </blockquote>
 
@@ -562,11 +564,35 @@
     <br/>
 
     <p>
-        An extended rigid body also resists rotation about its own centre of mass because its mass is distributed through space rather than
-        concentrated at a single mathematical point. Following Cannon [2], we write this additional inertial moment as:
+        Unlike a point mass, an extended rigid body has mass distributed around its centre of mass. As the body changes orientation, that
+        distributed mass must also be angularly accelerated, requiring the additional inertial moment $J\ddot\theta$. The
+        angular-acceleration vector follows the right-hand rule, whereas the scalar
+        $\ddot\theta$ is positive clockwise. With $\hat{\mathbf z}$ denoting the unit vector pointing out of the page, the two are related by:
     </p>
     <br/>
-    $$ M_i = J \ddot\theta \tag{16} $$
+    $$ \boldsymbol{\alpha}=-\ddot\theta\hat{\mathbf z} $$
+    <br/>
+
+    <div style="break-inside: avoid; page-break-inside: avoid;">
+        <p>
+            Following d'Alembert's principle, the additional body inertial moment is $-J\boldsymbol{\alpha}$. Substituting the relation above
+            and then taking the signed z component gives:
+        </p>
+        <br/>
+        \begin{align}
+
+            -J\boldsymbol{\alpha}
+                &= -J\left(-\ddot\theta\hat{\mathbf z}\right) \\[3ex]
+
+            &= J\ddot\theta\hat{\mathbf z} \\[3ex]
+
+            M_i
+                &= \left[-J\boldsymbol{\alpha}\right]_z \\[3ex]
+
+                &= J\ddot\theta \tag{16}
+
+        \end{align}
+    </div>
     <br/>
 
     <p>
@@ -574,9 +600,9 @@
         $mr^2$ contribution identified after equation (14), this gives total moment of inertia $mr^2+J$ about P.
     </p>
     <p>
-        The sign of $M_i$ follows the d'Alembert convention used above for inertial forces. A positive $\ddot\theta$ is a
-        clockwise angular acceleration in this paper's coordinate convention, and the corresponding inertial moment opposes that
-        acceleration. Thus $M_i$ is positive, representing an anticlockwise moment, when $\ddot\theta$ is positive.
+        Thus, when $\ddot\theta$ is positive, the angular acceleration is clockwise and the opposing inertial moment is anticlockwise,
+        so its signed z component $M_i$ is positive. Equation (16) now follows directly from the two sign conventions rather than requiring
+        a separate sign assumption.
     </p>
     <p>
         Summing the three moments and equating to zero as per d'Alembert's principle, gives:
@@ -2011,34 +2037,32 @@
     $$ \sum \mathbf{M}^{\mathrm{ext}}_G = J\boldsymbol{\alpha} $$
 
     <p>
-        Rearranging introduces the body inertial moment:
+        Moving the rotational inertial term to the left gives:
     </p>
 
-    $$ \mathbf{M}^i = -J\boldsymbol{\alpha} $$
+    $$ \sum \mathbf{M}^{\mathrm{ext}}_G - J\boldsymbol{\alpha} = 0 \tag{A2} $$
 
     <p>
-        And therefore:
-    </p>
-
-    $$ \sum \mathbf{M}^{\mathrm{ext}}_G + \mathbf{M}^i = 0 \tag{A2} $$
-
-    <p>
-        Equation (A2) must not be transferred unchanged to an arbitrary accelerating point. In particular, pivot P accelerates horizontally
-        with the cart. When moments are taken about P, the d'Alembert balance must also include the moment about P of the inertial force
-        $\mathbf{F}^i_G=-m\mathbf{a}_G$ applied at the centre of mass G. This moment accounts for translation of the centre of mass around P.
-    </p>
-
-    $$ \sum \mathbf{M}^{\mathrm{ext}}_P + \mathbf{r}_{PG}\times\mathbf{F}^i_G + \mathbf{M}^i = 0 $$
-
-    <p>
-        Section 3.5 therefore uses both inertial contributions: $M_G$ is the moment about P of the inertial force at G, while
-        $M_i=J\ddot\theta$ is the scalar form of the body inertial moment about G. The ordinary pivot reaction force contributes no moment
-        about P because it is applied at P itself.
+        Equation (A2) is a moment balance about G. The inertial force $\mathbf{F}^i_G=-m\mathbf{a}_G$ introduced in equation (A1) acts at G,
+        so it has zero lever arm and therefore zero moment about G. This is why only the rotational inertial term
+        $-J\boldsymbol{\alpha}$ appears in equation (A2).
     </p>
     <p>
-        Note that this last expression uses this paper's scalar sign convention, where positive $\ddot\theta$ is clockwise but a positive
-        moment is anticlockwise. Thus the inertial moment that opposes a positive angular acceleration is written as a positive scalar moment.
+        If moments are instead taken about pivot P, the same inertial force has lever arm $\mathbf{r}_{PG}$ and contributes the moment
+        $\mathbf{r}_{PG}\times\mathbf{F}^i_G$. The rotational inertial term $-J\boldsymbol{\alpha}$ is already a pure moment, also called a
+        couple, so its value does not change when the moment centre moves from G to P. The balance about P is therefore:
     </p>
+
+    <div style="break-inside: avoid; page-break-inside: avoid;">
+        $$ \sum \mathbf{M}^{\mathrm{ext}}_P + \mathbf{r}_{PG}\times\mathbf{F}^i_G - J\boldsymbol{\alpha} = 0 $$
+
+        <p>
+            The three terms are, in order: the ordinary external moments about P; the moment of the centre-of-mass inertial force about P;
+            and the rotational inertial moment of the body. In section 3.5, the second term becomes $M_G$ and includes the
+            $mr^2\ddot\theta$ contribution, while the third becomes $M_i=J\ddot\theta$. The ordinary pivot reaction contributes no moment
+            about P because it is applied at P itself.
+        </p>
+    </div>
     <br/>
     <br/>
     <br/>
@@ -2099,7 +2123,25 @@
         In this paper the z-axis points out of the page. Therefore a positive torque, i.e. a positive z-axis moment, is anticlockwise.
         This is the convention used for the moment terms in table 1 and section 3.5. However, the pole angle $\theta$, angular velocity
         $\dot\theta$, and angular acceleration $\ddot\theta$ are defined as positive in the clockwise direction. This deliberate difference
-        in positive directions is why the signs of the moment terms require care.
+        means that their corresponding vectors point along the negative z-axis when the scalar values are positive:
+    </p>
+    <br/>
+
+    \begin{align}
+
+        \boldsymbol{\omega} &= -\dot\theta\hat{\mathbf z} \\[3ex]
+
+        \boldsymbol{\alpha} &= -\ddot\theta\hat{\mathbf z}.
+
+    \end{align}
+    <br/>
+
+    <p>
+        These equations are the conversion between the paper's clockwise-positive angular-coordinate scalars and its
+        right-hand-rule vectors. For example, the d'Alembert body inertial moment vector is
+        $-J\boldsymbol{\alpha}=J\ddot\theta\hat{\mathbf z}$, so its signed scalar z component is
+        $M_i=J\ddot\theta$, as shown in equation (16). Similarly, when $\dot\theta&gt;0$ the pole rotates clockwise, so a damping moment
+        opposing that motion is anticlockwise and therefore has a positive signed value, consistent with $M_f=b_p\dot\theta$ in equation (32).
     </p>
     <br/>
 
@@ -2669,7 +2711,7 @@
         <i>
             Colin,
             <br />Originally published January 4, 2020
-            <br />Last revised July 15, 2026
+            <br />Last revised July 20, 2026
         </i>
     </p>
     <br/>

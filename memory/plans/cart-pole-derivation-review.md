@@ -3,7 +3,7 @@
 - Reviewed: 2026-07-13
 - Reviewed page: `public/research/cart-pole/cart-pole-equations.html`
 - Reviewed revision: `d07bb73` (`Refine cart-pole derivation and figure`)
-- Status: In progress; F1-F6, F11, and F14 resolved on 2026-07-13; F7-F10, F12-F13, and F15-F16 resolved on 2026-07-14
+- Status: Complete; F1-F6, F11, and F14 resolved on 2026-07-13; F7-F10, F12-F13, and F15-F16 resolved on 2026-07-14; F17 resolved on 2026-07-20
 
 ## Review Goal
 
@@ -26,7 +26,7 @@ The broad structure is also sound:
 7. collect recommended simulation equations; and
 8. discuss numerical integration.
 
-The main remaining weakness is not the correctness of the final formulas, but the gap between the paper's intended audience and the mechanics knowledge it sometimes assumes. The initial review also found uneven algebraic detail: a reader was guided line by line through differentiation, then expected to supply substantial later substitutions. The F3 and F4 revisions have now expanded the friction, multiple-pole, uniform-pole, and Wieland transitions; the remaining findings concern physical assumptions, topology, implementation guidance, and smaller narrative or editorial issues.
+The review found no incorrect final formula, but it initially identified a gap between the paper's intended audience and the mechanics knowledge it sometimes assumed. It also found uneven algebraic detail: a reader was guided line by line through differentiation, then expected to supply substantial later substitutions. The completed F1-F17 revisions have now supplied the missing mechanics foundations and algebraic bridges, clarified physical assumptions and topology, made section 5 a self-contained implementation handoff, narrowed the numerical claims, and resolved the remaining notation and editorial decisions.
 
 The initial review also found one formal derivation issue in section 3.6: the final acceleration equations were valid when the pole was horizontal, but both written elimination routes passed through intermediate equations that divided by `cos(theta)`. This was resolved on 2026-07-13 by retaining only the nonsingular cart-acceleration-first route in the main paper. The opposite elimination order is now derived once, in Appendix D, because Barto et al.'s source equation requires that form for direct comparison.
 
@@ -69,7 +69,7 @@ The primary-source transcriptions and quotations in Appendices C-E were not inde
 | F14 | P3 | Equation numbering jumps from (24) to (29), which looks like missing content | [x] Resolved 2026-07-13 |
 | F15 | P3 | Several local prose, notation, accessibility, and dating issues remain | [x] Resolved 2026-07-14 |
 | F16 | P3 | Optional friction discussion sometimes overstates or weakly motivates approximations | [x] Resolved 2026-07-14 |
-| F17 | P2 | Angular variables are clockwise-positive while right-hand-rule moments are anticlockwise-positive | [ ] Deferred for a dedicated sign-convention pass |
+| F17 | P2 | Angular variables are clockwise-positive while right-hand-rule moments are anticlockwise-positive | [x] Resolved 2026-07-20 |
 
 Priority meanings:
 
@@ -135,7 +135,7 @@ Appendix A's statement `sum M = I alpha` “about a chosen axis” is too broad.
 
 **Recommended change:** Add the 2D component identity, show the substitutions into (13), derive (15) in two lines, explain why the pivot reaction contributes no moment, and qualify the generic rotational statement in Appendix A.
 
-**Outcome (2026-07-13):** Resolved. Section 3.5 now states $[\mathbf r\times\mathbf F]_z=r_xF_y-r_yF_x$, explains the physical meaning of its two products, identifies the radial-vector and inertial-force components before substitution, and includes the intermediate component line in (13)-(14). The gravity force is written as horizontal component zero and vertical component $-mg$, then substituted through the same rule to derive (15). The ideal pivot reaction is explicitly omitted because it is applied at P and therefore has zero moment about P; the later friction moment is distinguished from that reaction force. Appendix B repeats the planar component identity as part of its fuller cross-product explanation. Appendix A now limits the compact $\sum\mathbf M=J\boldsymbol\alpha$ form to planar moments about the centre of mass and explicitly includes both the centre-of-mass inertial-force moment and body inertial moment when balancing about accelerating pivot P. Symbolic residual checks for (14) and (15) reduced to zero, and the expanded derivation and appendices were rendered without overflow.
+**Outcome (2026-07-13; clarified 2026-07-20):** Resolved. Section 3.5 now states $[\mathbf r\times\mathbf F]_z=r_xF_y-r_yF_x$, explains the physical meaning of its two products, identifies the radial-vector and inertial-force components before substitution, and includes the intermediate component line in (13)-(14). The gravity force is written as horizontal component zero and vertical component $-mg$, then substituted through the same rule to derive (15). The ideal pivot reaction is explicitly omitted because it is applied at P and therefore has zero moment about P; the later friction moment is distinguished from that reaction force. Appendix B repeats the planar component identity as part of its fuller cross-product explanation. Appendix A now limits the compact $\sum\mathbf M=J\boldsymbol\alpha$ form to planar moments about the centre of mass and explicitly includes both the centre-of-mass inertial-force moment and body inertial moment when balancing about pivot P. Its bridge after (A2) explains why the inertial force has zero moment at G, why it acquires lever arm $\mathbf r_{PG}$ at P, and why the body inertial couple is unchanged. Symbolic residual checks for (14) and (15) reduced to zero, and the expanded derivation and appendices were rendered without overflow.
 
 ### F3 — Derive the friction-extended balances before listing four results
 
@@ -492,6 +492,27 @@ Under this transformation, sine terms change sign while cosine terms do not. Eve
 
 **Recommended change:** Defer this choice until it can be handled as one coordinated sign-convention pass. At that point, verify the Cannon provenance, decide the main-paper convention explicitly, rederive rather than mechanically relabel the equations, regenerate affected numerical artefacts, and record the complete equivalence checks here.
 
+**Outcome (2026-07-20):** Resolved by deliberately retaining the clockwise-positive angular-coordinate scalars and the
+anticlockwise-positive right-hand-rule moment vectors. Primary-source inspection established that this convention aligns with all three
+historical comparisons. Cannon p.705 writes the mass-centre position with horizontal component $l\sin\theta$ and vertical component
+$l\cos\theta$, so positive $\theta$ moves the stick to the right and is clockwise from upright. Barto et al.'s figure 1 draws $\theta$
+clockwise from upright. Wieland's tables call $\theta$ only the angle from vertical, but his equation (10), after replacing his signed
+$g=-9.8\,\mathrm{m/s^2}$ by a positive magnitude, has
+$\ddot\theta=\frac{3}{4l}(g\sin\theta-\ddot x\cos\theta-\mu_p\dot\theta/(ml))$; the cart-acceleration sign therefore implies the same
+clockwise-positive coordinate. Changing the paper would have added source-boundary sign mappings, reversed the public code's angular-state
+semantics and numerical artefacts, and moved sign complexity into the opening kinematics without changing the physical model.
+
+The pedagogical issue was addressed directly instead. Table 1 and Appendix B now state the vector-scalar bridge
+$\boldsymbol\omega=-\dot\theta\hat{\mathbf z}$ and $\boldsymbol\alpha=-\ddot\theta\hat{\mathbf z}$ for outward unit vector $\hat{\mathbf z}$. Section 3.5 uses it
+to derive $-J\boldsymbol\alpha=J\ddot\theta\hat{\mathbf z}$ and hence its signed z component $M_i=J\ddot\theta$ rather than
+asking the reader to accept that sign from prose. Appendix B also applies the same bridge to $M_f=b_p\dot\theta$. No equation of motion,
+figure, C# implementation, initial condition, dataset, or numerical result changed.
+
+Verification found 63 balanced `align` environments, unchanged main equation tags (1)-(51), 644 rendered MathJax containers and no
+actual `mjx-merror` element. The new expressions fit the desktop print rendering and a 524-pixel viewport; the narrow-width diagnostic's
+five overflowing displays were pre-existing long derivation equations, not F17 additions. The section 3.5 explanation and equation (16)
+are kept together in print. The visible last-revised date is now July 20, 2026.
+
 ## Suggested Work Order
 
 Work in small passes so that mathematical and editorial changes remain reviewable:
@@ -500,11 +521,11 @@ Work in small passes so that mathematical and editorial changes remain reviewabl
 2. **Implementation and numerical claims (resolved 2026-07-14):** F9 and F10.
 3. **Optional depth and notation (resolved 2026-07-14):** F12-F13 and F16.
 4. **Editorial integrity (resolved 2026-07-14):** F15.
-5. **Dedicated coordinate-convention decision:** F17, when a full rederivation and artefact-regeneration pass is desired.
+5. **Coordinate-convention decision (resolved 2026-07-20):** F17 retained the historical clockwise coordinate and added the explicit vector-scalar bridge.
 
 For each pass:
 
-- preserve the stated coordinate and sign conventions unless undertaking the dedicated F17 pass, in which case transform them systematically;
+- preserve the stated clockwise-positive angular-coordinate scalars, anticlockwise-positive right-hand-rule vectors, and their explicit negative-sign bridge;
 - check each changed equality symbolically or by substitution;
 - test upright, horizontal, and downward pole configurations;
 - check dimensions of every added force and moment term;
@@ -522,3 +543,5 @@ This review can be closed when:
 - friction, uniform-pole, and multiple-pole results show enough intermediate work to reproduce their signs and coefficients;
 - section 5 is sufficient on its own as an implementation handoff after the reader has accepted the derivation; and
 - all remaining P2/P3 decisions and verification results are recorded here.
+
+All completion criteria were met and the review was closed on 2026-07-20.
