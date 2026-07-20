@@ -1,6 +1,6 @@
 # Cart-Pole Equations Article
 
-Last updated: 2026-07-20
+Last updated: 2026-07-21
 
 ## Current Status
 
@@ -26,6 +26,7 @@ Last updated: 2026-07-20
 - F17 deliberately retains clockwise-positive $\theta$, $\dot\theta$, and $\ddot\theta$ alongside anticlockwise-positive right-hand-rule moment vectors. This aligns with Cannon and Barto directly and with the sign structure of Wieland's equation (10). Table 1 and Appendix B now give the explicit bridge $\boldsymbol\omega=-\dot\theta\hat{\mathbf z}$ and $\boldsymbol\alpha=-\ddot\theta\hat{\mathbf z}$, where $\hat{\mathbf z}$ is the outward unit vector; section 3.5 uses it to derive $M_i=J\ddot\theta$, and Appendix B applies it to $M_f=b_p\dot\theta$. Preserve both conventions and their bridge together.
 - Follow-up finding F18 was resolved on 2026-07-20. Equations (34)-(35) and (42)-(43) are an explicit cart-acceleration-first evaluation sequence only when the selected friction loads can be calculated without the unknown accelerations, as with the adopted linear damping models. Exact reaction-dependent Coulomb models using (23), (27), (30), or (33) leave an implicit, generally nonlinear and piecewise system that must be solved simultaneously. Preserve this qualification whenever describing generic friction substitutions.
 - Follow-up finding F19 was resolved on 2026-07-20 without moving Appendix A into the main derivation. Section 3.3 states the immediately required d'Alembert rule, identifies $\mathbf F^i_G=-m\mathbf a_G$ as an inertial bookkeeping force rather than an additional physical force, and directs unfamiliar readers to read Appendix A before continuing. It describes this term for an extended pole as the resultant translational inertial force represented at G, not as distributed mass physically located there. Preserve this compact prerequisite signpost and the conclusion's qualification that Appendix A is optional only for readers already familiar with the construction.
+- Follow-up finding F20 was resolved on 2026-07-21 with a compact derivation of the slender uniform rod's body inertia. Section 4.1 uses the intuitive twice-as-far, twice-the-force and twice-the-moment-arm explanation for the squared distance, defines the mass element $dm=(m/L)ds$, shows the change from a mass integral to an integral along the pole on its own line, and evaluates $J=\frac{1}{12}mL^2$ before applying $L=2r$. Preserve this accessible sequence, the slender-rod modelling assumption, and the distinction between body inertia about G and the subsequently derived total pivot inertia $mr^2+J$.
 - Supporting C# repository: `/mnt/d/home/projects/code/cartpole-physics/main`.
 - The corrected C# solution builds with zero warnings and errors, and its analysis results match the article.
 - The article now uses MathJax 4's TeX/CommonHTML component from jsDelivr; the migrated rendering has been visually verified.

@@ -1426,11 +1426,39 @@
 
     <h3>4.1 Rotational Inertia</h3>
     <p>
-        As discussed in section 3.5, the body moment of inertia for an extended pole is measured about its centre of mass. For a uniform
-        pole of full length $L=2r$, this is:
+        As discussed in section 3.5, the body moment of inertia for an extended pole is measured about its centre of mass. The uniform-pole
+        specialization used here idealizes the pole as a slender rod with mass distributed evenly along its full length $L$. Let $s$ be a
+        coordinate along the pole measured from G, so that the two ends are at $s=-L/2$ and $s=L/2$. A short element of length $ds$ has
+        mass $dm=(m/L)ds$.
+    </p>
+    <p>
+        Imagine dividing the pole into many small pieces. An equal-mass piece twice as far from G needs twice as much force to achieve the
+        same angular acceleration. The force is tangential and therefore perpendicular to the pole, so its moment about G is the force
+        multiplied by its distance from G. Acting twice as far from G therefore supplies a second factor of two. The piece's contribution
+        to rotational inertia is consequently $2\mathbin{\times}2=4=2^2$ times as large. This is why the distance from G appears squared in $s^2\,dm$.
+        For the uniform pole, substituting $dm=(m/L)ds$ changes the sum over small pieces of mass into an integral along the pole:
     </p>
     <br/>
-    $$ J = \frac{1}{12}mL^2 = \frac{1}{12}m(2r)^2 = \frac{4}{12}mr^2 = \frac{1}{3}mr^2 $$
+    \begin{align}
+
+        J &= \int s^2\,dm \\[3ex]
+
+          &= \int_{-L/2}^{L/2}s^2\left(\frac{m}{L}\,ds\right) \\[3ex]
+
+          &= \frac{m}{L}\left[\frac{s^3}{3}\right]_{-L/2}^{L/2} \\[3ex]
+
+          &= \frac{m}{L}\left(\frac{L^3}{24}-\left(-\frac{L^3}{24}\right)\right) \\[3ex]
+
+          &= \frac{1}{12}mL^2.
+
+    \end{align}
+    <br/>
+
+    <p>
+        For a uniform pole, $L=2r$. Substituting this relation gives:
+    </p>
+    <br/>
+    $$ J = \frac{1}{12}m(2r)^2 = \frac{4}{12}mr^2 = \frac{1}{3}mr^2 $$
     <br/>
 
     <p>

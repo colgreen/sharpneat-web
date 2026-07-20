@@ -46,7 +46,7 @@ The review found one conditional correctness problem in the instructions for eva
 | --- | --- | --- | --- |
 | F18 | P1 | Restrict or qualify the explicit evaluation order for acceleration-dependent friction models | Resolved 2026-07-20 |
 | F19 | P1 | Teach the essential d'Alembert mechanics before using it | Resolved 2026-07-20 |
-| F20 | P1 | Derive the uniform-pole body inertia rather than importing it silently | Open |
+| F20 | P1 | Derive the uniform-pole body inertia rather than importing it silently | Resolved 2026-07-21 |
 | F21 | P2 | Move optional friction detail out of the main derivation path | Open |
 | F22 | P2 | Label equation (12) consistently as a combined-system balance | Open |
 | F23 | P3 | Define the sign function at first use | Open |
@@ -135,6 +135,10 @@ Then retain the existing substitution `L=2r` and addition of the `mr^2` offset c
 - The factor `1/12` is derived rather than asserted.
 - The existing distinction between body inertia `J` and total pivot inertia `mr^2+J` remains explicit.
 
+**Outcome (2026-07-21):** Resolved with a compact derivation in section 4.1. The uniform pole is now identified more precisely as a slender rod with mass distributed evenly along its length. A coordinate $s$ is measured from centre of mass G and a short element is assigned mass $dm=(m/L)ds$. The squared distance is explained without introducing further moment equations: a piece twice as far from G needs twice the tangential force for the same angular acceleration; because that force is perpendicular to the pole, its moment about G is force multiplied by distance, so the doubled moment arm supplies a second factor of two. Its rotational-inertia contribution is therefore $2\times2=2^2$ times as large. The displayed calculation then gives the mass-to-length substitution $\int s^2\,dm=\int_{-L/2}^{L/2}s^2(m/L)\,ds$ its own line and evaluates the endpoint terms explicitly to obtain $J=\frac{1}{12}mL^2$. The existing substitution $L=2r$ then gives $J=\frac{1}{3}mr^2$, after which the paper retains its separate derivation of total pivot inertia $mr^2+J=\frac{4}{3}mr^2$.
+
+The integral coefficient was independently checked as $1/12$. Main equation numbering remains unchanged; the page now has 64 balanced `align` environments and 261 balanced paragraph pairs, and a headless Chrome render produced no `mjx-merror` element.
+
 ### F21 - Move optional friction detail out of the main derivation path
 
 **Priority:** P2
@@ -203,9 +207,8 @@ and explain that the zero value belongs to this kinetic-friction-only mathematic
 
 ## Suggested Resolution Order
 
-1. F20 - derive the uniform-rod inertia formula.
-2. F22 - correct the combined-system heading and references.
-3. F23 - define `sgn` at first use.
-4. F21 - reorganize the optional friction material after the local content is stable.
+1. F22 - correct the combined-system heading and references.
+2. F23 - define `sgn` at first use.
+3. F21 - reorganize the optional friction material after the local content is stable.
 
 After each change, verify equation references, MathJax rendering, print layout, and consistency with the mathematical and notation invariants in `../cart-pole-equations.md`.
