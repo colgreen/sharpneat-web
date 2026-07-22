@@ -48,7 +48,7 @@ The review found one conditional correctness problem in the instructions for eva
 | F19 | P1 | Teach the essential d'Alembert mechanics before using it | Resolved 2026-07-20 |
 | F20 | P1 | Derive the uniform-pole body inertia rather than importing it silently | Resolved 2026-07-21 |
 | F21 | P2 | Move optional friction detail out of the main derivation path | Resolved 2026-07-22 |
-| F22 | P2 | Label equation (12) consistently as a combined-system balance | Open |
+| F22 | P2 | Label equation (12) consistently as a combined-system balance | Resolved 2026-07-22 |
 | F23 | P3 | Define the sign function at first use | Open |
 
 ## Detailed Findings
@@ -187,6 +187,10 @@ For a novice reader, the cart-only label conflicts with the actual system bounda
 - Every description of equation (12) identifies the same system boundary.
 - The cancellation of the internal pivot interaction follows naturally from that boundary.
 
+**Outcome (2026-07-22):** Resolved. Section 3.4 is now titled “Horizontal Balance for the Combined Cart-Pole System”, matching the derivation immediately below it. The opening of section 3.6 now likewise identifies equation (12) as the horizontal-force balance for the combined cart-pole system rather than for the cart alone. This makes the system boundary consistent with the pole inertial term in equation (12) and with the explanation that the internal pivot interaction cancels.
+
+No equation was changed. Main equation numbering remains (1)-(51), including the deliberate repetitions of (26) and (32) in section 5; all 64 `align` environments and 262 paragraph pairs remain balanced. A headless Chrome render produced 504 MathJax containers and no `mjx-merror` element.
+
 ### F23 - Define the sign function at first use
 
 **Priority:** P3
@@ -211,7 +215,6 @@ and explain that the zero value belongs to this kinetic-friction-only mathematic
 
 ## Suggested Resolution Order
 
-1. F22 - correct the combined-system heading and references.
-2. F23 - define `sgn` at first use.
+1. F23 - define `sgn` at first use.
 
 After each change, verify equation references, MathJax rendering, print layout, and consistency with the mathematical and notation invariants in `../cart-pole-equations.md`.
