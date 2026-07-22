@@ -47,7 +47,7 @@ The review found one conditional correctness problem in the instructions for eva
 | F18 | P1 | Restrict or qualify the explicit evaluation order for acceleration-dependent friction models | Resolved 2026-07-20 |
 | F19 | P1 | Teach the essential d'Alembert mechanics before using it | Resolved 2026-07-20 |
 | F20 | P1 | Derive the uniform-pole body inertia rather than importing it silently | Resolved 2026-07-21 |
-| F21 | P2 | Move optional friction detail out of the main derivation path | Open |
+| F21 | P2 | Move optional friction detail out of the main derivation path | Resolved 2026-07-22 |
 | F22 | P2 | Label equation (12) consistently as a combined-system balance | Open |
 | F23 | P3 | Define the sign function at first use | Open |
 
@@ -167,6 +167,10 @@ A clearer instructional sequence would be:
 - The optional models and their physical caveats are preserved.
 - Generic friction signs are still derived rather than merely asserted.
 
+**Outcome (2026-07-22):** Resolved with a navigation-and-labelling compromise rather than relocating the friction material. A prominent “Main derivation route” callout at the end of the section 3.7 introduction explains that sections 3.7.1-3.7.2 compare friction models in detail and links readers directly to section 3.7.3, where $F_f$ and $M_f$ are carried as generic signed terms; it also tells readers that section 5 repeats and substitutes the adopted linear models (26) and (32). The headings of sections 3.7.1 and 3.7.2 now identify them as “Optional Detail”, and section 3.7.3 has the stable `frictionEquations` fragment target.
+
+No friction content, equation, or existing reference was moved or removed. Main equation numbering remains unchanged; all 64 `align` environments and 262 paragraph pairs are balanced, the new link has exactly one target, and a headless Chrome render produced no `mjx-merror` element.
+
 ### F22 - Label equation (12) consistently as a combined-system balance
 
 **Priority:** P2
@@ -209,6 +213,5 @@ and explain that the zero value belongs to this kinetic-friction-only mathematic
 
 1. F22 - correct the combined-system heading and references.
 2. F23 - define `sgn` at first use.
-3. F21 - reorganize the optional friction material after the local content is stable.
 
 After each change, verify equation references, MathJax rendering, print layout, and consistency with the mathematical and notation invariants in `../cart-pole-equations.md`.
