@@ -15,7 +15,7 @@ Focused topic notes:
 Working areas:
 
 - `plans/`: active plans, handovers, and task checklists worth preserving.
-- `plans/cart-pole-derivation-follow-up.md`: active follow-up review; F18-F22 on implicit Coulomb-friction evaluation, prerequisite signposting, uniform-rod inertia, main-path friction navigation, and system-boundary labelling are resolved, while F23 remains open on sign-function notation.
+- `plans/cart-pole-derivation-follow-up.md`: completed F18-F23 follow-up review covering implicit Coulomb-friction evaluation, prerequisite signposting, uniform-rod inertia, main-path friction navigation, system-boundary labelling, and sign-function notation.
 - `plans/cart-pole-derivation-review.md`: completed correctness, structure, flow, and basic-algebra accessibility review of the canonical cart-pole paper, including outcomes and verification for findings F1-F17.
 - `plans/cart-pole-pedagogical-simplification.md`: ordered, one-pass-at-a-time plan for improving the derivation's pacing while preserving its basic-algebra audience.
 - `tmp/`: disposable session notes and drafts that are not durable project memory.

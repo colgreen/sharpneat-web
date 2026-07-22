@@ -2,7 +2,7 @@
 
 - Reviewed: 2026-07-20
 - Reviewed page: `public/research/cart-pole/cart-pole-equations.html`
-- Status: Open
+- Status: Complete
 - Preceding review: `cart-pole-derivation-review.md` (F1-F17 complete)
 
 ## Review Goal
@@ -49,7 +49,7 @@ The review found one conditional correctness problem in the instructions for eva
 | F20 | P1 | Derive the uniform-pole body inertia rather than importing it silently | Resolved 2026-07-21 |
 | F21 | P2 | Move optional friction detail out of the main derivation path | Resolved 2026-07-22 |
 | F22 | P2 | Label equation (12) consistently as a combined-system balance | Resolved 2026-07-22 |
-| F23 | P3 | Define the sign function at first use | Open |
+| F23 | P3 | Define the sign function at first use | Resolved 2026-07-22 |
 
 ## Detailed Findings
 
@@ -210,11 +210,15 @@ and explain that the zero value belongs to this kinetic-friction-only mathematic
 
 **Success criteria:**
 
-- Every value produced by `sgn` is defined before it is used.
+- Every value produced by `sgn` is defined where the notation is first introduced.
 - The definition is consistent with the paper's decision not to model static friction.
 
-## Suggested Resolution Order
+**Outcome (2026-07-22):** Resolved with a compact definition immediately after equation (21). The text identifies $\sgn(v)$ as the standard sign function and states its values for positive, negative, and zero arguments. It then explains that the leading minus sign makes $F_f$ oppose cart velocity and that the resulting $F_f=0$ at zero velocity does not represent static friction while the cart remains at rest. This definition also applies to the later uses of $\sgn(\dot\theta)$ in the pivot-friction models.
 
-1. F23 - define `sgn` at first use.
+No numbered equation was added or changed. Main equation numbering remains (1)-(51), including the deliberate repetitions of (26) and (32) in section 5; all 64 `align` environments and 263 paragraph pairs are balanced. A headless Chrome render produced no `mjx-merror` element.
+
+## Completion
+
+All findings F18-F23 were resolved by 2026-07-22. The follow-up review is complete.
 
 After each change, verify equation references, MathJax rendering, print layout, and consistency with the mathematical and notation invariants in `../cart-pole-equations.md`.
